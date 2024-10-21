@@ -2,7 +2,7 @@
  <link rel="stylesheet" href="/asset/css/klapper.css">
 @section ('content')
 <body>
-
+<!-- 
 <h2>Klapper</h2>
 
 <hr>
@@ -54,6 +54,6 @@
     
 </table>
         
-   
+    -->
 </body>
 @endsection

@@ -13,6 +13,9 @@ Route::get('main', function () {
 Route::get('klapper', function () {
     return view('klapper');
 });
+Route::get('halaman-klapper', function () {
+    return view('halaman-klapper');
+});
 
 
 Route::get('klapper', [KlapperController::class, 'index']);

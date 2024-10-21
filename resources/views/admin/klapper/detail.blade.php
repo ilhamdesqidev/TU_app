@@ -6,7 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>coba</h2>
-    <h1>coba 2</h1>
+    <h1></h1>
 </body>
 </html>

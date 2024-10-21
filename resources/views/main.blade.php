@@ -1,46 +1,10 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{asset('/asset/css/main.css')}}">
-    <title>TATA USAHA</title>
-    
-</head>
-<body>
-
-<header>
-    <h2>Tata Usaha</h2>
-</header>
-
-<nav>
-    <ul>
-        <li><a href="{{url('/')}}">Dashboard</a></li>
-        <li><a href="{{url('klapper')}}">Klapper</a></li>
-        <li><a href="{{url('/')}}">Coming Soon</a></li>
-        <li><a href="{{url('/')}}">Coming Soon</a></li>
-        <li><a href="{{url('/')}}">Coming Soon</a></li>
-    </ul>
-</nav>
-    <div class="content">
-
-    <div class="gambar">
-        <img src="public/img/ytta.jpeg" alt="" srcset="">
-    </div>
-        @yield('content')
-    </div>
-</body>
-
-
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/asset/css/main.css">
-    <title>tu</title>
+    <title>Tata Usaha</title>
 </head>
 <body>
     <nav>
