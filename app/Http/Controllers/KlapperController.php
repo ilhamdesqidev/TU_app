@@ -19,7 +19,7 @@ class KlapperController extends Controller
      */
     public function create()
     {
-        return view('components.admin.klapper.tambahdataklapper');
+        return view('admin.klapper.tambahdataklapper');
     }
 
     /**
