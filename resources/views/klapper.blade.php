@@ -1,13 +1,14 @@
 @extends('main')
+<!-- <link rel="stylesheet" href="/asset/css/klapper.css"> -->
 @section('content')
 <body>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 <section class="home">
-    <div class="text">Klapper</div>
-</section>
-
+        <div class="text">Klapper</div>
+    </section>
 <div class="container">
+<<<<<<< HEAD
     <!-- Membuat tombol tambah data berada di tengah -->
     <div class="btn-container">
         <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">
@@ -15,17 +16,20 @@
         </a>
     </div>
 
+=======
+    <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">Tambah Data</a>
+>>>>>>> 236ce9ee2dae2605da8ce18ef988c7b5aa370a45
     <div class="card-container">
         @foreach ($klapper as $item)
         <div class="card" onclick="window.location='{{ url("klapper/".$item->id) }}'">
-            <div class="card-header">
-                <i class="fas fa-book logo-buku"></i> <!-- Ikon buku Font Awesome -->
-                <h3>{{ $item->nama_buku }}</h3>
+                <div class="card-header">
+                    <h3>{{ $item->nama_buku }}</h3>
+                </div>
+                <div class="card-body">
+                    <p class="tahun-ajaran">{{ $item->tahun_ajaran }}</p>
+                </div>
             </div>
-            <div class="card-body">
-                <p class="tahun-ajaran">{{ $item->tahun_ajaran }}</p>
-            </div>
-        </div>
+            
         @endforeach
     </div>
 </div>
@@ -33,7 +37,7 @@
 <style>
     .container {
         padding: 20px;
-        margin-left: 250px;
+        margin-left:250px;
     }
     
     .btn-container {
@@ -61,7 +65,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
-        margin-left: 250px;
+        margin-left:250px;
     }
     .card {
         border: 1px solid #ccc;
@@ -71,13 +75,14 @@
         padding: 15px;
         display: flex;
         flex-direction: column;
-        cursor: pointer;
-        transition: transform 0.1s;
+        cursor: pointer; /* Menambahkan pointer cursor untuk menunjukkan bahwa card bisa diklik */
+        transition: transform 0.1s; /* Mengurangi durasi animasi saat hover */
     }
     .card:hover {
-        transform: scale(1.02);
+        transform: scale(1.02); /* Mengurangi efek zoom saat hover */
     }
     .card-header {
+<<<<<<< HEAD
         display: flex;
         align-items: center;
         font-size: 1.2em;
@@ -88,12 +93,29 @@
         margin-right: 10px;
         color: #007bff;
     }
+=======
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+>>>>>>> 236ce9ee2dae2605da8ce18ef988c7b5aa370a45
     .card-body {
         flex-grow: 1;
     }
     .tahun-ajaran {
-        color: rgba(0, 0, 0, 0.6);
+        color: rgba(0, 0, 0, 0.6); /* Membuat teks tahun ajaran sedikit samar */
     }
+<<<<<<< HEAD
+=======
+    .btn-add {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 20px; /* Menambahkan jarak di bawah tombol */
+    }
+>>>>>>> 236ce9ee2dae2605da8ce18ef988c7b5aa370a45
 </style>
 
 </body>
