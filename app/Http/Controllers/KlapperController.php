@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Models\Klapper; // Perbaiki ini dengan 'App', bukan 'app'
+use App\Models\Klapper; // Perbaiki ini dengan 'App', bukan 'app'
 use DB;
 
 class KlapperController extends Controller
@@ -16,7 +16,7 @@ class KlapperController extends Controller
 
     public function create()
     {
-        return view('admin.klapper.tambahdataklapper');
+        return view('admin.klapper.tambah_buku');
     }
 
     public function store(Request $request)
@@ -31,9 +31,8 @@ class KlapperController extends Controller
 
     public function show($id)
     {
-        // Mengambil data berdasarkan id
-        $klapper = Klapper::findOrFail($id);
-        return view('show', compact('klapper')); // Tampilkan di view 'show'
+        $klapper = Klapper::findOrFail($id); // Mengambil data berdasarkan ID
+        return view('admin.klapper.show', compact('klapper')); // Tampilkan di view 'show'
     }
 
     public function delete($id)

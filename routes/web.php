@@ -11,9 +11,9 @@ Route::get('/', function () {
 Route::get('main', function () {
     return view('main');
 });
-Route::get('klapper', function () {
-    return view('klapper');
-});
+// Route::get('klapper', function () {
+//     return view('klapper');
+// });
 Route::get('halaman-klapper', function () {
     return view('halaman-klapper');
 });
