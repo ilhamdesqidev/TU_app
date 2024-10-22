@@ -1,5 +1,5 @@
 @extends('main')
-<link rel="stylesheet" href="/asset/css/klapper.css">
+<!-- <link rel="stylesheet" href="/asset/css/klapper.css"> -->
 @section('content')
 <body>
 
@@ -11,7 +11,7 @@
 
     <div class="card-container">
         @foreach ($klapper as $item)
-            <div class="card" onclick="window.location='{{ url("klapper/detail/".$item->id) }}'">
+        <div class="card" onclick="window.location='{{ url("klapper/".$item->id) }}'">
                 <div class="card-header">
                     <h3>{{ $item->nama_buku }}</h3>
                 </div>
