@@ -8,17 +8,12 @@
         <div class="text">Klapper</div>
     </section>
 <div class="container">
-<<<<<<< HEAD
     <!-- Membuat tombol tambah data berada di tengah -->
     <div class="btn-container">
         <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">
             <i class="fas fa-plus"></i> Tambah Data
         </a>
     </div>
-
-=======
-    <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">Tambah Data</a>
->>>>>>> 236ce9ee2dae2605da8ce18ef988c7b5aa370a45
     <div class="card-container">
         @foreach ($klapper as $item)
         <div class="card" onclick="window.location='{{ url("klapper/".$item->id) }}'">
