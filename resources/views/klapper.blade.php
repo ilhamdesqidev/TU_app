@@ -1,59 +1,71 @@
-@extends ('main')
- <link rel="stylesheet" href="/asset/css/klapper.css">
-@section ('content')
+@extends('main')
+<link rel="stylesheet" href="/asset/css/klapper.css">
+@section('content')
 <body>
 
 <h2>Klapper</h2>
-
 <hr>
 
-</head>
-<body>
+<div class="container">
+    <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">Tambah Data</a>
 
-<a href="{{url('klapper/tambahdataklapper')}}" class="btn-add">Tambah Data</a>
+    <div class="card-container">
+        @foreach ($klapper as $item)
+            <div class="card" onclick="window.location='{{ url("klapper/detail/".$item->id) }}'">
+                <div class="card-header">
+                    <h3>{{ $item->nama_buku }}</h3>
+                </div>
+                <div class="card-body">
+                    <p class="tahun-ajaran">{{ $item->tahun_ajaran }}</p>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
 
-<table border="1" cellspacing="0" cellpadding="10">
-    <tr>
-        <th>NO</th>
-        <th>Nama</th>
-        <th>NIS</th>
-        <th>Jurusan</th>
-        <th>Angkatan</th>
-        <th>Aksi</th>
-</tr>
-@php
-    $i = 1;
-@endphp
-@foreach ($klapper as $item)
-    <tr>
-        <td>
-            @php
-                echo $i;
-            @endphp
-        </td>
-        <td>{{ $item -> nama }}</td>
-        <td>{{ $item -> nis }}</td>
-        <td>{{ $item -> jurusan }}</td>
-        <td>{{ $item -> angkatan }}</td>
-        <td><a href="">detail</a>
-        <form action="{{url('klapper/'.$item->id)}}" method="POST" class="d-inline" 
-        onsubmit="return confirm('Apakah Data Akan Dihapus?')">
-            @method('delete')
-            @csrf
-            <button class="btn-delete">Delete</button>
-        </form>
-        </td>
-        
-    </tr>
+<style>
+    .container {
+        padding: 20px;
+    }
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 200px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer; /* Menambahkan pointer cursor untuk menunjukkan bahwa card bisa diklik */
+        transition: transform 0.1s; /* Mengurangi durasi animasi saat hover */
+    }
+    .card:hover {
+        transform: scale(1.02); /* Mengurangi efek zoom saat hover */
+    }
+    .card-header {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+    .card-body {
+        flex-grow: 1;
+    }
+    .tahun-ajaran {
+        color: rgba(0, 0, 0, 0.6); /* Membuat teks tahun ajaran sedikit samar */
+    }
+    .btn-add {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 20px; /* Menambahkan jarak di bawah tombol */
+    }
+</style>
 
-    @php
-    $i++;
-    @endphp
-    
-    @endforeach
-    
-</table>
-        
-   
 </body>
 @endsection

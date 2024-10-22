@@ -98,19 +98,19 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Halaman Input</h2>
+        <h2>Halaman tambah buku</h2>
         <form action="{{ url('klapper') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="form-input">
-                <label for="nis">NIS</label>
-                <input type="text" name="nis" id="nis">
+                <label for="nama_buku">nama_buku</label>
+                <input type="text" name="nama_buku" id="nama_buku">
             </div>
             <div class="form-input">
-                <label for="nama">Nama</label>
-                <input type="text" name="nama" id="nama">
+                <label for="tahun_ajaran">tahun_ajaran</label>
+                <input type="text" name="tahun_ajaran" id="tahun_ajaran">
             </div>
-            <div class="form-input">
+            <!-- <div class="form-input">
                 <label>Gender:</label>
                     <input type="radio" name="gender" id="male" value="laki-laki">
                     <label for="male">Laki-laki</label>
@@ -160,7 +160,7 @@
             <div class="form-input">
                 <label for="foto"> foto</label>
                 <input type="file" name="foto" id="foto">
-            </div>
+            </div> -->
 
             <button type="submit">Kirim</button>
         </form>

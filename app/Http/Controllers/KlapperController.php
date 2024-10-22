@@ -28,20 +28,8 @@ class KlapperController extends Controller
     public function store(Request $request)
     {
         DB::table('klapper')->insert([
-            'nis'=> $request->nis,
-            'nama'=> $request->nama,
-            'gender'=> $request->gender,
-            'kelas'=> $request->kelas,
-            'jurusan'=> $request->jurusan,
-            'angkatan'=> $request->angkatan,
-            'tempat_tanggal_lahir'=> $request->tempat_tanggal_lahir,
-            'tanggal_lahir'=> $request->tanggal_lahir,
-            'nama_orang_tua'=> $request->nama_orang_tua,
-            'tanggal_masuk'=> $request->tanggal_masuk, 
-            'tanggal_naik_kelas_xi'=> $request->tanggal_naik_kelas_xi,
-            'tanggal_naik_kelas_xii'=> $request->tanggal_naik_kelas_xii,
-            'tanggal_lulus'=> $request->tanggal_lulus,
-            'foto'=> $request->foto,
+            'nama_buku'=> $request->nama_buku,
+            'tahun_ajaran'=> $request->tahun_ajaran,
             ]);
             
             return redirect('klapper')->with('status','Data berhasil di tambah!');
