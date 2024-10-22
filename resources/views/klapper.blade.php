@@ -7,12 +7,8 @@
 <section class="home">
         <div class="text">Klapper</div>
     </section>
-
-
-
 <div class="container">
     <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">Tambah Data</a>
-
     <div class="card-container">
         @foreach ($klapper as $item)
         <div class="card" onclick="window.location='{{ url("klapper/".$item->id) }}'">
@@ -23,6 +19,7 @@
                     <p class="tahun-ajaran">{{ $item->tahun_ajaran }}</p>
                 </div>
             </div>
+            
         @endforeach
     </div>
 </div>

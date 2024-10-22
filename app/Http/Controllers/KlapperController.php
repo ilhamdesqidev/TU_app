@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Models\Klapper; // Perbaiki ini dengan 'App', bukan 'app'
+use App\Models\Klapper;
 use DB;
 
 class KlapperController extends Controller
@@ -21,6 +21,13 @@ class KlapperController extends Controller
 
     public function store(Request $request)
     {
+        
+        $request->validate([
+            'nama_buku' => 'required|string|max:255',
+            'tahun_ajaran' => 'required|string|max:255',
+        ]);
+
+    
         DB::table('klapper')->insert([
             'nama_buku' => $request->nama_buku,
             'tahun_ajaran' => $request->tahun_ajaran,
@@ -31,14 +38,17 @@ class KlapperController extends Controller
 
     public function show($id)
     {
-        // Mengambil data berdasarkan id
+        
         $klapper = Klapper::findOrFail($id);
-        return view('show', compact('klapper')); // Tampilkan di view 'show'
+        return view('show', compact('klapper')); 
     }
 
     public function delete($id)
     {
-        DB::table('klapper')->where('id', $id)->delete();
+                                                
+        $klapper = Klapper::findOrFail($id);
+        $klapper->delete();
+
         return redirect('klapper')->with('status', 'Data berhasil dihapus!');
     }
 }
