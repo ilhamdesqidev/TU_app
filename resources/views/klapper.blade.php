@@ -3,8 +3,12 @@
 @section('content')
 <body>
 
-<h2>Klapper</h2>
-<hr>
+
+<section class="home">
+        <div class="text">Klapper</div>
+    </section>
+
+
 
 <div class="container">
     <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">Tambah Data</a>
@@ -26,11 +30,13 @@
 <style>
     .container {
         padding: 20px;
+        margin-left:250px;
     }
     .card-container {
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
+        margin-left:250px;
     }
     .card {
         border: 1px solid #ccc;

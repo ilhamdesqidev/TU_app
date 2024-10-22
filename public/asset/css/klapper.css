@@ -68,3 +68,25 @@ tr:hover {
 button {
      right: 65%;
 }
+
+.home {
+    position: relative;
+    left: 250px;
+
+    transition: var(--tran-05);
+}
+
+.home .text {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 8px 40px;
+    background-color: var(--primary-color-light);
+    width: 100%;
+}
+
+.sidebar.close ~ .home {
+    left: 88px;
+    width: calc(100% - 88px);
+}
+

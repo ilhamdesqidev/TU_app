@@ -3,7 +3,11 @@
 @section ('content')
 <body>
 
-<h2>Dashboard</h2>
+
+<section class="home">
+        <div class="text">Dashboard</div>
+    </section>
+
 <div class="cards-container">
     <div class="card">
         <div class="icon">
