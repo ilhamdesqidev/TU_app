@@ -2,20 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KlapperController;
-
-
+use App\Http\Controllers\TambahsiswaController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 Route::get('main', function () {
     return view('main');
-});
-// Route::get('klapper', function () {
-//     return view('klapper');
-// });
-Route::get('halaman-klapper', function () {
-    return view('halaman-klapper');
 });
 
 
@@ -28,3 +21,5 @@ Route::get('klapper/{id}', [KlapperController::class, 'show']);
 
 // Tambahkan rute untuk show, edit, update sesuai kebutuhan
 
+Route::get('klapper/tambah_siswa', [TambahsiswaController::class, 'create']);
+Route::post('klapper', [TambahsiswaController::class, 'store']);

@@ -1,5 +1,6 @@
 @extends('main')
-<!-- <link rel="stylesheet" href="/asset/css/klapper.css"> -->
+<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
 @section('content')
 <body>
 
@@ -18,6 +19,7 @@
         @foreach ($klapper as $item)
         <div class="card" onclick="window.location='{{ url("klapper/".$item->id) }}'">
                 <div class="card-header">
+                <i class='bx bxs-book'></i>
                     <h3>{{ $item->nama_buku }}</h3>
                 </div>
                 <div class="card-body">
