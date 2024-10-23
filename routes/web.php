@@ -18,8 +18,3 @@ Route::post('klapper', [KlapperController::class, 'store']);
 Route::delete('klapper/{id}', [KlapperController::class, 'delete']);
 // Route::get('klapper/{id}', [KlapperController::class, 'show'])->name('klapper.show');
 Route::get('klapper/{id}', [KlapperController::class, 'show']);
-
-// Tambahkan rute untuk show, edit, update sesuai kebutuhan
-
-Route::get('klapper/tambah_siswa', [TambahsiswaController::class, 'create']);
-Route::post('klapper', [TambahsiswaController::class, 'store']);
