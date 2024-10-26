@@ -103,14 +103,22 @@
             @csrf
             
             <div class="form-input">
-                <label for="nama_buku">nama_buku</label>
-                <input type="text" name="nama_buku" id="nama_buku">
+                <label for="nis">nis</label>
+                <input type="text" name="nis" id="nis">
             </div>
             <div class="form-input">
-                <label for="tahun_ajaran">tahun_ajaran</label>
-                <input type="text" name="tahun_ajaran" id="tahun_ajaran">
+                <label for="nama_siswa">nama_siswa</label>
+                <input type="text" name="nama_siswa" id="nama_siswa">
             </div>
-            <!-- <div class="form-input">
+            <div class="form-input">
+                <label for="tempat_lahir">tempat_lahir</label>
+                <input type="text" name="tempat_lahir" id="tempat_lahir">
+            </div>
+            <div class="form-input">
+                <label for="tanggal_lahir">tanggal_lahir</label>
+                <input type="date" name="tanggal_lahir" id="tanggal_lahir">
+            </div>
+            <div class="form-input">
                 <label>Gender:</label>
                     <input type="radio" name="gender" id="male" value="laki-laki">
                     <label for="male">Laki-laki</label>
@@ -128,14 +136,6 @@
             <div class="form-input">
                 <label for="angkatan">angkatan</label>
                 <input type="text" name="angkatan" id="angkatan">
-            </div>
-            <div class="form-input">
-                <label for="tempat_tanggal_lahir">Tempat tgl Lahir</label>
-                <input type="text" name="tempat_tanggal_lahir" id="tempat_tanggal_lahir">
-            </div>
-            <div class="form-input">
-                <label for="tanggal_lahir">Tanggal Lahir</label>
-                <input type="date" name="tanggal_lahir" id="tgl_lahir">
             </div>
             <div class="form-input">
                 <label for="nama_orang_tua">nama orang tua</label>
@@ -160,7 +160,7 @@
             <div class="form-input">
                 <label for="foto"> foto</label>
                 <input type="file" name="foto" id="foto">
-            </div> -->
+            </div>
 
             <button type="submit">Kirim</button>
         </form>

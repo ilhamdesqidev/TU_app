@@ -9,8 +9,10 @@
         <table border="1" cellspacing="0" cellpadding="10">
     <tr>
         <th>NO</th>
-        <th>Nama buku</th>
-        <th>tahun ajaran</th>
+        <th>Nama siswa</th>
+        <th>nisn</th>
+        <th>jurusan</th>
+        <th>angkatan</th>
         <th>aksi</th>
 </tr>
 @php
@@ -23,10 +25,12 @@
                 echo $i;
             @endphp
         </td>
-        <td>{{ $item -> nama_buku }}</td>
-        <td>{{ $item -> tahun_ajaran }}</td>
+        <td>{{ $item -> nama_siswa }}</td>
+        <td>{{ $item -> nis }}</td>
+        <td>{{ $item -> jurusan }}</td>
+        <td>{{ $item -> angkatan }}</td>
 
-        <td><a href="">detail</a>
+        <td><a href="{{url('detail_siswa', $item->id)}}">detail</a>
         <form action="{{url('show/'.$item->id)}}" method="POST" class="d-inline" 
         onsubmit="return confirm('Apakah Data Akan Dihapus?')">
             @method('delete')

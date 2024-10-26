@@ -31,8 +31,20 @@ class Tambah_siswaController extends Controller
     public function store(Request $request)
     {
         DB::table('show')->insert([
-            'nama_buku' => $request->nama_buku,
-            'tahun_ajaran' => $request->tahun_ajaran,
+            'nis' => $request->nis,
+            'nama_siswa' => $request->nama_siswa,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'gender' => $request->gender,
+            'kelas' => $request->kelas,
+            'jurusan' => $request->jurusan,
+            'angkatan' => $request->angkatan,
+            'nama_orang_tua' => $request->nama_orang_tua,
+            'tanggal_masuk' => $request->tanggal_masuk,
+            'tanggal_naik_kelas_xi' => $request->tanggal_naik_kelas_xi,
+            'tanggal_naik_kelas_xii' => $request->tanggal_naik_kelas_xii,
+            'tanggal_lulus' => $request->tanggal_lulus,
+            'foto' => $request->foto,
         ]);
 
         return redirect('show')->with('status', 'Data berhasil ditambah!');
@@ -41,10 +53,19 @@ class Tambah_siswaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $show = show::findOrFail($id); // Mengambil data berdasarkan ID
-        return view('show', compact('show')); // Tampilkan di view 'show'
+    public function detail_siswa($iddetail_siswa)
+{
+    $data_siswa = DB::table('show')->where('id', $iddetail_siswa)->first();
+
+    if (!$data_siswa) {
+        return redirect('show')->with('error', 'Data tidak ditemukan!');
+    }
+
+    return view('admin.klapper.detail_siswa', compact('data_siswa'));
+    // $data_siswa = DB::table('data_siswa')->where('id', $iddetail_siswa)->first();
+    // return view('admin.klapper.detail_siswa', compact('data_siswa'));
+        // $show = show::findOrFail($id); // Mengambil data berdasarkan ID
+        // return view('show', compact('show')); // Tampilkan di view 'show'
     }
 
     /**
