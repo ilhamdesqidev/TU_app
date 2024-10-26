@@ -32,7 +32,7 @@ class KlapperController extends Controller
     public function show($id)
     {
         $klapper = Klapper::findOrFail($id); // Mengambil data berdasarkan ID
-        return view('admin.klapper.show', compact('klapper')); // Tampilkan di view 'show'
+        return view('show', compact('klapper')); // Tampilkan di view 'show'
     }
 
     public function delete($id)
