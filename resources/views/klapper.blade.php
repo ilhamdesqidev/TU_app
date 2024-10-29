@@ -8,7 +8,7 @@
 
 <section class="home">
         <div class="text">Klapper</div>
-    </section>
+    
 <div class="container">
     <!-- Membuat tombol tambah data berada di tengah -->
     <div class="btn-container">
@@ -31,6 +31,7 @@
         @endforeach
     </div>
 </div>
+</section>
 
    
 </body>
