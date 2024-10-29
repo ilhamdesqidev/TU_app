@@ -14,6 +14,10 @@
 <h3>{{ $data_siswa->tanggal_naik_kelas_xi }}</h3>
 <h3>{{ $data_siswa->tanggal_naik_kelas_xii }}</h3>
 <h3>{{ $data_siswa->tanggal_lulus }}</h3>
-<h3>{{ $data_siswa->foto }}</h3>
+                @if ($data_siswa->foto)
+                    <img src="{{ asset('image/' . $data_siswa->foto) }}" alt="Foto {{ $data_siswa->nama_siswa }}" width="1000">
+                @else
+                    Tidak ada foto
+                @endif
 
 @endsection
