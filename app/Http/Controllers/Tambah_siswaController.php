@@ -62,10 +62,6 @@ class Tambah_siswaController extends Controller
     }
 
     return view('admin.klapper.detail_siswa', compact('data_siswa'));
-    // $data_siswa = DB::table('data_siswa')->where('id', $iddetail_siswa)->first();
-    // return view('admin.klapper.detail_siswa', compact('data_siswa'));
-        // $show = show::findOrFail($id); // Mengambil data berdasarkan ID
-        // return view('show', compact('show')); // Tampilkan di view 'show'
     }
 
     /**
@@ -73,16 +69,30 @@ class Tambah_siswaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data_siswa = DB::table('show')->where('id', $id)->first();
+        return view('admin.klapper.editdata_siswa', compact('data_siswa'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function update(Request $request, $id)
+{
+    DB::table('show')->where('id', $id)->update([
+        'nis' => $request->nis,
+        'nama_siswa' => $request->nama_siswa,
+        'tempat_lahir' => $request->tempat_lahir,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'gender' => $request->gender,
+        'kelas' => $request->kelas,
+        'jurusan' => $request->jurusan,
+        'angkatan' => $request->angkatan,
+        'nama_orang_tua' => $request->nama_orang_tua,
+        'tanggal_masuk' => $request->tanggal_masuk,
+    ]);
+
+    return redirect('show')->with('status', 'Data berhasil diperbarui!');
+}
 
     /**
      * Remove the specified resource from storage.

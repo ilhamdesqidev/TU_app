@@ -31,6 +31,7 @@
         <td>{{ $item -> angkatan }}</td>
 
         <td><a href="{{url('detail_siswa', $item->id)}}">detail</a>
+        <td><a href="{{url('editdata_siswa', $item->id)}}">edit</a>
         <form action="{{url('show/'.$item->id)}}" method="POST" class="d-inline" 
         onsubmit="return confirm('Apakah Data Akan Dihapus?')">
             @method('delete')
