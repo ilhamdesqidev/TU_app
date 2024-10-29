@@ -14,39 +14,27 @@
         <th>jurusan</th>
         <th>angkatan</th>
         <th>aksi</th>
-</tr>
-@php
-    $i = 1;
-@endphp
-@foreach ($show as $item)
-    <tr>
-        <td>
-            @php
-                echo $i;
-            @endphp
-        </td>
-        <td>{{ $item -> nama_siswa }}</td>
-        <td>{{ $item -> nis }}</td>
-        <td>{{ $item -> jurusan }}</td>
-        <td>{{ $item -> angkatan }}</td>
-
-        <td><a href="{{url('detail_siswa', $item->id)}}">detail</a>
-        <form action="{{url('show/'.$item->id)}}" method="POST" class="d-inline" 
-        onsubmit="return confirm('Apakah Data Akan Dihapus?')">
-            @method('delete')
-            @csrf
-            <button class="btn-delete">Delete</button>
-        </form>
-        </td>
-        
     </tr>
 
-    @php
-    $i++;
-    @endphp
-    
+    @php $i = 1; @endphp
+    @foreach ($show as $item)
+        <tr>
+            <td>{{ $i++ }}</td>
+            <td>{{ $item->nama_siswa }}</td>
+            <td>{{ $item->nis }}</td>
+            <td>{{ $item->jurusan }}</td>
+            <td>{{ $item->angkatan }}</td>
+            <td>
+                <a href="{{ url('detail_siswa', $item->id) }}">detail</a>
+                <form action="{{ url('show/' . $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Data Akan Dihapus?')">
+                    @method('delete')
+                    @csrf
+                    <button class="btn-delete">Delete</button>
+                </form>
+            </td>
+        </tr>
     @endforeach
-    
 </table>
+
 
 @endsection
