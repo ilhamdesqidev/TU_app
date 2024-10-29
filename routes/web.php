@@ -24,7 +24,3 @@ Route::get('show/tambah_siswa', [Tambah_siswaController::class, 'create']);
 Route::post('show', [Tambah_siswaController::class, 'store']);
 Route::delete('show/{id}', [Tambah_siswaController::class, 'delete']);
 Route::get('detail_siswa/{iddetail_siswa}', [Tambah_siswaController::class, 'detail_siswa'])->name('detail_siswa');
-
-// Route::get('show/{id}', [Tambah_siswaController::class, 'show'])->name
-// Route::get('show/{id}', [Tambah_siswaController::class, 'show']);
-// Route::get('/admin/klapper/detail_siswa/{iddetail_siswa}', [SiswaController::class, 'detail_siswa'])->name('detail_siswa');

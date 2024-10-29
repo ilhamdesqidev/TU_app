@@ -17,7 +17,7 @@
     </div>
     <div class="card-container">
         @foreach ($klapper as $item)
-        <div class="card" onclick="window.location='{{ url("klapper/".$item->id) }}'">
+        <div class="card" onclick="window.location='{{ url("show") }}'">
                 <div class="card-header">
                 <i class='bx bxs-book'></i>
                     <h3>{{ $item->nama_buku }}</h3>
