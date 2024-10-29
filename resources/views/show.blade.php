@@ -17,23 +17,28 @@
     </tr>
 
     @php $i = 1; @endphp
-    @foreach ($show as $item)
+    @if ($klapper)
         <tr>
             <td>{{ $i++ }}</td>
-            <td>{{ $item->nama_siswa }}</td>
-            <td>{{ $item->nis }}</td>
-            <td>{{ $item->jurusan }}</td>
-            <td>{{ $item->angkatan }}</td>
+            <td>{{ $klapper->nama_siswa }}</td>
+            <td>{{ $klapper->nis }}</td>
+            <td>{{ $klapper->jurusan }}</td>
+            <td>{{ $klapper->angkatan }}</td>
             <td>
-                <a href="{{ url('detail_siswa', $item->id) }}">detail</a>
-                <form action="{{ url('show/' . $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Data Akan Dihapus?')">
+                <a href="{{ url('detail_siswa', $klapper->id) }}">detail</a>
+                <form action="{{ url('show/' . $klapper->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Data Akan Dihapus?')">
                     @method('delete')
                     @csrf
                     <button class="btn-delete">Delete</button>
                 </form>
             </td>
         </tr>
-    @endforeach
+    @else
+        <tr>
+            <td colspan="6">Data tidak ditemukan.</td>
+        </tr>
+    @endif
+
 </table>
 
 

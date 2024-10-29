@@ -10,8 +10,8 @@ class KlapperController extends Controller
 {
     public function index()
     {
-        $klapper = DB::table('klapper')->get();
-        return view('klapper', ['klapper' => $klapper]);
+        $klapper = DB::table('klapper')->get(); // Pastikan nama tabel sesuai
+        return view('klapper', compact('klapper'));
     }
 
     public function create()
