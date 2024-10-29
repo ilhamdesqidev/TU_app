@@ -7,7 +7,6 @@
 
 <section class="home">
         <div class="text">Dashboard</div>
-    </section>
 
     <h1>SMK AMALIAH 1&2</h1>
 <div class="cards-container">
@@ -175,6 +174,7 @@
 
         </div>
     </div>
+</section>
 </section>
 
 </body>
