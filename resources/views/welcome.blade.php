@@ -50,133 +50,96 @@
     </div>
 </div>
 
-<section id="gambar">
-    <div class="container">
-        <h3 class="text-center section-subheading">Jurusan</h3>
-        <h1 class="text-cent section-heading">Jurusan</h1>
-    </div>
-    <div class="container">
-        <!-- slider-start -->
-        <div class="swiper gambar-slider">
-            <div class="swiper-wraper">
-                <div class="swiper-slide gambar-slide">
-                    <img src="" alt="gambar">
-               </div>
-               <div class="gambar-slide-content">
-                <!-- <h1 class="jrs">PPLG</h1> -->
-                <div class="gambar-slide-content-bottom">
-                    <h2 class="jrss">
-                        PPLG
-                    </h2>
-                    <!-- <h3 class="jrrs"> -->
-                        <!-- <span>4.5</span> -->
-                        <!-- <div class="rating"> -->
-
-                        <!-- </div> -->
-                <!-- </h3> -->
-                </div>
-               </div>
-            <!-- slider-end -->
-             <!-- slider-start -->
-        <div class="swiper gambar-slider">
-            <div class="swiper-wraper">
-                <div class="swiper-slide gambar-slide">
-                    <img src="" alt="gambar">
-               </div>
-               <div class="gambar-slide-content">
-                <!-- <h1 class="jrs">PPLG</h1> -->
-                <div class="gambar-slide-content-bottom">
-                    <h2 class="jrss">
-                        TKJ
-                    </h2>
-                    <!-- <h3 class="jrrs"> -->
-                        <!-- <span>4.5</span> -->
-                        <!-- <div class="rating"> -->
-
-                        <!-- </div> -->
-                <!-- </h3> -->
-                </div>
-               </div>
-            <!-- slider-end -->
-             <!-- slider-start -->
-        <div class="swiper gambar-slider">
-            <div class="swiper-wraper">
-                <div class="swiper-slide gambar-slide">
-                    <img src="" alt="gambar">
-               </div>
-               <div class="gambar-slide-content">
-                <!-- <h1 class="jrs">PPLG</h1> -->
-                <div class="gambar-slide-content-bottom">
-                    <h2 class="jrss">
-                        Akuntasi
-                    </h2>
-                    <!-- <h3 class="jrrs"> -->
-                        <!-- <span>4.5</span> -->
-                        <!-- <div class="rating"> -->
-
-                        <!-- </div> -->
-                <!-- </h3> -->
-                </div>
-               </div>
-            <!-- slider-end -->
-             <!-- slider-start -->
-        <div class="swiper gambar-slider">
-            <div class="swiper-wraper">
-                <div class="swiper-slide gambar-slide">
-                    <img src="" alt="gambar">
-               </div>
-               <div class="gambar-slide-content">
-                <!-- <h1 class="jrs">PPLG</h1> -->
-                <div class="gambar-slide-content-bottom">
-                    <h2 class="jrss">
-                        Animasi
-                    </h2>
-                    <!-- <h3 class="jrrs"> -->
-                        <!-- <span>4.5</span> -->
-                        <!-- <div class="rating"> -->
-
-                        <!-- </div> -->
-                <!-- </h3> -->
-                </div>
-               </div>
-            <!-- slider-end -->
-             <!-- slider-start -->
-        <div class="swiper gambar-slider">
-            <div class="swiper-wraper">
-                <div class="swiper-slide gambar-slide">
-                    <img src="" alt="gambar">
-               </div>
-               <div class="gambar-slide-content">
-                <!-- <h1 class="jrs">PPLG</h1> -->
-                <div class="gambar-slide-content-bottom">
-                    <h2 class="jrss">
-                        PPLG
-                    </h2>
-                    <!-- <h3 class="jrrs"> -->
-                        <!-- <span>4.5</span> -->
-                        <!-- <div class="rating"> -->
-
-                        <!-- </div> -->
-                <!-- </h3> -->
-                </div>
-               </div>
-            <!-- slider-end -->
+<section class="slider-container">
+    <div class="slider-image">
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="1">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
             </div>
-
-            <div class="gambar-slider-control">
-                <div class="swiper-button-prev slider-arrow">
-                <i class='bx bxs-chevron-right'></i>
-                </div>
-                <div class="swiper-button-prev slider-arrow">
-                <i class='bx bxs-chevron-left'></i>
-                </div>
+        </div>
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="2">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
             </div>
-
+        </div>
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="3">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
+            </div>
+        </div>
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="4">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
+            </div>
+        </div>
+        <div class="slider-img active">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="5">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
+            </div>
+        </div>
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="6">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
+            </div>
+        </div>
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="7">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
+            </div>
+        </div>
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="8">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
+            </div>
+        </div>
+        <div class="slider-img">
+        <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="9">
+        <h1>Jurusan</h1>
+        <div class="detail">
+            <h2>Jurusan</h2>
+            <p>PPLG</p>
+            </div>
         </div>
     </div>
+
 </section>
 </section>
 
+
+<script>
+    jQuery(document).ready(function($){
+
+        $('.slider-img').on('click', function(){
+            $('.slider-img').removeClass('active');
+            $(this).addClass('active');
+        })
+
+    });
+</script>
 </body>
 </html>
    
