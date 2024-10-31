@@ -1,61 +1,45 @@
 @extends('main')
-<link rel="stylesheet" href="{{ asset('asset/css/klapper.css') }}">
-
+<link rel="stylesheet" href="/asset/css/show.css.css">
 @section('content')
-<body>
-<section class="home">
-    <div class="text">{{ $klapper->nama_buku }}</div>
 
-    <div class="container">
-        <div class="detail-card">
-            <div class="detail-header">
-                <h2>Detail Klapper</h2>
-            </div>
-            <table border="1" cellspacing="0" cellpadding="10">
-                <tr>
-                    <th>NO</th>
-                    <th>Nama</th>
-                    <th>NIS</th>
-                    <th>Jurusan</th>
-                    <th>Angkatan</th>
-                    <th>Aksi</th>
-                </tr>
-                @foreach ($siswa as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->nama_siswa }}</td>
-                    <td>{{ $item->nis }}</td>
-                    <td>{{ $item->jurusan }}</td>
-                    <td>{{ $item->angkatan }}</td>
-                    <td><!-- Tombol aksi jika diperlukan --></td>
-                </tr>
-                @endforeach
-            </table>
-            <div class="detail-body">
-                <!-- Informasi lainnya -->
-            </div>
-            <div class="btn-container">
-                <a href="{{ route('klapper.index') }}" class="btn-back">Kembali</a>
-                <a href="{{ route('klapper.create') }}" class="btn-add">Tambah Data</a>
-            </div>
-            <div class="form-container">
-                <h2>Tambah Siswa</h2>
-                <form action="{{ route('klapper.addSiswa', $klapper->id) }}" method="POST" enctype="multipart/form-data">
+<a href="{{ url('show/tambah_siswa') }}" class="btn-add">
+            <i class="fas fa-plus"></i> Tambah Data
+        </a>
+
+        <table border="1" cellspacing="0" cellpadding="10">
+    <tr>
+        <th>NO</th>
+        <th>Nama siswa</th>
+        <th>nisn</th>
+        <th>jurusan</th>
+        <th>angkatan</th>
+        <th>aksi</th>
+    </tr>
+
+    @php $i = 1; @endphp
+    @if ($klapper)
+        <tr>
+            <td>{{ $i++ }}</td>
+            <td>{{ $klapper->nama_siswa }}</td>
+            <td>{{ $klapper->nis }}</td>
+            <td>{{ $klapper->jurusan }}</td>
+            <td>{{ $klapper->angkatan }}</td>
+            <td>
+                <a href="{{ url('detail_siswa', $klapper->id) }}">detail</a>
+                <form action="{{ url('show/' . $klapper->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Data Akan Dihapus?')">
+                    @method('delete')
                     @csrf
-                    <div class="form-input">
-                        <label for="nis">NIS</label>
-                        <input type="text" name="nis" id="nis" required>
-                    </div>
-                    <div class="form-input">
-                        <label for="nama_siswa">Nama Siswa</label>
-                        <input type="text" name="nama_siswa" id="nama_siswa" required>
-                    </div>
-                    <!-- Tambahkan input lainnya sesuai kebutuhan -->
-                    <button type="submit">Kirim</button>
+                    <button class="btn-delete">Delete</button>
                 </form>
-            </div>
-        </div>
-    </div>
-</section>
-</body>
+            </td>
+        </tr>
+    @else
+        <tr>
+            <td colspan="6">Data tidak ditemukan.</td>
+        </tr>
+    @endif
+
+</table>
+
+
 @endsection

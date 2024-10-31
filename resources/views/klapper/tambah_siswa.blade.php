@@ -1,4 +1,4 @@
-    @extends('main')
+@extends('main')
     <link rel="stylesheet" href="{{ asset('asset/css/klapper.css') }}">
 
     @section('content')
