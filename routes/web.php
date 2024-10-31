@@ -12,17 +12,13 @@ Route::get('main', function () {
 });
 
 
-Route::get('klapper', [KlapperController::class, 'index']);
-Route::get('klapper/tambahdataklapper', [KlapperController::class, 'create']);
-Route::post('klapper', [KlapperController::class, 'store']);
-Route::delete('klapper/{id}', [KlapperController::class, 'delete']);
-// Route::get('klapper/{id}', [KlapperController::class, 'show'])->name('klapper.show');
-Route::get('klapper/{id}', [KlapperController::class, 'show']);
-
-Route::get('show', [Tambah_siswaController::class, 'index']);
-Route::get('show/tambah_siswa', [Tambah_siswaController::class, 'create']);
-Route::post('show', [Tambah_siswaController::class, 'store']);
-Route::delete('show/{id}', [Tambah_siswaController::class, 'delete']);
-Route::get('detail_siswa/{iddetail_siswa}', [Tambah_siswaController::class, 'detail_siswa'])->name('detail_siswa');
-Route::get('show/{id}/editdata_siswa', [Tambah_siswaController::class, 'edit']);
-Route::put('show/{id}', [Tambah_siswaController::class, 'update']);
+Route::resource('klapper', KlapperController::class);
+Route::post('klapper/{klapper_id}/add-siswa', [KlapperController::class, 'addSiswa'])->name('klapper.addSiswa');
+// Route::get('klapper', [KlapperController::class, 'index']);
+Route::get('/klapper', [KlapperController::class, 'index'])->name('klapper.index');
+Route::get('/tambah_siswa', [KlapperController::class, 'index'])->name('klapper');
+Route::get('/klapper/tambahdataklapper', [KlapperController::class, 'create'])->name('klapper.create');
+Route::post('/klapper', [KlapperController::class, 'store'])->name('klapper.store');
+Route::get('/klapper/tambah_siswa', [KlapperController::class, 'create'])->name('klapper.create');
+Route::post('/klapper', [KlapperController::class, 'store'])->name('klapper.store');
+Route::get('/klapper/{id}', [KlapperController::class, 'show'])->name('klapper.show');
