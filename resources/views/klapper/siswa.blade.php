@@ -98,10 +98,30 @@ ul {
     
     <!-- Daftar siswa terkait klapper -->
     <h3>Daftar Siswa</h3>
-    <ul>
+    <table border="1" cellspacing="0" cellpadding="10">
+        <tr>
+            <th>NO</th>
+            <th>Nama</th>
+            <th>NIS</th>
+            <th>Jurusan</th>
+            <th>Angkatan</th>
+            <th>Aksi</th>
+        </tr>
         @foreach ($klapper->siswas as $siswa)
-            <li>{{ $siswa->nama_siswa }} - NIS: {{ $siswa->nis }}</li>
-        @endforeach
-    </ul>
+    <tr>
+        <td>
+            {{ $loop->iteration }}
+        </td>
+        <td>{{ $siswa -> nama_siswa }}</td>
+        <td>{{ $siswa -> nis }}</td>
+        <td>{{ $siswa -> jurusan }}</td>
+        <td>{{ $siswa -> angkatan }}</td>
+        <td><a href="">detail</a>
+        </td>
+    </tr>
+    @endforeach
+    
+</table>
+
 </div>
 @endsection

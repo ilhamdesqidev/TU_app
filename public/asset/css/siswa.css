@@ -1,0 +1,22 @@
+/* asset/css/klapper.css */
+.detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Menempatkan item di tengah secara horizontal */
+    justify-content: center; /* Menempatkan item di tengah secara vertikal */
+    text-align: center; /* Menempatkan teks di tengah */
+    padding: 20px; /* Tambahkan padding untuk ruang */
+}
+
+h2, h3, p {
+    margin: 10px 0; /* Spasi antar elemen */
+}
+
+form {
+    margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
+}
+
+ul {
+    list-style-type: none; /* Menghilangkan bullet pada list */
+    padding: 0; /* Menghilangkan padding pada list */
+}

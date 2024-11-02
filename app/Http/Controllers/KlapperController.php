@@ -72,6 +72,7 @@ class KlapperController extends Controller
             'tanggal_naik_kelas_xii' => 'nullable|date',
             'tanggal_lulus' => 'nullable|date',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            
         ]);
 
         $siswa = new Siswa();

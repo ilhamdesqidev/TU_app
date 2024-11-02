@@ -17,7 +17,7 @@ Route::get('/klapper/tambahdataklapper', [KlapperController::class, 'createKlapp
 Route::post('/klapper', [KlapperController::class, 'storeKlapper'])->name('klapper.store');
 Route::get('/klapper/{id}', [KlapperController::class, 'showKlapper'])->name('klapper.siswa');
 Route::delete('/klapper/{id}', [KlapperController::class, 'deleteKlapper'])->name('klapper.delete');
-Route::post('/klapper/{id}/siswa', [KlapperController::class, 'storeSiswa'])->name('siswa.store');
+// Route::post('/klapper/{id}/siswa', [KlapperController::class, 'storeSiswa'])->name('siswa.store');
 
 // Routes untuk Siswa
 Route::get('/siswa', [KlapperController::class, 'indexSiswa'])->name('siswa.index');
