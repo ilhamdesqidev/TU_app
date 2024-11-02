@@ -97,8 +97,8 @@
     <body>
         <div class="form-container">
             <h2>Halaman tambah buku</h2>
-            <form action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
-             @csrf             
+            <action= "{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf    
                 <div class="form-input">
                     <label for="nis">nis</label>
                     <input type="text" name="nis" id="nis">
@@ -158,7 +158,6 @@
                     <label for="foto"> foto</label>
                     <input type="file" name="foto" id="foto">
                 </div>
-
                 <button type="submit">Kirim</button>
             </form>
         </div>

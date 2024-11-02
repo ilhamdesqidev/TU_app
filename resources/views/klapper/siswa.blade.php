@@ -6,7 +6,7 @@
             <i class="fas fa-plus"></i> Tambah Data
         </a>
 
-        <table border="1" cellspacing="0" cellpadding="10">
+        <!-- <table border="1" cellspacing="0" cellpadding="10">
     <tr>
         <th>NO</th>
         <th>Nama siswa</th>
@@ -39,7 +39,7 @@
         </tr>
     @endif
 
-</table>
+</table> -->
 
 
 @endsection
