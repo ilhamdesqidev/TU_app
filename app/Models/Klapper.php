@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,5 +8,10 @@ class Klapper extends Model
 {
     use HasFactory;
 
-    protected $table = 'klapper'; // Sesuaikan nama tabel jika perlu
+    protected $fillable = ['nama_buku', 'tahun_ajaran']; // Tambahkan field yang sesuai
+
+    public function siswas()
+    {
+        return $this->hasMany(Siswa::class);
+    }
 }

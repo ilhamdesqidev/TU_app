@@ -16,6 +16,12 @@
             <i class="fas fa-plus"></i> Tambah Data
         </a>
     </div>
+    @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+    @endif
+
     <div class="card-container">
         @foreach ($klapper as $item)
         <div class="card" onclick="window.location='{{ url('klapper/' . $item->id) }}'">
