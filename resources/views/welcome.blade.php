@@ -1,6 +1,7 @@
 @extends ('main')
  <link rel="stylesheet" href="/asset/css/dashboard.css">
  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section ('content')
 <body>
 
@@ -56,7 +57,7 @@
         <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg" alt="1">
         <h1>Jurusan</h1>
         <div class="detail">
-            <h2>Jurusan</h2>
+           <h2>Jurusan</h2>
             <p>PPLG</p>
             </div>
         </div>
@@ -129,17 +130,36 @@
 </section>
 </section>
 
-
 <script>
-    jQuery(document).ready(function($){
+    jQuery(document).ready(function($) {
+        let currentIndex = 0;
+        const slides = $('.slider-img');
+        const totalSlides = slides.length;
 
-        $('.slider-img').on('click', function(){
-            $('.slider-img').removeClass('active');
-            $(this).addClass('active');
-        })
+        function showSlide(index) {
+            slides.removeClass('active');
+            slides.eq(index).addClass('active');
+        }
 
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlide(currentIndex);
+        }
+
+        // Menampilkan slide pertama
+        showSlide(currentIndex);
+
+        // Mengatur interval untuk pergerakan otomatis
+        setInterval(nextSlide, 3000); // Ubah setiap 3 detik
+
+        // Mengubah slide saat diklik
+        slides.on('click', function() {
+            currentIndex = $(this).index();
+            showSlide(currentIndex);
+        });
     });
 </script>
+
 </body>
 </html>
    
