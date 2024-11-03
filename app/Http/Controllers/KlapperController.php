@@ -46,7 +46,7 @@ class KlapperController extends Controller
     // Untuk Siswa
     public function indexSiswa()
     {
-        $siswa = Siswa::all();
+        $siswa = Siswa::count();
         return view('klapper.siswa', compact('siswa'));
     }
 
@@ -55,7 +55,7 @@ class KlapperController extends Controller
         return view('tambah_siswa'); // View untuk menambah siswa
     }
 
-    public function storeSiswa(Request $request, $klapperId)
+    public function storeSiswa(Request $request, $klappersId)
     {
         $request->validate([
             'nis' => 'required',
@@ -89,28 +89,8 @@ class KlapperController extends Controller
         $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;
         $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
         $siswa->tanggal_lulus = $request->tanggal_lulus;
-        $siswa->klapper_id = $klapperId;
+        $siswa->klappers_id = $klappersId;
         $siswa->save();
-        
-
-        // Siswa::create
-        // ([
-        //     'nis' => $request->nis,
-        //     'nama_siswa' => $request->nama_siswa,
-        //     'tempat_lahir' => $request->tempat_lahir,
-        //     'tanggal_lahir' => $request->tanggal_lahir,
-        //     'gender' => $request->gender,
-        //     'kelas' => $request->kelas,
-        //     'jurusan' => $request->jurusan,
-        //     'angkatan' => $request->angkatan,
-        //     'nama_orang_tua' => $request->nama_orang_tua,
-        //     'tanggal_masuk' => $request->tanggal_masuk,
-        //     'tanggal_naik_kelas_xi' => $request->tanggal_naik_kelas_xi,
-        //     'tanggal_naik_kelas_xii' => $request->tanggal_naik_kelas_xii,
-        //     'tanggal_lulus' => $request->tanggal_lulus,
-        //     'klapper_id' => $klapperId,
-        // ]);
-        // return redirect()->route('klapper.siswa')->with('success', 'Data siswa berhasil
-        return redirect()->route('klapper.siswa', $klapperId)->with('status', 'Data siswa berhasil ditambah!');
+        return redirect()->route('klapper.siswa', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
     }
 }

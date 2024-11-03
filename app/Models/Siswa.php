@@ -22,10 +22,10 @@ class Siswa extends Model
         'tanggal_naik_kelas_xi',
         'tanggal_naik_kelas_xii',
         'tanggal_lulus', 'foto',
-        'klapper_id'];
+        'klappers_id'];
 
-    public function klappers()
+    public function klapper()
     {
-        return $this->belongsTo(Klapper::class);
+        return $this->belongsTo(Klapper::class, 'klappers_id');
     }
 }
