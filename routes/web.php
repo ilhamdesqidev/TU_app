@@ -11,6 +11,7 @@ Route::get('main', function () {
     return view('main');
 });
 
+
 // // Routes untuk Klapper
 // Route::get('/klapper', [KlapperController::class, 'indexKlapper'])->name('klapper.index');
 // Route::get('/klapper/tambahdataklapper', [KlapperController::class, 'createKlapper'])->name('klapper.create');
