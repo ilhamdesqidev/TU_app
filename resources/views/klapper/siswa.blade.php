@@ -41,6 +41,7 @@ ul {
             <th>NIS</th>
             <th>Jurusan</th>
             <th>Angkatan</th>
+            <th>status</th>
             <th>Aksi</th>
         </tr>
         @foreach ($klapper->siswas as $siswa)
@@ -52,7 +53,18 @@ ul {
         <td>{{ $siswa -> nis }}</td>
         <td>{{ $siswa -> jurusan }}</td>
         <td>{{ $siswa -> angkatan }}</td>
+        <td>
+            @if($siswa->status == 0)
+                Pelajar
+            @elseif($siswa->status == 1)
+                Lulus
+            @else
+                Keluar
+            @endif
+        </td>
+
         <td><a href="{{ route('siswa.show', $siswa->id) }}">detail</a></td>
+        <td><a href="{{ route('klapper.lulus', $siswa->id) }}" class="btn btn-success">Lulus</a></td>
         </td>
     </tr>
     @endforeach

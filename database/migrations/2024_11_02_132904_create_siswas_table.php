@@ -28,6 +28,7 @@ return new class extends Migration
             $table->date('tanggal_lulus')->nullable();
             $table->string('foto')->nullable();
             $table->foreignId('klapper_id')->constrained('klappers')->onDelete('cascade'); // Menghubungkan ke tabel klappers
+            $table->integer('status')->default(2); // 2 untuk Pelajar, 1 untuk Lulus
             $table->timestamps();
         });
     }

@@ -43,3 +43,6 @@ Route::get('siswa/{id}/edit', [KlapperController::class, 'editSiswa'])->name('si
 Route::put('siswa/{id}', [KlapperController::class, 'updateSiswa'])->name('siswa.update');
 
 Route::get('/', [KlapperController::class, 'index'])->name('welcome');
+Route::patch('/siswa/{id}/lulus', [SiswaController::class, 'lulus'])->name('siswa.lulus');
+Route::get('/siswa/lulus/{id}', [KlapperController::class, 'lulus'])->name('klapper.lulus');
+
