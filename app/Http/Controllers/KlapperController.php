@@ -91,6 +91,35 @@ class KlapperController extends Controller
         $siswa->tanggal_lulus = $request->tanggal_lulus;
         $siswa->klapper_id = $klappersId;
         $siswa->save();
-        return redirect()->route('klapper.index', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
+        return redirect()->route('klapper.siswa', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
     }
+
+    public function showSiswa($id)
+    {
+        $siswa = Siswa::findOrFail($id);
+        return view('klapper.detail_siswa', compact('siswa'));
+    }
+
+    public function editSiswa($id)
+    {
+        $siswa = Siswa::findOrFail($id); // Ambil siswa berdasarkan ID
+        return view('klapper.editdata_siswa', compact('siswa')); // Tampilkan form edit dengan data siswa
+    }
+
+    public function updateSiswa(Request $request, $id)
+    {
+        $siswa = Siswa::findOrFail($id);
+        $siswa->update($request->all()); // Update dengan data dari form
+        return redirect()->route('siswa.show', $siswa->id)->with('success', 'Data siswa berhasil diperbarui.');
+    }
+    
+
+    public function index()
+    {
+        $jumlahSiswa = Siswa::count(); // Menghitung jumlah siswa
+        return view('welcome', compact('jumlahSiswa')); // Mengirimkan jumlah siswa ke view
+    }
+    
+
 }
+

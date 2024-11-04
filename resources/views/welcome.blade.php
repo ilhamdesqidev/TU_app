@@ -16,8 +16,8 @@
             <i class="fa fa-user-circle"></i>
         </div>
         <div class="content">
-            <h1>1389</h1>
-            <p>Siswa</p>
+        <h1>{{ $jumlahSiswa }}</h1>
+        <p>Siswa</p>
         </div>
     </div>
     

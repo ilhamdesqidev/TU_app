@@ -52,7 +52,7 @@ ul {
         <td>{{ $siswa -> nis }}</td>
         <td>{{ $siswa -> jurusan }}</td>
         <td>{{ $siswa -> angkatan }}</td>
-        <td><a href="">detail</a>
+        <td><a href="{{ route('siswa.show', $siswa->id) }}">detail</a></td>
         </td>
     </tr>
     @endforeach

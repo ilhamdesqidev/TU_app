@@ -33,8 +33,13 @@ Route::post('/klapper', [KlapperController::class, 'storeKlapper'])->name('klapp
 Route::get('/klapper/{id}', [KlapperController::class, 'showKlapper'])->name('klapper.show');
 Route::delete('/klapper/{id}', [KlapperController::class, 'deleteKlapper'])->name('klapper.delete');
 
-Route::get('/klapper/{klapperId}/siswa', [KlapperController::class, 'indexSiswa'])->name('klapper.siswa');
+Route::get('/klapper/{klapperId}', [KlapperController::class, 'indexSiswa'])->name('klapper.siswa');
 // Route::get('/klapper/{klapperId}/siswa/create', [KlapperController::class, 'createSiswa'])->name('siswa.create');
 // Route::post('/klapper/{klapperId}/siswa', [KlapperController::class, 'storeSiswa'])->name('siswa.store');
 Route::get('klapper/{id}/siswa/create', [KlapperController::class, 'createSiswa'])->name('siswa.create');
 Route::post('klapper/{id}/siswa', [KlapperController::class, 'storeSiswa'])->name('siswa.store');
+Route::get('/siswa/{id}', [KlapperController::class, 'showSiswa'])->name('siswa.show');
+Route::get('siswa/{id}/edit', [KlapperController::class, 'editSiswa'])->name('siswa.edit');
+Route::put('siswa/{id}', [KlapperController::class, 'updateSiswa'])->name('siswa.update');
+
+Route::get('/', [KlapperController::class, 'index'])->name('welcome');

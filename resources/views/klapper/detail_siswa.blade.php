@@ -57,15 +57,14 @@
         <div class="row">
             <!-- Kolom untuk Foto -->
             <div class="col-md-4 text-center">
-                @if ($data_siswa->foto)
-                    <img src="{{ asset('image/' . $data_siswa->foto) }}" alt="Foto {{ $data_siswa->nama_siswa }}" class="detail-photo">
+                @if ($siswa->foto)
+                    <img src="{{ asset('image/' . $siswa->foto) }}" alt="Foto {{ $siswa->nama_siswa }}" class="detail-photo">
                 @else
                     <p>Tidak ada foto</p>
                 @endif
                 <div class="btn-container">
-                <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">
-                <i class="fas fa-plus"></i> edit data
-                </a>
+                    <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn-add">
+                    <i class="fas fa-plus"></i> Edit Data </a>
                 </div>
                 <div class="btn-container">
                 <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">
@@ -79,56 +78,56 @@
             <div class="col-md-8">
                 <div class="detail-content">
                     <div class="detail-nama pb-2">
-                        <span class="display-4 text-shadow fs-custom">{{ $data_siswa->nama_siswa }}</span>
+                        <span class="display-4 text-shadow fs-custom">{{ $siswa->nama_siswa }}</span>
                     </div>
 
                     <div class="detail-item">
                         <span class="detail-label">NIS:</span>
-                        <span>{{ $data_siswa->nis }}</span>
+                        <span>{{ $siswa->nis }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tempat Lahir</span>
-                        <span>{{ $data_siswa->tempat_lahir }}</span>
+                        <span>{{ $siswa->tempat_lahir }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Lahir</span>
-                        <span>{{ $data_siswa->tanggal_lahir }}</span>
+                        <span>{{ $siswa->tanggal_lahir }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Jenis Kelamin</span>
-                        <span>{{ $data_siswa->gender }}</span>
+                        <span>{{ $siswa->gender }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Kelas</span>
-                        <span>{{ $data_siswa->kelas }}</span>
+                        <span>{{ $siswa->kelas }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Jurusan</span>
-                        <span>{{ $data_siswa->jurusan }}</span>
+                        <span>{{ $siswa->jurusan }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Angkatan</span>
-                        <span>{{ $data_siswa->angkatan }}</span>
+                        <span>{{ $siswa->angkatan }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Nama Orang Tua</span>
-                        <span>{{ $data_siswa->nama_orang_tua }}</span>
+                        <span>{{ $siswa->nama_orang_tua }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Masuk</span>
-                        <span>{{ $data_siswa->tanggal_masuk }}</span>
+                        <span>{{ $siswa->tanggal_masuk }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Naik Kelas XI</span>
-                        <span>{{ $data_siswa->tanggal_naik_kelas_xi }}</span>
+                        <span>{{ $siswa->tanggal_naik_kelas_xi }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Naik Kelas XII</span>
-                        <span>{{ $data_siswa->tanggal_naik_kelas_xii }}</span>
+                        <span>{{ $siswa->tanggal_naik_kelas_xii }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Lulus</span>
-                        <span>{{ $data_siswa->tanggal_lulus }}</span>
+                        <span>{{ $siswa->tanggal_lulus }}</span>
                     </div>
                 </div>
             </div>
