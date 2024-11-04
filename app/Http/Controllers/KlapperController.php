@@ -33,7 +33,7 @@ class KlapperController extends Controller
 
     public function showKlapper($id)
     {
-        $klapper = Klapper::findOrFail($id);
+        $klapper = Klapper::with('siswas')->findOrFail($id); // Pastikan relasi 'siswas' di-load
         return view('klapper.siswa', compact('klapper'));
     }
 
@@ -50,9 +50,9 @@ class KlapperController extends Controller
         return view('klapper.siswa', compact('siswa'));
     }
 
-    public function createSiswa()
+    public function createSiswa($klappersId)
     {
-        return view('tambah_siswa'); // View untuk menambah siswa
+        return view('klapper.tambah_siswa', compact('klappersId'));
     }
 
     public function storeSiswa(Request $request, $klappersId)
@@ -89,8 +89,8 @@ class KlapperController extends Controller
         $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;
         $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
         $siswa->tanggal_lulus = $request->tanggal_lulus;
-        $siswa->klappers_id = $klappersId;
+        $siswa->klapper_id = $klappersId;
         $siswa->save();
-        return redirect()->route('klapper.siswa', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
+        return redirect()->route('klapper.index', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
     }
 }
