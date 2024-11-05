@@ -5,9 +5,9 @@
 @section('content')
 <body>
 
-
 <section class="home">
         <div class="text">Klapper</div>
+
     
 <div class="container">
     <!-- Membuat tombol tambah data berada di tengah -->
