@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('siswas', function (Blueprint $table) {
-            $table->integer('status')->default(0); // 0 untuk 'pelajar', 1 untuk 'lulus', dsb.
+            $table->integer('status')->default(0)->change();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('siswas', function (Blueprint $table) {
-            $table->dropColumn('status');
+            //
         });
     }
 };

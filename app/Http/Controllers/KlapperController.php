@@ -90,6 +90,7 @@ class KlapperController extends Controller
         $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
         $siswa->tanggal_lulus = $request->tanggal_lulus;
         $siswa->klapper_id = $klappersId;
+        $siswa->status = 0;
         $siswa->save();
         return redirect()->route('klapper.siswa', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
     }
