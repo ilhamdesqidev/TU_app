@@ -123,6 +123,16 @@ class KlapperController extends Controller
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Lulus.');
     }
 
+    public function keluar($id)
+    {
+        $siswa = Siswa::findOrFail($id);
+        $siswa->status = 2; // Set status ke 2 untuk "Keluar"
+        $siswa->save();
+    
+        return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Keluar.');
+    }
+    
+
     public function index()
     {
         $jumlahSiswa = Siswa::where('status', 0)->count(); // Menghitung jumlah siswa

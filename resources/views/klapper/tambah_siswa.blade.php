@@ -118,6 +118,7 @@
         </div>
         
         <button type="submit">Tambah Siswa</button>
+        
     </form>
 </div>
 @endsection

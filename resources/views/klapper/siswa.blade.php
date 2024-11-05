@@ -1,5 +1,7 @@
 @extends('main')
 <link rel="stylesheet" href="asset/css/siswa.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 @section('content')
 <body>
     <section class="home">
@@ -138,8 +140,10 @@ table tr:hover {
             @endif
         </td>
 
-        <td><a href="{{ route('siswa.show', $siswa->id) }}">detail</a></td>
-        <td><a href="{{ route('klapper.lulus', $siswa->id) }}" class="btn btn-success">Lulus</a></td>
+        <td>
+            <a href="{{ route('klapper.lulus', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-user-graduate"></i></a>
+            <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"><i class="fa-solid fa-user-slash"></i></a>
+            <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
         </td>
     </tr>
     @endforeach

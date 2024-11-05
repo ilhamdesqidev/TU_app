@@ -67,11 +67,6 @@
                     <i class="fas fa-plus"></i> Edit Data </a>
                 </div>
                 <div class="btn-container">
-                <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">
-                <i class="fas fa-plus"></i> lulus
-                </a>
-                </div>
-                <div class="btn-container">
                 <a href="{{ route('klapper.siswa', $siswa->klapper_id) }}" class="back-link">Kembali</a>
                 </a>
                 </div>

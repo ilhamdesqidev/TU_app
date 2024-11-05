@@ -106,6 +106,6 @@
         </div>
         <button type="submit">Simpan</button>
     </form>
-    <a href="{{ route('klapper.index') }}" class="back-link">Kembali</a>
+   <a href="{{ route('klapper.index') }}" class="back-link">Kembali</a> 
 </div>
 @endsection

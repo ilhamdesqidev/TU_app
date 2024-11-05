@@ -65,3 +65,16 @@ table tr:hover {
 .btn-success:hover {
     background-color: #218838;
 }
+
+.btn-danger {
+    background-color: #dc3545; /* Warna merah */
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Warna merah lebih gelap saat dihover */
+}
