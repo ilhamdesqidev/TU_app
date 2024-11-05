@@ -1,6 +1,15 @@
 @extends('main')
 <link rel="stylesheet" href="asset/css/siswa.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 @section('content')
+<body>
+    <section class="home">
+        <div class="text">{{ $klapper->nama_buku }}<h6>{{ $klapper->tahun_ajaran }}</h6></div>
+
+    </div>
+        </div>
+</body>
 <style>
     /* asset/css/klapper.css */
 .detail-container {
@@ -25,10 +34,78 @@ ul {
     padding: 0; /* Menghilangkan padding pada list */
 }
 
+/* Styling untuk tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    min-width: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+table th {
+    background-color: #4CAF50; /* Warna background header tabel */
+    color: #ffffff;
+    font-weight: bold;
+}
+
+table tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+table tr:last-of-type {
+    border-bottom: 2px solid #4CAF50;
+}
+
+/* Efek hover untuk baris tabel */
+table tr:hover {
+    background-color: #e9f5e9;
+    cursor: pointer;
+}
+
+/* Styling untuk tombol */
+.btn-tambah {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn-tambah:hover {
+    background-color: #45a049;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
 </style>
 <div class="detail-container">
-    <h2>Detail Klapper: {{ $klapper->nama_buku }}</h2>
-    <p>Tahun Ajaran: {{ $klapper->tahun_ajaran }}</p>
+    
+    
     
     <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah">Tambah Data Siswa</a>
     
@@ -63,8 +140,10 @@ ul {
             @endif
         </td>
 
-        <td><a href="{{ route('siswa.show', $siswa->id) }}">detail</a></td>
-        <td><a href="{{ route('klapper.lulus', $siswa->id) }}" class="btn btn-success">Lulus</a></td>
+        <td>
+            <a href="{{ route('klapper.lulus', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-user-graduate"></i></a>
+            <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"><i class="fa-solid fa-user-slash"></i></a>
+            <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
         </td>
     </tr>
     @endforeach
