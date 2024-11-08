@@ -128,6 +128,10 @@
                         <span class="detail-label">Tanggal Lulus</span>
                         <span>{{ $siswa->tanggal_lulus }}</span>
                     </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tanggal Keluar</span>
+                        <span>{{ $siswa->tanggal_keluar }}</span>
+                    </div>
                 </div>
             </div>
         </div>

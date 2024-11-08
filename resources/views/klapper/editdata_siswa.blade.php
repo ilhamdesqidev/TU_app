@@ -37,6 +37,9 @@
     <label for="tanggal_masuk">Tanggal Masuk:</label>
     <input type="date" name="tanggal_masuk" value="{{ $siswa->tanggal_masuk }}" required>
 
+    <label for="tanggal_keluar">Tanggal Keluar:</label>
+    <input type="date" name="tanggal_keluar" value="{{ $siswa->tanggal_keluar }}" required>
+
     <button type="submit" class="btn-submit">Simpan Perubahan</button>
 </form>
 

@@ -108,6 +108,10 @@ table tr:hover {
     
     
     <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah">Tambah Data Siswa</a>
+    <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn-success">Luluskan Semua Pelajar</button>
+    </form>
     
     <!-- Daftar siswa terkait klapper -->
     <h3>Daftar Siswa</h3>
@@ -141,7 +145,6 @@ table tr:hover {
         </td>
 
         <td>
-            <a href="{{ route('klapper.lulus', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-user-graduate"></i></a>
             <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"><i class="fa-solid fa-user-slash"></i></a>
             <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
         </td>

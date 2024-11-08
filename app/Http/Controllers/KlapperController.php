@@ -91,6 +91,12 @@ class KlapperController extends Controller
         $siswa->tanggal_lulus = $request->tanggal_lulus;
         $siswa->klapper_id = $klappersId;
         $siswa->status = 0;
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('image'), $filename);
+            $siswa->foto = $filename;
+        }
         $siswa->save();
         return redirect()->route('klapper.siswa', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
     }
@@ -110,7 +116,28 @@ class KlapperController extends Controller
     public function updateSiswa(Request $request, $id)
     {
         $siswa = Siswa::findOrFail($id);
-        $siswa->update($request->all()); // Update dengan data dari form
+
+        $request->validate([
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+    
+        // Update semua data kecuali foto
+        $siswa->update($request->except('foto'));
+    
+        // Proses update foto jika ada file yang diunggah
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            if ($siswa->foto && file_exists(public_path('image/' . $siswa->foto))) {
+                unlink(public_path('image/' . $siswa->foto));
+            }
+    
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('image'), $filename);
+            $siswa->foto = $filename;
+        }
+    
+        $siswa->save();
         return redirect()->route('siswa.show', $siswa->id)->with('success', 'Data siswa berhasil diperbarui.');
     }
     
@@ -123,6 +150,20 @@ class KlapperController extends Controller
     
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Lulus.');
     }
+
+    public function lulusSemua($klapperId)
+    {
+        $klapper = Klapper::findOrFail($klapperId);
+    
+        // Update status siswa menjadi "Lulus" hanya jika statusnya "Pelajar"
+        $klapper->siswas()
+            ->where('status', 0)
+            ->update(['status' => 1]);
+    
+        return redirect()->route('klapper.show', $klapperId)
+                         ->with('success', 'Semua pelajar telah diluluskan.');
+    }
+    
 
     public function keluar($id)
     {

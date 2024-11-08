@@ -82,7 +82,7 @@
         </div>
         <div class="form-input">
             <label for="kelas">Kelas</label>
-            <input type="text" name="kelas" id="kelas" required>
+            <input type="text" name="kelas" id="kelas" value="10" required>
         </div>
         <div class="form-input">
             <label for="jurusan">Jurusan</label>
@@ -111,6 +111,10 @@
                 <div class="form-input">
                     <label for="tanggal_lulus">Tanggal lulus</label>
                     <input type="date" name="tanggal_lulus" id="tanggal_lulus">
+                </div>
+                <div class="form-input">
+                    <label for="tanggal_keluar">Tanggal Keluar</label>
+                    <input type="date" name="tanggal_keluar" id="tanggal_keluar">
                 </div>
         <div class="form-input">
             <label for="foto">Foto</label>

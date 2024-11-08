@@ -46,3 +46,5 @@ Route::get('/', [KlapperController::class, 'index'])->name('welcome');
 Route::patch('/siswa/{id}/lulus', [SiswaController::class, 'lulus'])->name('siswa.lulus');
 Route::get('/siswa/lulus/{id}', [KlapperController::class, 'lulus'])->name('klapper.lulus');
 Route::get('/siswa/{id}/keluar', [KlapperController::class, 'keluar'])->name('klapper.keluar');
+Route::post('/klapper/{klapper}/lulusSemua', [KlapperController::class, 'lulusSemua'])->name('klapper.lulusSemua');
+
