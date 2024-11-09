@@ -121,7 +121,7 @@ table tr:hover {
             <th>Nama</th>
             <th>NIS</th>
             <th>Jurusan</th>
-            <th>Angkatan</th>
+            <th>kelas</th>
             <th>status</th>
             <th>Aksi</th>
         </tr>
@@ -133,7 +133,7 @@ table tr:hover {
         <td>{{ $siswa -> nama_siswa }}</td>
         <td>{{ $siswa -> nis }}</td>
         <td>{{ $siswa -> jurusan }}</td>
-        <td>{{ $siswa -> angkatan }}</td>
+        <td>{{ $siswa -> kelas }}</td>
         <td>
             @if($siswa->status == 0)
                 Pelajar
