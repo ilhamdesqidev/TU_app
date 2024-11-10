@@ -97,9 +97,41 @@ table tr:hover {
     border-radius: 4px;
     transition: background-color 0.3s;
 }
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
 
 .btn-success:hover {
     background-color: #218838;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.3em 0.6em;
+    border-radius: 0.5rem;
+    font-size: 0.9em;
+}
+
+.badge-secondary {
+    background-color: #e0e0e0; /* Abu-abu minimalis */
+    color: #333;
+}
+
+.badge-success {
+    background-color: #d4edda; /* Hijau lembut */
+    color: #155724;
+}
+
+.badge-danger {
+    background-color: #f8d7da; /* Merah lembut */
+    color: #721c24;
 }
 
 </style>
@@ -135,18 +167,26 @@ table tr:hover {
         <td>{{ $siswa -> jurusan }}</td>
         <td>{{ $siswa -> kelas }}</td>
         <td>
-            @if($siswa->status == 0)
-                Pelajar
-            @elseif($siswa->status == 1)
-                Lulus
-            @else
-                Keluar
-            @endif
-        </td>
+    @if($siswa->status == 0)
+        <span class="badge badge-secondary">
+            <i class="fas fa-user-graduate"></i> Pelajar
+        </span>
+    @elseif($siswa->status == 1)
+        <span class="badge badge-success">
+            <i class="fas fa-graduation-cap"></i> Lulus
+        </span>
+    @else
+        <span class="badge badge-danger">
+        <i class="fas fa-arrow-right-from-bracket"></i>  Keluar
+        </span>
+    @endif
+</td>
+
+
 
         <td>
-            <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"><i class="fa-solid fa-user-slash"></i></a>
-            <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
+        <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
+        <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"> <i class="fas fa-arrow-right-from-bracket"></i></a>
         </td>
     </tr>
     @endforeach
