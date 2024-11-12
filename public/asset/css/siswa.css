@@ -1,20 +1,9 @@
     /* asset/css/klapper.css */
-    .detail-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Menempatkan item di tengah secara horizontal */
-        justify-content: center; /* Menempatkan item di tengah secara vertikal */
-        text-align: center; /* Menempatkan teks di tengah */
-        padding: 20px; /* Tambahkan padding untuk ruang */
-    }
 
     h2, h3, p {
         margin: 10px 0; /* Spasi antar elemen */
     }
 
-    form {
-        margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
-    }
 
     ul {
         list-style-type: none; /* Menghilangkan bullet pada list */
@@ -61,11 +50,6 @@
     }
 
     /* Styling untuk tombol */
-    form {
-        margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
-        text-align: right; /* Membuat tombol di dalam form rata kiri */
-        width: 100%;
-    }
 
     form .btn-success {
         padding: 10px 20px;
@@ -75,7 +59,6 @@
     .btn-tambah {
         display: inline-block;
         padding: 10px 20px;
-        margin-bottom: 15px;
         background-color: #4CAF50;
         color: white;
         text-decoration: none;
