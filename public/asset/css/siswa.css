@@ -1,80 +1,146 @@
-/* Styling untuk tabel */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 16px;
-    min-width: 400px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-}
+    /* asset/css/klapper.css */
+    .detail-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Menempatkan item di tengah secara horizontal */
+        justify-content: center; /* Menempatkan item di tengah secara vertikal */
+        text-align: center; /* Menempatkan teks di tengah */
+        padding: 20px; /* Tambahkan padding untuk ruang */
+    }
 
-table th, table td {
-    padding: 12px 15px;
-    text-align: center;
-}
+    h2, h3, p {
+        margin: 10px 0; /* Spasi antar elemen */
+    }
 
-table th {
-    background-color: #4CAF50; /* Warna background header tabel */
-    color: #ffffff;
-    font-weight: bold;
-}
+    form {
+        margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
+    }
 
-table tr {
-    border-bottom: 1px solid #dddddd;
-}
+    ul {
+        list-style-type: none; /* Menghilangkan bullet pada list */
+        padding: 0; /* Menghilangkan padding pada list */
+    }
 
-table tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
+    /* Styling untuk tabel */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 16px;
+        min-width: 400px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    }
 
-table tr:last-of-type {
-    border-bottom: 2px solid #4CAF50;
-}
+    table th, table td {
+        padding: 12px 15px;
+        text-align: center;
+    }
 
-/* Efek hover untuk baris tabel */
-table tr:hover {
-    background-color: #e9f5e9;
-    cursor: pointer;
-}
+    table th {
+        background-color: #4CAF50; /* Warna background header tabel */
+        color: #ffffff;
+        font-weight: bold;
+    }
 
-/* Styling untuk tombol */
-.btn-tambah {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-bottom: 15px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+    table tr {
+        border-bottom: 1px solid #dddddd;
+    }
 
-.btn-tambah:hover {
-    background-color: #45a049;
-}
+    table tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
 
-.btn-success {
-    background-color: #28a745;
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
+    table tr:last-of-type {
+        border-bottom: 2px solid #4CAF50;
+    }
 
-.btn-success:hover {
-    background-color: #218838;
-}
+    /* Efek hover untuk baris tabel */
+    table tr:hover {
+        background-color: #e9f5e9;
+        cursor: pointer;
+    }
 
-.btn-danger {
-    background-color: #dc3545; /* Warna merah */
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
+    /* Styling untuk tombol */
+    form {
+        margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
+        text-align: right; /* Membuat tombol di dalam form rata kiri */
+        width: 100%;
+    }
 
-.btn-danger:hover {
-    background-color: #c82333; /* Warna merah lebih gelap saat dihover */
-}
+    form .btn-success {
+        padding: 10px 20px;
+        margin-top: 10px;
+    }
+
+    .btn-tambah {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-bottom: 15px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
+    }
+
+    .btn-lulus{
+        color: white;
+        border: none;
+        background-color: #4CAF50;
+        text-decoration: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        transition: background-color 0.6s;
+        box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
+    }
+
+    .btn-tambah:hover {
+        background-color: #45a049;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        padding: 0.3em 0.6em;
+        border-radius: 0.5rem;
+        font-size: 0.9em;
+    }
+
+    .badge-secondary {
+        background-color: #e0e0e0; /* Abu-abu minimalis */
+        color: #333;
+    }
+
+    .badge-success {
+        background-color: #d4edda; /* Hijau lembut */
+        color: #155724;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da; /* Merah lembut */
+        color: #721c24;
+    }

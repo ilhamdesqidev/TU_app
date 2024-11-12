@@ -1,56 +1,12 @@
 @extends('main')
+<link rel="stylesheet" href="/asset/css/detailsiswa.css">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 @section('content')
-    <style>
-        .detail-card {
-            margin: 20px auto;
-            padding: 20px;
-            max-width: 800px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-        .detail-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .detail-photo {
-            width: 100%;
-            max-width: 150px;
-            border-radius: 8px;
-            margin: auto;
-        }
-        .detail-content {
-            flex-grow: 1;
-        }
-        .detail-item {
-            display: flex;
-            padding: 8px 0;
-            justify-self: star;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .detail-nama {
-            font-weight: bold;
-        }
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-        .detail-label {
-            font-weight: bold;
-            color: #555;
-        }
-        .text-shadow {
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        .fs-custom {
-            font-size: 2rem;
-        }
-    </style>
 <div class="container">
     <div class="card detail-card">
         <div class="detail-header">
             <h2>Profil Siswa</h2>
         </div>
-        
         <div class="row">
             <!-- Kolom untuk Foto -->
             <div class="col-md-4 text-center">
@@ -82,12 +38,8 @@
                         <span>{{ $siswa->nis }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Tempat Lahir</span>
-                        <span>{{ $siswa->tempat_lahir }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Tanggal Lahir</span>
-                        <span>{{ $siswa->tanggal_lahir }}</span>
+                        <span class="detail-label">Tempat,Tanggal Lahir</span>
+                        <span> {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Jenis Kelamin</span>
@@ -117,7 +69,7 @@
                         <span class="detail-label">Naik Kelas XI</span>
                         <span>
                             @if ($siswa->tanggal_naik_kelas_xi)
-                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->format('d-m-Y') }}
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->Isoformat('D MMMM YYYY') }}
                             @else
                                 - (Belum Naik Kelas XI)
                             @endif
@@ -127,7 +79,7 @@
                         <span class="detail-label">Naik Kelas XII</span>
                         <span>
                             @if ($siswa->tanggal_naik_kelas_xii)
-                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->format('d-m-Y') }}
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->Isoformat('D MMMM YYYY') }}
                             @else
                                 - (Belum Naik Kelas XII)
                             @endif
