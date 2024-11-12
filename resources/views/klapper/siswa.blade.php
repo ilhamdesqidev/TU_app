@@ -14,9 +14,9 @@
     
     
     <!-- Daftar siswa terkait klapper -->
-    <h3>Daftar Siswa</h3>
+    <h1>Data Siswa</h1>
     <div style="display: flex; justify-content: flex-end; gap:10px;">
-                <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah"><i class='bx bx-plus-circle'></i></a>
+                <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus"><i class='bx bx-plus-circle'></i></a>
 
     <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
         @csrf
