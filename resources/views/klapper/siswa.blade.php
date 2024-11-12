@@ -164,9 +164,6 @@ form .btn-success {
     
     
     
-    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah">Tambah Data Siswa</a>
-    
-    
     <!-- Daftar siswa terkait klapper -->
     <h3>Daftar Siswa</h3>
 
