@@ -1,7 +1,7 @@
 @extends('main')
 <link rel="stylesheet" href="asset/css/siswa.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 @section('content')
 <body>
     <section class="home">
@@ -14,10 +14,8 @@
     /* asset/css/klapper.css */
 .detail-container {
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Menempatkan item di tengah secara horizontal */
-    justify-content: center; /* Menempatkan item di tengah secara vertikal */
-    text-align: center; /* Menempatkan teks di tengah */
+    flex-direction: column; /* Menempatkan item di tengah secara horizontal */
+/* Menempatkan teks di tengah */
     padding: 20px; /* Tambahkan padding untuk ruang */
 }
 
@@ -89,7 +87,8 @@ form .btn-success {
 }
 
 .btn-tambah {
-    display: inline-block;
+    display: ;
+    width: 50px;
     padding: 10px 20px;
     margin-bottom: 15px;
     background-color: #4CAF50;
@@ -162,17 +161,18 @@ form .btn-success {
 
 </style>
 <div class="detail-container">
+
+<h1>Data Siswa</h1>
     
-    
-    
-    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah">Tambah Data Siswa</a>
     
     
     <!-- Daftar siswa terkait klapper -->
-    <h3>Daftar Siswa</h3>
+   
 
     <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
         @csrf
+        <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah"><i class='bx bx-plus-circle'></i></a>
+
         <button type="submit" class="btn-lulus">Luluskan Semua Pelajar</button>
     </form>
 
