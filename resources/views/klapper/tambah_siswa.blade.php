@@ -98,7 +98,7 @@
         </div>
         <div class="form-input">
             <label for="kelas">Kelas</label>
-            <input type="text" name="kelas" id="kelas" value="10" required>
+            <input type="text" name="kelas" id="kelas" value="X" required>
         </div>
         <div class="form-input">
             <label for="jurusan">Jurusan</label>

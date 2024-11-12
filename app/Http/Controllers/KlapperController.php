@@ -179,6 +179,37 @@ class KlapperController extends Controller
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Keluar.');
     }
     
+    public function naikKelasXI($id)
+    {
+        $klapper = Klapper::findOrFail($id); // Cari klapper berdasarkan ID
+        $siswas = $klapper->siswas; // Ambil data siswa yang terkait dengan klapper ini
+    
+        // Update kelas siswa menjadi XI jika mereka belum lulus
+        foreach ($siswas as $siswa) {
+            if ($siswa->status != 1) { // Pastikan siswa tidak lulus
+                $siswa->kelas = 'XI'; // Update kelas menjadi XI
+                $siswa->save(); // Simpan perubahan
+            }
+        }
+    
+        return redirect()->route('klapper.show', $klapper->id)->with('success', 'Siswa telah dinaikkan ke kelas XI.');
+    }
+
+    public function naikKelasXII($id)
+    {
+        $klapper = Klapper::findOrFail($id); // Cari klapper berdasarkan ID
+        $siswas = $klapper->siswas; // Ambil data siswa yang terkait dengan klapper ini
+    
+        // Update kelas siswa menjadi XII jika mereka belum lulus
+        foreach ($siswas as $siswa) {
+            if ($siswa->status != 1) { // Pastikan siswa tidak lulus
+                $siswa->kelas = 'XII'; // Update kelas menjadi XII
+                $siswa->save(); // Simpan perubahan
+            }
+        }
+    
+        return redirect()->route('klapper.show', $klapper->id)->with('success', 'Siswa telah dinaikkan ke kelas XII.');
+    }    
 
     public function index()
     {
