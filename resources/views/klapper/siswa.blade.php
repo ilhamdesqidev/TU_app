@@ -38,7 +38,7 @@
     
     <table border="1" cellspacing="0" cellpadding="10">
         <tr>
-            <th>NO</th>
+            <th style="width: 50px; text-align: center;">NO</th>
             <th>Nama</th>
             <th>NIS</th>
             <th>Jurusan</th>
@@ -48,10 +48,10 @@
         </tr>
         @foreach ($klapper->siswas as $siswa)
         <tr>
-            <td>
+            <td style="text-align: center;">
                 {{ $loop->iteration }}
             </td>
-            <td>{{ $siswa->nama_siswa }}</td>
+            <td style="text-align: left;">{{ $siswa->nama_siswa }}</td>
             <td>{{ $siswa->nis }}</td>
             <td>{{ $siswa->jurusan }}</td>
             <td>{{ $siswa->kelas }}</td>
@@ -71,8 +71,15 @@
                 @endif
             </td>
             <td>
-                <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
-                <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"> <i class="fas fa-arrow-right-from-bracket"></i></a>
+                <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success">
+                    <i class="fa-solid fa-folder-open"></i>
+                </a>
+                
+                @if($siswa->status == 0) <!-- Tampilkan tombol "Keluar" hanya jika statusnya Pelajar -->
+                <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                </a>
+                @endif
             </td>
         </tr>
         @endforeach

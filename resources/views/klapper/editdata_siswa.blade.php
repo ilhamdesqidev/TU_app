@@ -1,75 +1,6 @@
 @extends('main')
+<link rel="stylesheet" href="/asset/css/editsiswa.css">
 @section('content')
-
-<style>
-    /* Style untuk halaman Edit Data Siswa */
-
-h2 {
-    text-align: center;
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-/* Style untuk form */
-form {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-/* Style untuk label */
-label {
-    display: block;
-    margin-top: 15px;
-    color: #333;
-    font-weight: bold;
-}
-
-/* Style untuk input teks */
-input[type="text"],
-input[type="date"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="date"]:focus {
-    border-color: #4CAF50;
-    outline: none;
-}
-
-/* Style untuk tombol submit */
-.btn-submit {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn-submit:hover {
-    background-color: #45a049;
-}
-
-</style>
 
 <h2>Edit Data Siswa</h2>
 
@@ -106,6 +37,18 @@ input[type="date"]:focus {
 
     <label for="tanggal_masuk">Tanggal Masuk:</label>
     <input type="date" name="tanggal_masuk" value="{{ $siswa->tanggal_masuk }}" required>
+
+    <!-- Tambahkan Input untuk Foto -->
+    <label for="foto">Foto:</label>
+    <input type="file" name="foto" id="foto">
+
+    <!-- Tampilkan Foto Saat Ini -->
+    @if($siswa->foto)
+        <div class="current-photo">
+            <p>Foto Saat Ini:</p>
+            <img src="{{ asset('image/' . $siswa->foto) }}" alt="Foto Siswa" width="150">
+        </div>
+    @endif
 
     <button type="submit" class="btn-submit">Simpan Perubahan</button>
 </form>

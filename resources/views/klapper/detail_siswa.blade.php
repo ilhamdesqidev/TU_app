@@ -87,11 +87,23 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Lulus</span>
-                        <span>{{ $siswa->tanggal_lulus }}</span>
+                        <span>
+                        @if ($siswa->tanggal_lulus)
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_lulus)->Isoformat('D MMMM YYYY') }}
+                            @else
+                                - (Belum Lulus)
+                            @endif
+                        </span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Keluar</span>
-                        <span>{{ $siswa->tanggal_keluar }}</span>
+                        <span>
+                        @if ($siswa->tanggal_keluar)
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_keluar)->Isoformat('D MMMM YYYY') }}
+                            @else
+                                - (Tidak Keluar Sekolah)
+                            @endif
+                        </span>
                     </div>
                 </div>
             </div>
