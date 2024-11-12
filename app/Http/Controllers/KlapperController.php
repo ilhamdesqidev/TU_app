@@ -28,7 +28,7 @@ class KlapperController extends Controller
         ]);
 
         Klapper::create($request->all());
-        return redirect()->route('klapper.index')->with('status', 'Data berhasil ditambah!');
+        return redirect()->route('klapper.index')->with('status', 'Berhasil Menambahkan Buku Angkatan');
     }
 
     public function showKlapper($id)
@@ -98,7 +98,7 @@ class KlapperController extends Controller
             $siswa->foto = $filename;
         }
         $siswa->save();
-        return redirect()->route('klapper.siswa', $klappersId)->with('status', 'Data siswa berhasil ditambah!');
+        return redirect()->route('klapper.siswa', $klappersId)->with('status', 'Berhasil Menambahkan Data Siswa!');
     }
 
     public function showSiswa($id)
@@ -158,7 +158,11 @@ class KlapperController extends Controller
         // Update status siswa menjadi "Lulus" hanya jika statusnya "Pelajar"
         $klapper->siswas()
             ->where('status', 0)
-            ->update(['status' => 1]);
+            ->update([
+            'status' => 1,
+            'tanggal_lulus' => now(), // Mengisi dengan tanggal dan waktu saat ini
+            ]);
+            
     
         return redirect()->route('klapper.show', $klapperId)
                          ->with('success', 'Semua pelajar telah diluluskan.');
@@ -169,6 +173,7 @@ class KlapperController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
         $siswa->status = 2; // Set status ke 2 untuk "Keluar"
+        $siswa->tanggal_keluar = now();
         $siswa->save();
     
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Keluar.');

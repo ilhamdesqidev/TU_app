@@ -1,8 +1,6 @@
 @extends('main')
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 @section('content')
-<head>
-    <!-- Tambahkan link Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .detail-card {
             margin: 20px auto;
@@ -47,7 +45,6 @@
             font-size: 2rem;
         }
     </style>
-</head>
 <div class="container">
     <div class="card detail-card">
         <div class="detail-header">

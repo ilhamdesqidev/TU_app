@@ -41,6 +41,7 @@
 
     /* Styling untuk tombol */
     button[type="submit"] {
+        display: flex;
         padding: 10px 15px;
         color: #fff;
         background-color: #007bff;
@@ -51,6 +52,21 @@
 
     button[type="submit"]:hover {
         background-color: #0056b3;
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 15px;
+        color: #fff;
+        background-color: #6c757d;
+        text-decoration: none;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .btn-back:hover {
+        background-color: #5a6268;
     }
 </style>
 <div class="form-container">
@@ -124,5 +140,7 @@
         <button type="submit">Tambah Siswa</button>
         
     </form>
+
+    <a href="{{ route('klapper.show', $klappersId) }}" class="btn-back">Kembali ke Halaman Siswa</a>
 </div>
 @endsection
