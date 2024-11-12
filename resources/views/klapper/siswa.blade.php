@@ -32,6 +32,13 @@ ul {
     padding: 0; /* Menghilangkan padding pada list */
 }
 
+h1{
+    text-align:center;
+    margin:25px;
+    font-size:30px;
+    font-weight:600;
+}
+
 /* Styling untuk tabel */
 table {
     width: 100%;
@@ -75,7 +82,7 @@ table tr:hover {
 
 /* Mengatur form agar teks di dalamnya rata kiri */
 form {
-    margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
+    margin-bottom:1px; /* Spasi antara form dan daftar siswa */
     text-align: right; /* Membuat tombol di dalam form rata kiri */
     width: 100%;
 }
@@ -108,6 +115,11 @@ form .btn-success {
     padding: 10px 15px;
     transition: background-color 0.6s;
     box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
+    cursor: pointer;
+}
+
+.btn-lulus:hover{
+    background-color: #45a049;
 }
 
 .btn-tambah:hover {
