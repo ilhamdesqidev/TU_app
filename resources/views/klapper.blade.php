@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="asset/css/klapper.css">
 
 @section('content')
-<body>
 
 <section class="home">
         <div class="text">Klapper</div>
@@ -38,7 +37,4 @@
     </div>
 </div>
 </section>
-
-   
-</body>
 @endsection

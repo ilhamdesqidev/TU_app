@@ -1,74 +1,6 @@
 @extends('main')
+<link rel="stylesheet" href="/asset/css/tambahsiswa.css">
 @section('content')
-<style>
-    /* Menyusun form di tengah halaman */
-    .form-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 500px; /* Batasi lebar form */
-        margin: 0 auto; /* Tengah secara horizontal */
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
-    }
-
-    /* Styling untuk input form */
-    .form-input {
-        margin-bottom: 15px;
-        width: 100%;
-    }
-
-    .form-input label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    .form-input input[type="text"],
-    .form-input input[type="date"],
-    .form-input input[type="file"] {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    /* Styling untuk tombol */
-    button[type="submit"] {
-        display: flex;
-        padding: 10px 15px;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    button[type="submit"]:hover {
-        background-color: #0056b3;
-    }
-
-    .btn-back {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 15px;
-        color: #fff;
-        background-color: #6c757d;
-        text-decoration: none;
-        border-radius: 4px;
-        text-align: center;
-    }
-
-    .btn-back:hover {
-        background-color: #5a6268;
-    }
-</style>
 <div class="form-container">
     <h2>Tambah Data Siswa</h2>
     <form action="{{ route('siswa.store', $klappersId) }}" method="POST" enctype="multipart/form-data">
@@ -98,7 +30,7 @@
         </div>
         <div class="form-input">
             <label for="kelas">Kelas</label>
-            <input type="text" name="kelas" id="kelas" value="10" required>
+            <input type="text" name="kelas" id="kelas" value="X" required>
         </div>
         <div class="form-input">
             <label for="jurusan">Jurusan</label>
@@ -143,4 +75,12 @@
 
     <a href="{{ route('klapper.show', $klappersId) }}" class="btn-back">Kembali ke Halaman Siswa</a>
 </div>
+<script>
+    // Set the current date for the "Tanggal Masuk" field
+    document.addEventListener('DOMContentLoaded', function() {
+        const tanggalMasuk = document.getElementById('tanggal_masuk');
+        const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+        tanggalMasuk.value = currentDate; // Set the input value to the current date
+    });
+</script>
 @endsection

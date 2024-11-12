@@ -1,21 +1,22 @@
 @extends('main')
-<link rel="stylesheet" href="asset/css/siswa.css">
+<link rel="stylesheet" href="/asset/css/siswa.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 @section('content')
-<body>
     <section class="home">
-        <div class="text">{{ $klapper->nama_buku }}<h6>{{ $klapper->tahun_ajaran }}</h6></div>
-
-    </div>
+        <div class="text">
+            {{ $klapper->nama_buku }}
+            <h6>{{ $klapper->tahun_ajaran }}</h6>
         </div>
 </body>
 <style>
     /* asset/css/klapper.css */
 .detail-container {
     display: flex;
-    flex-direction: column; /* Menempatkan item di tengah secara horizontal */
-/* Menempatkan teks di tengah */
+    flex-direction: column;
+    align-items: center; /* Menempatkan item di tengah secara horizontal */
+    justify-content: center; /* Menempatkan item di tengah secara vertikal */
+    text-align: center; /* Menempatkan teks di tengah */
     padding: 20px; /* Tambahkan padding untuk ruang */
 }
 
@@ -30,13 +31,6 @@ form {
 ul {
     list-style-type: none; /* Menghilangkan bullet pada list */
     padding: 0; /* Menghilangkan padding pada list */
-}
-
-h1{
-    text-align:center;
-    margin:25px;
-    font-size:30px;
-    font-weight:600;
 }
 
 /* Styling untuk tabel */
@@ -82,7 +76,7 @@ table tr:hover {
 
 /* Mengatur form agar teks di dalamnya rata kiri */
 form {
-    margin-bottom:1px; /* Spasi antara form dan daftar siswa */
+    margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
     text-align: right; /* Membuat tombol di dalam form rata kiri */
     width: 100%;
 }
@@ -94,8 +88,7 @@ form .btn-success {
 }
 
 .btn-tambah {
-    display: ;
-    width: 50px;
+    display: inline-block;
     padding: 10px 20px;
     margin-bottom: 15px;
     background-color: #4CAF50;
@@ -115,11 +108,6 @@ form .btn-success {
     padding: 10px 15px;
     transition: background-color 0.6s;
     box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
-    cursor: pointer;
-}
-
-.btn-lulus:hover{
-    background-color: #45a049;
 }
 
 .btn-tambah:hover {
@@ -173,13 +161,14 @@ form .btn-success {
 
 </style>
 <div class="detail-container">
-
-<h1>Data Siswa</h1>
     
+    
+    
+    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah">Tambah Data Siswa</a>
     
     
     <!-- Daftar siswa terkait klapper -->
-   
+    <h3>Daftar Siswa</h3>
 
     <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
         @csrf
@@ -187,7 +176,17 @@ form .btn-success {
 
         <button type="submit" class="btn-lulus">Luluskan Semua Pelajar</button>
     </form>
+    
+    <form action="{{ route('klapper.naikKelasXI', $klapper->id) }}" method="POST" style="display: inline-block;">
+        @csrf
+        <button type="submit" class="btn-lulus" style="background-color: #17a2b8;">Naik Kelas XI</button>
+    </form>
 
+    <form action="{{ route('klapper.naikKelasXII', $klapper->id) }}" method="POST" style="display: inline-block; margin-left: 10px;">
+        @csrf
+        <button type="submit" class="btn-lulus" style="background-color: #6c757d;">Naik Kelas XII</button>
+    </form>
+    
     <table border="1" cellspacing="0" cellpadding="10">
         <tr>
             <th>NO</th>
@@ -199,40 +198,35 @@ form .btn-success {
             <th>Aksi</th>
         </tr>
         @foreach ($klapper->siswas as $siswa)
-    <tr>
-        <td>
-            {{ $loop->iteration }}
-        </td>
-        <td>{{ $siswa -> nama_siswa }}</td>
-        <td>{{ $siswa -> nis }}</td>
-        <td>{{ $siswa -> jurusan }}</td>
-        <td>{{ $siswa -> kelas }}</td>
-        <td>
-    @if($siswa->status == 0)
-        <span class="badge badge-secondary">
-            <i class="fas fa-user-graduate"></i> Pelajar
-        </span>
-    @elseif($siswa->status == 1)
-        <span class="badge badge-success">
-            <i class="fas fa-graduation-cap"></i> Lulus
-        </span>
-    @else
-        <span class="badge badge-danger">
-        <i class="fas fa-arrow-right-from-bracket"></i>  Keluar
-        </span>
-    @endif
-</td>
-
-
-
-        <td>
-        <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
-        <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"> <i class="fas fa-arrow-right-from-bracket"></i></a>
-        </td>
-    </tr>
-    @endforeach
-    
-</table>
-
+        <tr>
+            <td>
+                {{ $loop->iteration }}
+            </td>
+            <td>{{ $siswa->nama_siswa }}</td>
+            <td>{{ $siswa->nis }}</td>
+            <td>{{ $siswa->jurusan }}</td>
+            <td>{{ $siswa->kelas }}</td>
+            <td>
+                @if($siswa->status == 0)
+                <span class="badge badge-secondary">
+                    <i class="fas fa-user-graduate"></i> Pelajar
+                </span>
+                @elseif($siswa->status == 1)
+                <span class="badge badge-success">
+                    <i class="fas fa-graduation-cap"></i> Lulus
+                </span>
+                @else
+                <span class="badge badge-danger">
+                    <i class="fas fa-arrow-right-from-bracket"></i> Keluar
+                </span>
+                @endif
+            </td>
+            <td>
+                <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
+                <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"> <i class="fas fa-arrow-right-from-bracket"></i></a>
+            </td>
+        </tr>
+        @endforeach
+    </table>
 </div>
 @endsection

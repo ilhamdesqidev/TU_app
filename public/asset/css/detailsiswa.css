@@ -1,0 +1,42 @@
+.detail-card {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+.detail-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.detail-photo {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 8px;
+    margin: auto;
+}
+.detail-content {
+    flex-grow: 1;
+}
+.detail-item {
+    display: flex;
+    padding: 8px 0;
+    justify-self: star;
+    border-bottom: 1px solid #e0e0e0;
+}
+.detail-nama {
+    font-weight: bold;
+}
+.detail-item:last-child {
+    border-bottom: none;
+}
+.detail-label {
+    font-weight: bold;
+    color: #555;
+}
+.text-shadow {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+.fs-custom {
+    font-size: 2rem;
+}
