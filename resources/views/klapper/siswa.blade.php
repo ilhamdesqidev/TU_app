@@ -74,6 +74,20 @@ table tr:hover {
 }
 
 /* Styling untuk tombol */
+
+/* Mengatur form agar teks di dalamnya rata kiri */
+form {
+    margin-bottom: 20px; /* Spasi antara form dan daftar siswa */
+    text-align: right; /* Membuat tombol di dalam form rata kiri */
+    width: 100%;
+}
+
+/* Styling untuk tombol */
+form .btn-success {
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+
 .btn-tambah {
     display: inline-block;
     padding: 10px 20px;
@@ -83,6 +97,18 @@ table tr:hover {
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
+    box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
+}
+
+.btn-lulus{
+    color: white;
+    border: none;
+    background-color: #4CAF50;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: background-color 0.6s;
+    box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
 }
 
 .btn-tambah:hover {
@@ -140,13 +166,16 @@ table tr:hover {
     
     
     <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah">Tambah Data Siswa</a>
-    <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
-        @csrf
-        <button type="submit" class="btn-success">Luluskan Semua Pelajar</button>
-    </form>
+    
     
     <!-- Daftar siswa terkait klapper -->
     <h3>Daftar Siswa</h3>
+
+    <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn-lulus">Luluskan Semua Pelajar</button>
+    </form>
+
     <table border="1" cellspacing="0" cellpadding="10">
         <tr>
             <th>NO</th>
