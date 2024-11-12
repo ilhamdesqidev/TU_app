@@ -115,11 +115,23 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Naik Kelas XI</span>
-                        <span>{{ $siswa->tanggal_naik_kelas_xi }}</span>
+                        <span>
+                            @if ($siswa->tanggal_naik_kelas_xi)
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->format('d-m-Y') }}
+                            @else
+                                - (Belum Naik Kelas XI)
+                            @endif
+                        </span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Naik Kelas XII</span>
-                        <span>{{ $siswa->tanggal_naik_kelas_xii }}</span>
+                        <span>
+                            @if ($siswa->tanggal_naik_kelas_xii)
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->format('d-m-Y') }}
+                            @else
+                                - (Belum Naik Kelas XII)
+                            @endif
+                        </span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Lulus</span>

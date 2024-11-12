@@ -188,6 +188,7 @@ class KlapperController extends Controller
         foreach ($siswas as $siswa) {
             if ($siswa->status != 1) { // Pastikan siswa tidak lulus
                 $siswa->kelas = 'XI'; // Update kelas menjadi XI
+                $siswa->tanggal_naik_kelas_xi = now(); // Simpan tanggal kenaikan kelas (tanggal saat ini)
                 $siswa->save(); // Simpan perubahan
             }
         }
@@ -204,6 +205,7 @@ class KlapperController extends Controller
         foreach ($siswas as $siswa) {
             if ($siswa->status != 1) { // Pastikan siswa tidak lulus
                 $siswa->kelas = 'XII'; // Update kelas menjadi XII
+                $siswa->tanggal_naik_kelas_xii = now(); // Simpan tanggal kenaikan kelas (tanggal saat ini)
                 $siswa->save(); // Simpan perubahan
             }
         }
