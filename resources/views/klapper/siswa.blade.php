@@ -76,9 +76,20 @@
                 </a>
                 
                 @if($siswa->status == 0) <!-- Tampilkan tombol "Keluar" hanya jika statusnya Pelajar -->
-                <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger">
-                    <i class="fas fa-arrow-right-from-bracket"></i>
-                </a>
+                    <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger">
+                        <i class="fas fa-arrow-right-from-bracket"></i>
+                    </a>
+                @endif
+
+                @if($siswa->status == 0) <!-- Tampilkan tombol "Naik Kelas" hanya jika statusnya Pelajar -->
+                    <form action="{{ route('klapper.naikKelasXI', $klapper->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Naik Kelas XI</button>
+                    </form>
+                    <form action="{{ route('klapper.naikKelasXII', $klapper->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Naik Kelas XII</button>
+                    </form>
                 @endif
             </td>
         </tr>
