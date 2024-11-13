@@ -36,7 +36,9 @@ class KlapperController extends Controller
 
     public function showKlapper($id)
     {
-        $klapper = Klapper::with('siswas')->findOrFail($id); // Pastikan relasi 'siswas' di-load
+        $klapper = Klapper::with(['siswas' => function ($query) {
+            $query->orderBy('nama_siswa', 'asc'); // Urutkan berdasarkan nama siswa (A-Z)
+        }])->find($id);// Pastikan relasi 'siswas' di-load
         return view('klapper.siswa', compact('klapper'));
     }
 
