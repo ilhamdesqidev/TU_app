@@ -23,10 +23,13 @@ class KlapperController extends Controller
     public function storeKlapper(Request $request)
     {
         $request->validate([
-            'nama_buku' => 'required',
+            'nama_buku' => 'required|unique:klappers,nama_buku',
             'tahun_ajaran' => 'required',
+        ],  [
+            'nama_buku.required' => 'Nama buku wajib diisi.',
+            'nama_buku.unique' => 'Nama buku sudah ada, silakan gunakan nama lain.',
+            'tahun_ajaran.required' => 'Tahun ajaran wajib diisi.',
         ]);
-
         Klapper::create($request->all());
         return redirect()->route('klapper.index')->with('status', 'Berhasil Menambahkan Buku Angkatan');
     }
@@ -59,6 +62,7 @@ class KlapperController extends Controller
     {
         $request->validate([
             'nis' => 'required',
+            'nisn' => 'required',
             'nama_siswa' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
@@ -77,6 +81,7 @@ class KlapperController extends Controller
 
         $siswa = new Siswa();
         $siswa->nis = $request->nis;
+        $siswa->nisn = $request->nisn;
         $siswa->nama_siswa = $request->nama_siswa;
         $siswa->tempat_lahir = $request->tempat_lahir;
         $siswa->tanggal_lahir = $request->tanggal_lahir;

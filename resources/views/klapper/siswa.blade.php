@@ -39,7 +39,7 @@
     <table border="1" cellspacing="0" cellpadding="10">
         <tr>
             <th style="width: 50px; text-align: center;">NO</th>
-            <th>Nama</th>
+            <th style="width: 350px;">Nama</th>
             <th>NIS</th>
             <th>Jurusan</th>
             <th>kelas</th>
@@ -53,7 +53,7 @@
             </td>
             <td style="text-align: left;">{{ $siswa->nama_siswa }}</td>
             <td>{{ $siswa->nis }}</td>
-            <td>{{ $siswa->jurusan }}</td>
+            <td>{{ strtoupper($siswa->jurusan) }}</td>
             <td>{{ $siswa->kelas }}</td>
             <td>
                 @if($siswa->status == 0)

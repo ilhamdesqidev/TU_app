@@ -38,6 +38,10 @@
                         <span>{{ $siswa->nis }}</span>
                     </div>
                     <div class="detail-item">
+                        <span class="detail-label">NISN:</span>
+                        <span>{{ $siswa->nisn }}</span>
+                    </div>
+                    <div class="detail-item">
                         <span class="detail-label">Tempat,Tanggal Lahir</span>
                         <span> {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
                     </div>

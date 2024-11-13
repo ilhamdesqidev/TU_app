@@ -11,6 +11,9 @@
     <label for="nis">NIS:</label>
     <input type="text" name="nis" value="{{ $siswa->nis }}" required>
 
+    <label for="nisn">nisn:</label>
+    <input type="text" name="nisn" value="{{ $siswa->nisn }}" required>
+
     <label for="nama_siswa">Nama Siswa:</label>
     <input type="text" name="nama_siswa" value="{{ $siswa->nama_siswa }}" required>
 

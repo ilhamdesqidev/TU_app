@@ -94,6 +94,15 @@
 
 <div class="form-container">
     <h2>Tambah Klapper</h2>
+    @if ($errors->any())
+        <div style="color: red; margin-bottom: 15px;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <form action="{{ route('klapper.store') }}" method="POST">
         @csrf
         <div class="form-group">
