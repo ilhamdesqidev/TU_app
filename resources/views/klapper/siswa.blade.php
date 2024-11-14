@@ -17,8 +17,16 @@
     <h1>Data Siswa</h1>
 
     <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" style="margin-bottom: 20px;">
-        <input type="text" name="search" value="{{ $search }}" placeholder="Cari Nama atau Jurusan" class="search-input">
-        <button type="submit" class="btn-search"><i class="fas fa-search"></i> Cari</button>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama atau Jurusan" class="search-input">
+            <button type="submit" class="btn-search"><i class="fas fa-search"></i> Cari</button>
+
+            <select name="amaliah" onchange="this.form.submit()" class="form-select" style="width: 200px;">
+                <option value="" {{ request('amaliah') == '' ? 'selected' : '' }}>Semua Amaliah</option>
+                <option value="1" {{ request('amaliah') == '1' ? 'selected' : '' }}>SMK Amaliah 1</option>
+                <option value="2" {{ request('amaliah') == '2' ? 'selected' : '' }}>SMK Amaliah 2</option>
+            </select>
+        </div>
     </form>
     
     <div style="display: flex; justify-content: flex-end; gap:10px;">
@@ -51,8 +59,24 @@
             <th>kelas</th>
             <th>status</th>
             <th>Aksi</th>
+
+            @php 
+            $filteredSiswas = $klapper->siswas->filter(function ($siswa) {
+                $amaliah = request('amaliah');
+                $jurusanAmaliah1 = ['pplg', 'tjkt', 'an'];
+                $jurusanAmaliah2 = ['dpb', 'lps', 'akl', 'mp', 'br'];
+
+                if ($amaliah == '1') {
+                    return in_array(strtolower($siswa->jurusan), $jurusanAmaliah1);
+                } elseif ($amaliah == '2') {
+                    return in_array(strtolower($siswa->jurusan), $jurusanAmaliah2);
+                }
+                return true; // Jika tidak ada filter, tampilkan semua
+            });
+            @endphp
+
         </tr>
-        @foreach ($klapper->siswas as $siswa)
+        @foreach ($filteredSiswas as $siswa)
         <tr>
             <td style="text-align: center;">
                 {{ $loop->iteration }}
