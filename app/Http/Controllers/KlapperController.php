@@ -34,12 +34,20 @@ class KlapperController extends Controller
         return redirect()->route('klapper.index')->with('status', 'Berhasil Menambahkan Buku Angkatan');
     }
 
-    public function showKlapper($id)
+    public function showKlapper($id, Request $request)
     {
-        $klapper = Klapper::with(['siswas' => function ($query) {
-            $query->orderBy('nama_siswa', 'asc'); // Urutkan berdasarkan nama siswa (A-Z)
-        }])->find($id);// Pastikan relasi 'siswas' di-load
-        return view('klapper.siswa', compact('klapper'));
+        $search = $request->input('search');
+
+        $klapper = Klapper::with(['siswas' => function ($query) use ($search) {
+            if ($search) {
+                $query->where('nama_siswa', 'like', "%$search%")
+                      ->orwhere('nis', 'like', "%$search%")
+                      ->orWhere('jurusan', 'like', "%$search%");
+            }
+            $query->orderBy('nama_siswa', 'asc');
+        }])->findOrFail($id);
+
+        return view('klapper.siswa', compact('klapper', 'search'));
     }
 
     public function deleteKlapper($id)

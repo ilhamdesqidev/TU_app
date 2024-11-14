@@ -139,3 +139,29 @@ h1{
         background-color: #f8d7da; /* Merah lembut */
         color: #721c24;
     }
+
+
+    .search-input {
+        padding: 8px;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .btn-search {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .btn-search i {
+        margin-right: 5px;
+    }
+    
+    .btn-search:hover {
+        background-color: #0056b3;
+    }
+    

@@ -15,6 +15,12 @@
     
     <!-- Daftar siswa terkait klapper -->
     <h1>Data Siswa</h1>
+
+    <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" style="margin-bottom: 20px;">
+        <input type="text" name="search" value="{{ $search }}" placeholder="Cari Nama atau Jurusan" class="search-input">
+        <button type="submit" class="btn-search"><i class="fas fa-search"></i> Cari</button>
+    </form>
+    
     <div style="display: flex; justify-content: flex-end; gap:10px;">
                 <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus"><i class='bx bx-plus-circle'></i></a>
 
