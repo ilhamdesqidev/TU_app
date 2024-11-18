@@ -11,6 +11,7 @@ class Siswa extends Model
     protected $fillable = [
         'nama_siswa',
         'nis',
+        'nisn',
         'tempat_lahir', 
         'tanggal_lahir',
         'gender',
@@ -27,5 +28,10 @@ class Siswa extends Model
     public function klapper()
     {
         return $this->belongsTo(Klapper::class, 'klappers_id');
+    }
+
+    public function getJurusanAttribute($value)
+    {
+        return strtoupper($value);
     }
 }

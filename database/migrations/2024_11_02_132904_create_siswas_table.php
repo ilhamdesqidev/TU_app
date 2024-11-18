@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_siswa');
             $table->string('nis');
+            $table->string('nisn');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->string('gender');
