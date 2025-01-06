@@ -48,23 +48,6 @@
             <label for="tanggal_masuk">Tanggal Masuk</label>
             <input type="date" name="tanggal_masuk" id="tanggal_masuk" required>
         </div>
-        <div class="form-input">
-                    <label for="tanggal_naik_kelas_xi">tanggal_naik_kelas_xi</label>
-                    <input type="date" name="tanggal_naik_kelas_xi" id="tanggal_naik_kelas_xi">
-                </div>
-                <div class="form-input">
-                    <label for="tanggal_naik_kelas_xii">tanggal naik kelas xii</label>
-                    <input type="date" name="tanggal_naik_kelas_xii" id="tanggal_naik_kelas_xii">
-                </div>
-                <div class="form-input">
-                    <label for="tanggal_lulus">Tanggal lulus</label>
-                    <input type="date" name="tanggal_lulus" id="tanggal_lulus">
-                </div>
-                <div class="form-input">
-                    <label for="tanggal_keluar">Tanggal Keluar</label>
-                    <input type="date" name="tanggal_keluar" id="tanggal_keluar">
-                </div>
-        <div class="form-input">
             <label for="foto">Foto</label>
             <input type="file" name="foto" id="foto">
         </div>
