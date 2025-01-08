@@ -14,9 +14,23 @@
     
     
     <!-- Daftar siswa terkait klapper -->
-    <h3>Daftar Siswa</h3>
+    <h1>Data Siswa</h1>
+
+    <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" style="margin-bottom: 20px;">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama atau Jurusan" class="search-input">
+            <button type="submit" class="btn-search"><i class="fas fa-search"></i> Cari</button>
+
+            <select name="amaliah" onchange="this.form.submit()" class="form-select" style="width: 200px;">
+                <option value="" {{ request('amaliah') == '' ? 'selected' : '' }}>Semua Amaliah</option>
+                <option value="1" {{ request('amaliah') == '1' ? 'selected' : '' }}>SMK Amaliah 1</option>
+                <option value="2" {{ request('amaliah') == '2' ? 'selected' : '' }}>SMK Amaliah 2</option>
+            </select>
+        </div>
+    </form>
+    
     <div style="display: flex; justify-content: flex-end; gap:10px;">
-                <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-tambah"><i class='bx bx-plus-circle'></i></a>
+                <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus"><i class='bx bx-plus-circle'></i></a>
 
     <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
         @csrf
@@ -38,22 +52,38 @@
     
     <table border="1" cellspacing="0" cellpadding="10">
         <tr>
-            <th>NO</th>
-            <th>Nama</th>
+            <th style="width: 50px; text-align: center;">NO</th>
+            <th style="width: 350px;">Nama</th>
             <th>NIS</th>
             <th>Jurusan</th>
             <th>kelas</th>
             <th>status</th>
             <th>Aksi</th>
+
+            @php 
+            $filteredSiswas = $klapper->siswas->filter(function ($siswa) {
+                $amaliah = request('amaliah');
+                $jurusanAmaliah1 = ['pplg', 'tjkt', 'an'];
+                $jurusanAmaliah2 = ['dpb', 'lps', 'akl', 'mp', 'br'];
+
+                if ($amaliah == '1') {
+                    return in_array(strtolower($siswa->jurusan), $jurusanAmaliah1);
+                } elseif ($amaliah == '2') {
+                    return in_array(strtolower($siswa->jurusan), $jurusanAmaliah2);
+                }
+                return true; // Jika tidak ada filter, tampilkan semua
+            });
+            @endphp
+
         </tr>
-        @foreach ($klapper->siswas as $siswa)
+        @foreach ($filteredSiswas as $siswa)
         <tr>
-            <td>
+            <td style="text-align: center;">
                 {{ $loop->iteration }}
             </td>
-            <td>{{ $siswa->nama_siswa }}</td>
+            <td style="text-align: left;">{{ $siswa->nama_siswa }}</td>
             <td>{{ $siswa->nis }}</td>
-            <td>{{ $siswa->jurusan }}</td>
+            <td>{{ strtoupper($siswa->jurusan) }}</td>
             <td>{{ $siswa->kelas }}</td>
             <td>
                 @if($siswa->status == 0)
@@ -71,8 +101,15 @@
                 @endif
             </td>
             <td>
-                <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success"><i class="fa-solid fa-folder-open"></i></a>
-                <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger"> <i class="fas fa-arrow-right-from-bracket"></i></a>
+                <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-success">
+                    <i class="fa-solid fa-folder-open"></i>
+                </a>
+                
+                @if($siswa->status == 0) <!-- Tampilkan tombol "Keluar" hanya jika statusnya Pelajar -->
+                    <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-danger">
+                        <i class="fas fa-arrow-right-from-bracket"></i>
+                    </a>
+                @endif
             </td>
         </tr>
         @endforeach

@@ -1,5 +1,13 @@
     /* asset/css/klapper.css */
 
+
+h1{
+    text-align: center;
+    font-size: 30px ;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
     h2, h3, p {
         margin: 10px 0; /* Spasi antar elemen */
     }
@@ -12,9 +20,11 @@
 
     /* Styling untuk tabel */
     table {
-        width: 100%;
+        width: 95%;
         border-collapse: collapse;
         margin: 20px 0;
+        margin-left: 30px;
+        
         font-size: 16px;
         min-width: 400px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
@@ -75,7 +85,9 @@
         border-radius: 5px;
         padding: 10px 15px;
         transition: background-color 0.6s;
+        margin-top: 50px;
         box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
+        margin-right: 28px;
     }
 
     .btn-tambah:hover {
@@ -127,3 +139,29 @@
         background-color: #f8d7da; /* Merah lembut */
         color: #721c24;
     }
+
+
+    .search-input {
+        padding: 8px;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .btn-search {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .btn-search i {
+        margin-right: 5px;
+    }
+    
+    .btn-search:hover {
+        background-color: #0056b3;
+    }
+    

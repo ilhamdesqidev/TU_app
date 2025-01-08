@@ -16,8 +16,11 @@
                     <p>Tidak ada foto</p>
                 @endif
                 <div class="btn-container">
-                    <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn-add">
-                    <i class="fas fa-plus"></i> Edit Data </a>
+                    @if ($siswa->status != 1 && $siswa->status != 2) <!-- Tampilkan tombol edit hanya jika status siswa bukan Lulus (1) atau Keluar (2) -->
+                        <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn-add">
+                            <i class="fas fa-plus"></i> Edit Data 
+                        </a>
+                    @endif
                 </div>
                 <div class="btn-container">
                 <a href="{{ route('klapper.siswa', $siswa->klapper_id) }}" class="back-link">Kembali</a>
@@ -36,6 +39,10 @@
                     <div class="detail-item">
                         <span class="detail-label">NIS:</span>
                         <span>{{ $siswa->nis }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">NISN:</span>
+                        <span>{{ $siswa->nisn }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tempat,Tanggal Lahir</span>
@@ -87,11 +94,23 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Lulus</span>
-                        <span>{{ $siswa->tanggal_lulus }}</span>
+                        <span>
+                        @if ($siswa->tanggal_lulus)
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_lulus)->Isoformat('D MMMM YYYY') }}
+                            @else
+                                - (Belum Lulus)
+                            @endif
+                        </span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Keluar</span>
-                        <span>{{ $siswa->tanggal_keluar }}</span>
+                        <span>
+                        @if ($siswa->tanggal_keluar)
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_keluar)->Isoformat('D MMMM YYYY') }}
+                            @else
+                                - (Tidak Keluar Sekolah)
+                            @endif
+                        </span>
                     </div>
                 </div>
             </div>
