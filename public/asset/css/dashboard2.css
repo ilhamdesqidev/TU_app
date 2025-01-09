@@ -1,0 +1,26 @@
+.cards-container {
+    display: flex; /* Menggunakan Flexbox */
+    justify-content: space-between; /* Memberi jarak merata antar kartu */
+    gap: 20px; /* Jarak antar kartu */
+    margin-top: 50px; /* Margin atas */
+    flex-wrap: nowrap; /* Pastikan semua kartu tetap dalam satu baris */
+    overflow-x: auto; /* Tambahkan scroll horizontal jika lebar layar tidak cukup */
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 200px; /* Lebar kartu */
+    height: 120px; /* Tinggi kartu */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect tetap */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
