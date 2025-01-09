@@ -1,4 +1,3 @@
-<!-- resources/views/klapper/create.blade.php -->
 @extends('main')
 
 @section('content')
