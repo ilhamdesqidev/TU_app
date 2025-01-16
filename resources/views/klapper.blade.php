@@ -6,7 +6,7 @@
         font-family: 'Poppins', sans-serif;
         margin: 0;
         padding: 0;
-        background: linear-gradient(135deg, #f3ec78, #af4261);
+        background: #f5f5f5; /* Warna netral */
         color: #333;
     }
 
@@ -18,9 +18,8 @@
     .home .text {
         font-size: 2.5rem;
         font-weight: bold;
-        color: #fff;
+        color: #333;
         margin-bottom: 2rem;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     .container {
@@ -35,7 +34,7 @@
     }
 
     .btn-add {
-        background: #6c63ff;
+        background: #007bff; /* Biru profesional */
         color: #fff;
         padding: 0.75rem 1.5rem;
         border-radius: 25px;
@@ -43,16 +42,16 @@
         font-size: 1rem;
         font-weight: 600;
         transition: 0.3s;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .btn-add:hover {
-        background: #5a54e0;
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        background: #0056b3; /* Biru lebih gelap */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
     }
 
     .alert {
-        background: #28a745;
+        background: #28a745; /* Hijau untuk notifikasi sukses */
         color: #fff;
         padding: 1rem;
         border-radius: 5px;
@@ -68,7 +67,7 @@
     }
 
     .card {
-        background: #fff;
+        background: #fff; /* Putih untuk kartu */
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -78,11 +77,11 @@
 
     .card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
     .card-header {
-        background: #6c63ff;
+        background: #007bff; /* Warna biru untuk header */
         color: #fff;
         padding: 1.5rem;
         text-align: center;
@@ -109,6 +108,7 @@
         color: #555;
     }
 </style>
+
 
 @section('content')
 <section class="home">

@@ -4,10 +4,6 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 @section('content')
     <section class="home">
-        <div class="text">
-            {{ $klapper->nama_buku }}
-            <h6>{{ $klapper->tahun_ajaran }}</h6>
-        </div>
 </body>
 <div class="detail-container">
     
@@ -22,7 +18,7 @@
             <button type="submit" class="btn-search"><i class="fas fa-search"></i> Cari</button>
 
             <select name="amaliah" onchange="this.form.submit()" class="form-select" style="width: 200px;">
-                <option value="" {{ request('amaliah') == '' ? 'selected' : '' }}>Semua Amaliah</option>
+                <option value="" {{ request('amaliah') == '' ? 'selected' : '' }}>Semua</option>
                 <option value="1" {{ request('amaliah') == '1' ? 'selected' : '' }}>SMK Amaliah 1</option>
                 <option value="2" {{ request('amaliah') == '2' ? 'selected' : '' }}>SMK Amaliah 2</option>
             </select>
