@@ -2,6 +2,12 @@
 <link rel="stylesheet" href="/asset/css/siswa.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 @section('content')
     <section class="home">
 </body>
@@ -28,21 +34,91 @@
     <div style="display: flex; justify-content: flex-end; gap:10px;">
                 <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus"><i class='bx bx-plus-circle'></i></a>
 
-    <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
-        @csrf
+    <!-- Button to trigger the modal -->
+<button type="button" class="btn-lulus" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
+    Luluskan Semua Pelajar
+</button>
 
-        <button type="submit" class="btn-lulus">Luluskan Semua Pelajar</button>
-    </form>
+<!-- Modal -->
+<div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tanggalLulusModalLabel">Masukkan Tanggal Lulus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
+                    <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Luluskan Semua</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
     
-    <form action="{{ route('klapper.naikKelasXI', $klapper->id) }}" method="POST">
-        @csrf
-        <button type="submit" class="btn-lulus" >Naik Kelas XI</button>
-    </form>
+<!-- Button to trigger modal for Naik Kelas XI -->
+<button type="button" class="btn-lulus" data-bs-toggle="modal" data-bs-target="#naikKelasXIModal">
+    Naik Kelas XI
+</button>
 
-    <form action="{{ route('klapper.naikKelasXII', $klapper->id) }}" method="POST">
-        @csrf
-        <button type="submit" class="btn-lulus" >Naik Kelas XII</button>
-    </form>
+<!-- Modal for Naik Kelas XI -->
+<div class="modal fade" id="naikKelasXIModal" tabindex="-1" aria-labelledby="naikKelasXIModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('klapper.naikKelasXI', $klapper->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="naikKelasXIModalLabel">Masukkan Tanggal Naik Kelas XI</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="tanggal_naik_kelas_xi" class="form-label">Tanggal:</label>
+                    <input type="date" name="tanggal_naik_kelas_xi" id="tanggal_naik_kelas_xi" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Button to trigger modal for Naik Kelas XII -->
+<button type="button" class="btn-lulus" data-bs-toggle="modal" data-bs-target="#naikKelasXIIModal">
+    Naik Kelas XII
+</button>
+
+<!-- Modal for Naik Kelas XII -->
+<div class="modal fade" id="naikKelasXIIModal" tabindex="-1" aria-labelledby="naikKelasXIIModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('klapper.naikKelasXII', $klapper->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="naikKelasXIIModalLabel">Masukkan Tanggal Naik Kelas XII</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="tanggal_naik_kelas_xii" class="form-label">Tanggal:</label>
+                    <input type="date" name="tanggal_naik_kelas_xii" id="tanggal_naik_kelas_xii" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
     </div>
 
     

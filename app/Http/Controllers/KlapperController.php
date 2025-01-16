@@ -166,21 +166,25 @@ class KlapperController extends Controller
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Lulus.');
     }
 
-    public function lulusSemua($klapperId)
-    {
-        $klapper = Klapper::findOrFail($klapperId);
-    
-        // Update status siswa menjadi "Lulus" hanya jika statusnya "Pelajar"
-        $klapper->siswas()
-            ->where('status', 0)
-            ->update([
-            'status' => 1,
-            'tanggal_lulus' => now(), // Mengisi dengan tanggal dan waktu saat ini
-            ]);
+    public function lulusSemua(Request $request, $klapperId)
+{
+    $request->validate([
+        'tanggal_lulus' => 'required|date',
+    ]);
 
-        return redirect()->route('klapper.show', $klapperId)
-                         ->with('success', 'Semua pelajar telah diluluskan.');
-    }
+    $klapper = Klapper::findOrFail($klapperId);
+
+    $klapper->siswas()
+        ->where('status', 0)
+        ->update([
+            'status' => 1,
+            'tanggal_lulus' => $request->tanggal_lulus,
+        ]);
+
+    return redirect()->route('klapper.show', $klapperId)
+                     ->with('success', 'Semua pelajar telah diluluskan.');
+}
+
     
 
     public function keluar($id)
@@ -193,48 +197,50 @@ class KlapperController extends Controller
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Keluar.');
     }
     
-    public function naikKelasXI($klapperId)
-    {
-        // Ambil klapper berdasarkan ID
-        $klapper = Klapper::findOrFail($klapperId);
-    
-        // Ambil siswa yang statusnya Pelajar (status 0)
-        $siswasNaikKelas = $klapper->siswas()->where('status', 0)->get();
-    
-        // Lakukan perubahan kelas hanya pada siswa yang statusnya Pelajar
-        foreach ($siswasNaikKelas as $siswa) {
-            // Cek jika siswa berada di kelas X, maka naik kelas
-            if ($siswa->kelas == 'X') {
-                $siswa->kelas = 'XI';  // Ubah kelas menjadi XI
-                $siswa->save();
-            }
+    public function naikKelasXI(Request $request, $klapperId)
+{
+    $request->validate([
+        'tanggal_naik_kelas_xi' => 'required|date',
+    ]);
+
+    $klapper = Klapper::findOrFail($klapperId);
+    $siswasNaikKelas = $klapper->siswas()->where('status', 0)->get();
+
+    foreach ($siswasNaikKelas as $siswa) {
+        if ($siswa->kelas == 'X') {
+            $siswa->kelas = 'XI';
+            $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;
+            $siswa->save();
         }
-    
-        // Redirect kembali ke halaman yang sesuai setelah proses selesai
-        return redirect()->route('klapper.show', $klapperId);
     }
+
+    return redirect()->route('klapper.show', $klapperId)
+                     ->with('success', 'Siswa berhasil dinaikkan ke kelas XI.');
+}
+
     
 
-    public function naikKelasXII($klapperId)
-    {
-        // Ambil klapper berdasarkan ID
-        $klapper = Klapper::findOrFail($klapperId);
-    
-        // Ambil siswa yang statusnya Pelajar (status 0)
-        $siswasNaikKelas = $klapper->siswas()->where('status', 0)->get();
-    
-        // Lakukan perubahan kelas hanya pada siswa yang statusnya Pelajar
-        foreach ($siswasNaikKelas as $siswa) {
-            // Cek jika siswa berada di kelas XI, maka naik kelas
-            if ($siswa->kelas == 'XI') {
-                $siswa->kelas = 'XII';  // Ubah kelas menjadi XII
-                $siswa->save();
-            }
+public function naikKelasXII(Request $request, $klapperId)
+{
+    $request->validate([
+        'tanggal_naik_kelas_xii' => 'required|date',
+    ]);
+
+    $klapper = Klapper::findOrFail($klapperId);
+    $siswasNaikKelas = $klapper->siswas()->where('status', 0)->get();
+
+    foreach ($siswasNaikKelas as $siswa) {
+        if ($siswa->kelas == 'XI') {
+            $siswa->kelas = 'XII';
+            $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
+            $siswa->save();
         }
-    
-        // Redirect kembali ke halaman yang sesuai setelah proses selesai
-        return redirect()->route('klapper.show', $klapperId);
     }
+
+    return redirect()->route('klapper.show', $klapperId)
+                     ->with('success', 'Siswa berhasil dinaikkan ke kelas XII.');
+}
+
 
     public function index()
     {

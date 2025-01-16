@@ -7,7 +7,14 @@
 
 
 <section class="home">
+
+    <div>
+        <img src="/asset/img/logo-12 (1).png" class="image">
+    </div>
+
     <h1>SMK AMALIAH 1&2</h1>
+
+
 <div class="cards-container">
     <div class="card">
         <div class="icon">

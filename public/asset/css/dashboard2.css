@@ -1,3 +1,15 @@
+.image {
+    display: block; /* Atur gambar sebagai elemen block */
+    margin: 0 auto; /* Posisi horizontal di tengah */
+    width: 200px; /* Gambar tidak lebih besar dari kontainer */
+    height: auto; /* Menjaga proporsi gambar */
+}
+
+h1{
+    text-align: center;
+}
+
+
 .cards-container {
     display: flex; /* Menggunakan Flexbox */
     justify-content: space-between; /* Memberi jarak merata antar kartu */
