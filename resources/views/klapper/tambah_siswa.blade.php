@@ -68,10 +68,6 @@
             <label for="tanggal_masuk">Tanggal Masuk</label>
             <input type="date" name="tanggal_masuk" id="tanggal_masuk" required>
         </div>
-<<<<<<< HEAD
-=======
-        <div class="form-input">
->>>>>>> 9a9e24285a0bef21caffb9de78aeccdefd7aadc4
             <label for="foto">Foto</label>
             <input type="file" name="foto" id="foto">
         </div>
