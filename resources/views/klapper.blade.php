@@ -60,20 +60,27 @@
     }
 
     .card-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Menempatkan kartu di tengah */
+    gap: 2rem;
+    margin-top: 2rem;
     }
 
     .card {
-        background: #fff; /* Putih untuk kartu */
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 0 1 350px; /* Menyesuaikan ukuran kartu menjadi lebih panjang */
+    max-width: 500px; /* Membatasi lebar maksimum kartu */
+    width: 100%;
+    height: 200px; /* Menetapkan tinggi tetap untuk kartu */
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
+
 
     .card:hover {
         transform: translateY(-10px);

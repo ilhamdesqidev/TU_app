@@ -1,6 +1,7 @@
 .image {
     display: block; /* Atur gambar sebagai elemen block */
     margin: 0 auto; /* Posisi horizontal di tengah */
+    margin-top: 80px;
     width: 200px; /* Gambar tidak lebih besar dari kontainer */
     height: auto; /* Menjaga proporsi gambar */
 }
