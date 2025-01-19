@@ -14,61 +14,6 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Tata Usaha</title>
 </head>
-<!-- <body>
-    <nav class="sidebar close">
-        <header>
-            <div class="image-text">
-                <span class="image">
-                    <img src="/asset/img/WhatsApp Image 2024-10-22 at 08.47.17.jpeg " alt="">
-                </span>
-                <div class="text header-text">
-                    <span class="name">Smk Amaliah 1&2</span>
-                    <span class="tu">Tata Usaha</span>
-                </div>
-            </div>
-
-            <i class='bx bx-chevron-right toggle'></i>
-        </header>
-<div class="menu-bar">
-        <div class="menu">
-             <li class="nav-link">
-                <a href="{{url('/')}}">
-                <i class='bx bx-home icon'></i>
-                <span class="text nav-text">Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-link">
-                <a href="{{url('klapper')}}">
-                    <i class='bx bxs-book-open icon' ></i>
-                <span class="text nav-text">Klapper</span>
-                </a>
-            </li>
-            <li class="nav-link">
-                <a href="#">
-                    <i class='bx bxs-time icon'></i>
-                <span class="text nav-text">Coming Soon</span>
-                </a>
-            </li>
-            <li class="nav-link">
-                <a href="#">
-                    <i class='bx bxs-time icon'></i>
-                <span class="text nav-text">Coming Soon</span>
-                </a>
-            </li>
-        </div>
-
-        <div class="bottom-content">
-            <li class="">
-                <a href="">
-                    <i class='bx bxs-user-circle icon'></i>
-                    <span class="text nav-text">Account</span>
-                </a>
-            </li>
-        </div>
-      
-    </div>
-    </nav>-->
-
 <body id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
@@ -79,7 +24,7 @@
             <div> 
                 <a href="#" class="nav_logo">
                 <div class="header_toggle">
-                    <img src="public/asset/img/Ellipse 1.svg" alt="Menu Icon" id="header-toggle">
+                    <img src="/asset/img/Group 1.svg" alt="Menu Icon" id="header-toggle">
                 </div>
                      <span class="nav_logo-name">Tata Usaha
                      <small class="nav_logo-subtitle">SMK AMALIAH 1&2</small>
@@ -87,7 +32,7 @@
                 <div class="nav_list">
                     <a href="{{url('/')}}" class="nav_link {{ Request::is('/') ? 'active' : '' }}"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
                     <a href="{{url('klapper')}}" class="nav_link {{ Request::is('klapper') ? 'active' : '' }}"> <i class='bx bx-book nav_icon'></i> <span class="nav_name">Klapper</span> </a> 
-                    <a href="#" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Messages</span> </a> 
+                    <a href="{{url('spen')}}" class="nav_link {{ Request::is('spen') ? 'active' : '' }}"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Messages</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Bookmark</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>

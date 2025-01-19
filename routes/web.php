@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KlapperController;
-// use App\Http\Controllers\Tambah_siswaController;
+use App\Http\Controllers\SpenController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,3 +32,7 @@ Route::post('/klapper/{klapper}/lulusSemua', [KlapperController::class, 'lulusSe
 
 Route::post('/klapper/{id}/naik-kelas-xi', [KlapperController::class, 'naikKelasXI'])->name('klapper.naikKelasXI');
 Route::post('/klapper/{id}/naik-kelas-xii', [KlapperController::class, 'naikKelasXII'])->name('klapper.naikKelasXII');
+
+// Spen
+
+Route::get('/spen', [SpenController::class, 'index'])->name('spen');

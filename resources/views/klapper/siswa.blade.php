@@ -35,13 +35,13 @@
                 <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus"><i class='bx bx-plus-circle'></i></a>
 
     <!-- Button to trigger the modal -->
-<button type="button" class="btn-lulus" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
+    <button type="button" class="btn-lulus" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
     Luluskan Semua Pelajar
 </button>
 
 <!-- Modal -->
 <div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
                 @csrf
@@ -61,6 +61,7 @@
         </div>
     </div>
 </div>
+
 
     
 <!-- Button to trigger modal for Naik Kelas XI -->

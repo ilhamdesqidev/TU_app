@@ -17,7 +17,7 @@ class KlapperController extends Controller
 
     public function createKlapper()
     {
-        return view('admin.klapper.tambah_buku'); // Ganti dengan view tambah buku
+        return view('superadmin.klapper.tambah_buku');
     }
 
     public function storeKlapper(Request $request)
