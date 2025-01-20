@@ -13,7 +13,7 @@
     </div>
 
     <h1>SMK AMALIAH 1&2</h1>
-
+    <p>"Sekolah Menengah Kejuruan Berkualitas yang Menyatu Dalam Tauhid"</p>
 
 <div class="cards-container">
     <div class="card">

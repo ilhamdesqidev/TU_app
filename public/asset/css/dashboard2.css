@@ -10,30 +10,83 @@ h1{
     text-align: center;
 }
 
-
-.cards-container {
-    display: flex; /* Menggunakan Flexbox */
-    justify-content: space-between; /* Memberi jarak merata antar kartu */
-    gap: 20px; /* Jarak antar kartu */
-    margin-top: 50px; /* Margin atas */
-    flex-wrap: nowrap; /* Pastikan semua kartu tetap dalam satu baris */
-    overflow-x: auto; /* Tambahkan scroll horizontal jika lebar layar tidak cukup */
+p{
+    text-align: center;
 }
 
+
+/* Container for multiple cards */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+/* Style for the card */
 .card {
     display: flex;
     align-items: center;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 200px; /* Lebar kartu */
-    height: 120px; /* Tinggi kartu */
+    padding: 15px;
+    width: 220px;
+    height: 120px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-direction: row;
+    background: linear-gradient(135deg, #a8c0ff, #3f87a6); /* Soft blue-green */
 }
 
-/* Hover effect tetap */
+/* Hover effect */
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #c1d6fc, #6b9b7f); /* Lighter soft colors */
+}
+
+/* Style for the icon */
+.icon {
+    font-size: 40px;
+    color: white;
+    margin-right: 15px;
+}
+
+/* Style for the content */
+.content h1 {
+    font-size: 32px;
+    color: #fff;
+    margin: 0;
+}
+
+.content p {
+    font-size: 14px;
+    color: #fff;
+    margin: 5px 0 0;
+}
+
+/* Add individual soft colors to cards for variety */
+.card:nth-child(1) {
+    background: linear-gradient(135deg, #fbd3e9, #b7e0f2); /* Soft pink to soft blue */
+}
+
+.card:nth-child(2) {
+    background: linear-gradient(135deg, #c9e9ca, #a1c4d9); /* Soft green to soft blue */
+}
+
+.card:nth-child(3) {
+    background: linear-gradient(135deg, #ffecd2, #ffd6a5); /* Soft peach to light yellow */
+}
+
+.card:nth-child(4) {
+    background: linear-gradient(135deg, #f8e2e1, #e3b0c7); /* Soft blush to lavender */
+}
+
+.card:hover .content h1 {
+    color: #fff;
+}
+
+.card:hover .content p {
+    color: #fff;
 }
