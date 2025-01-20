@@ -11,7 +11,7 @@ class SpenController extends Controller
      */
     public function index()
     {
-        return view('spen');
+        return view('superadmin.spensasi.spen');
     }
 
     /**
