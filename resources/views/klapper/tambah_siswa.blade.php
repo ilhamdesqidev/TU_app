@@ -1,5 +1,6 @@
 @extends('main')
 <link rel="stylesheet" href="/asset/css/tambahsiswa.css">
+
 @section('content')
 <div class="form-container">
     <h2>Tambah Data Siswa</h2>
@@ -25,29 +26,27 @@
             <label for="tanggal_lahir">Tanggal Lahir</label>
             <input type="date" name="tanggal_lahir" id="tanggal_lahir" required>
         </div>
-        <div class="form-input" style="display: flex; align-items: center; gap: 10px;">
-            <label for="gender">Gender:</label>
-            <select name="gender" id="gender" required style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+        <div class="form-input">
+            <label for="gender">Gender</label>
+            <select name="gender" id="gender" required>
                 <option value="" disabled selected>Pilih Gender</option>
                 <option value="laki-laki">Laki-laki</option>
                 <option value="perempuan">Perempuan</option>
             </select>
         </div>
-        
-        <!-- Dropdown untuk memilih Sekolah -->
-        <div class="form-input" style="display: flex; align-items: center; gap: 10px;">
-            <label for="sekolah" style="margin-right: 10px;">Sekolah</label>
-            <select name="sekolah" id="sekolah" required style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+
+        <div class="form-input">
+            <label for="sekolah">Sekolah</label>
+            <select name="sekolah" id="sekolah" required>
                 <option value="" disabled selected>Pilih Sekolah</option>
                 <option value="smk_amaliah_1">SMK Amaliah 1</option>
                 <option value="smk_amaliah_2">SMK Amaliah 2</option>
             </select>
         </div>
 
-        <!-- Dropdown untuk memilih Jurusan, yang akan diubah sesuai pilihan Sekolah -->
-        <div class="form-input" style="display: flex; align-items: center; gap: 10px;">
+        <div class="form-input">
             <label for="jurusan">Jurusan</label>
-            <select name="jurusan" id="jurusan" required style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+            <select name="jurusan" id="jurusan" required>
                 <option value="" disabled selected>Pilih Jurusan</option>
             </select>
         </div>
@@ -56,27 +55,32 @@
             <label for="kelas">Kelas</label>
             <input type="text" name="kelas" id="kelas" value="X" required>
         </div>
+
         <div class="form-input">
             <label for="angkatan">Angkatan</label>
             <input type="text" name="angkatan" id="angkatan" required>
         </div>
+
         <div class="form-input">
             <label for="nama_orang_tua">Nama Orang Tua</label>
             <input type="text" name="nama_orang_tua" id="nama_orang_tua" required>
         </div>
+
         <div class="form-input">
             <label for="tanggal_masuk">Tanggal Masuk</label>
             <input type="date" name="tanggal_masuk" id="tanggal_masuk" required>
         </div>
+
+        <div class="form-input">
             <label for="foto">Foto</label>
             <input type="file" name="foto" id="foto">
         </div>
-        
-        <button type="submit">Tambah Siswa</button>
-        
-    </form>
 
-    <a href="{{ route('klapper.show', $klappersId) }}" class="btn-back">Kembali ke Halaman Siswa</a>
+        <div class="form-buttons">
+            <button type="submit">Simpan</button>
+            <a href="{{ route('klapper.show', $klappersId) }}" class="btn-back">Kembali</a>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -107,9 +111,7 @@
             });
         }
     });
-</script>
 
-<script>
     // Set the current date for the "Tanggal Masuk" field
     document.addEventListener('DOMContentLoaded', function() {
         const tanggalMasuk = document.getElementById('tanggal_masuk');
