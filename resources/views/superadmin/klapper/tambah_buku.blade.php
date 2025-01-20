@@ -5,38 +5,43 @@
     /* Gaya untuk keseluruhan halaman */
     body {
         font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
+        background-color: #f7f7f7;
         margin: 0;
         padding: 20px;
         display: flex;
         justify-content: center;
+        align-items: center;
+        min-height: 100vh;
     }
 
     /* Gaya container form */
     .form-container {
         background-color: #fff;
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        background-image: linear-gradient(135deg, #f2f2f2, #ffffff);
     }
 
     /* Gaya judul */
     h2 {
         text-align: center;
-        color: #333;
+        color: #4CAF50;
         margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
     }
 
     /* Gaya untuk elemen input */
     .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
     .form-group label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         font-weight: bold;
         color: #555;
     }
@@ -45,10 +50,10 @@
     .form-group input[type="date"],
     .form-group input[type="file"] {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
+        border-radius: 6px;
+        font-size: 16px;
         box-sizing: border-box;
         transition: border-color 0.3s ease;
     }
@@ -56,6 +61,7 @@
     /* Efek focus pada input */
     .form-group input:focus {
         border-color: #4CAF50;
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
     }
 
     /* Gaya untuk tombol submit */
@@ -63,11 +69,11 @@
         width: 100%;
         background-color: #4CAF50;
         color: white;
-        padding: 12px;
+        padding: 14px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 18px;
         transition: background-color 0.3s ease;
     }
 
@@ -80,21 +86,39 @@
     .back-link {
         display: block;
         text-align: center;
-        margin-top: 15px;
+        margin-top: 20px;
         color: #4CAF50;
         text-decoration: none;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .back-link:hover {
         color: #388E3C;
+    }
+
+    /* Gaya untuk error message */
+    .error-message {
+        color: red;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    /* Responsif untuk perangkat kecil */
+    @media (max-width: 600px) {
+        .form-container {
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+        }
     }
 </style>
 
 <div class="form-container">
     <h2>Tambah Klapper</h2>
     @if ($errors->any())
-        <div style="color: red; margin-bottom: 15px;">
+        <div class="error-message">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -112,8 +136,11 @@
             <label for="tahun_ajaran">Tahun Ajaran:</label>
             <input type="text" name="tahun_ajaran" id="tahun_ajaran" required>
         </div>
-        <button type="submit">Simpan</button>
+        <button type="submit">
+            <i class="fa fa-save"></i> Simpan
+        </button>
     </form>
-   <a href="{{ route('klapper.index') }}" class="back-link">Kembali</a> 
+    <a href="{{ route('klapper.index') }}" class="back-link">Kembali</a>
 </div>
 @endsection
+    
