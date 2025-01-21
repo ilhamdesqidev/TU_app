@@ -1,167 +1,186 @@
-    /* asset/css/klapper.css */
-
-
-h1{
-    text-align: center;
-    font-size: 30px ;
-    font-weight: 500;
-    margin-top: 20px;
+/* Global Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    line-height: 1.6;
 }
 
-    h2, h3, p {
-        margin: 10px 0; /* Spasi antar elemen */
-    }
+/* Heading Styling */
+h1 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 600;
+    margin-top: 30px;
+    color: #2d3436;
+}
 
+h2, h3, p {
+    margin: 15px 0; /* Spasi antar elemen */
+    color: #2d3436;
+}
 
-    ul {
-        list-style-type: none; /* Menghilangkan bullet pada list */
-        padding: 0; /* Menghilangkan padding pada list */
-    }
+/* List Styling */
+ul {
+    list-style-type: none; /* Menghilangkan bullet pada list */
+    padding: 0;
+    margin: 0;
+}
 
-    /* Styling untuk tabel */
-    table {
-        width: 95%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        margin-left: 30px;
-        
-        font-size: 16px;
-        min-width: 400px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-    }
+/* Table Styling */
+table {
+    width: 95%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-size: 16px;
+    min-width: 400px;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    table th, table td {
-        padding: 12px 15px;
-        text-align: center;
-    }
+table th, table td {
+    padding: 15px 20px;
+    text-align: center;
+}
 
-    table th {
-        background-color: #4CAF50; /* Warna background header tabel */
-        color: #ffffff;
-        font-weight: bold;
-    }
+table th {
+    background-color: #4CAF50;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
 
-    table tr {
-        border-bottom: 1px solid #dddddd;
-    }
+table tr {
+    border-bottom: 1px solid #dddddd;
+}
 
-    table tr:nth-of-type(even) {
-        background-color: #f3f3f3;
-    }
+table tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
 
-    table tr:last-of-type {
-        border-bottom: 2px solid #4CAF50;
-    }
+table tr:last-of-type {
+    border-bottom: 2px solid #4CAF50;
+}
 
-    /* Efek hover untuk baris tabel */
-    table tr:hover {
-        background-color: #e9f5e9;
-        cursor: pointer;
-    }
+table tr:hover {
+    background-color: #d1f2eb;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
 
-    /* Styling untuk tombol */
+/* Button Styling */
+button, .btn-tambah, .btn-lulus, .btn-search, .btn-success, .btn-danger {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
 
-    form .btn-success {
-        padding: 10px 20px;
-        margin-top: 10px;
-    }
+button, .btn-tambah, .btn-lulus {
+    background-color: #4CAF50;
+    color: white;
+}
 
-    .btn-tambah {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-        box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
-    }
+button:hover, .btn-tambah:hover, .btn-lulus:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
 
-    .btn-lulus{
-        color: white;
-        border: none;
-        background-color: #4CAF50;
-        text-decoration: none;
-        border-radius: 5px;
-        padding: 10px 15px;
-        transition: background-color 0.6s;
-        margin-top: 50px;
-        box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.5);
-        margin-right: 28px;
-    }
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
 
-    .btn-tambah:hover {
-        background-color: #45a049;
-    }
+.btn-danger:hover {
+    background-color: #c82333;
+}
 
-    .btn-success {
-        background-color: #28a745;
-        color: white;
-        padding: 5px 10px;
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-    }
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
 
-    .btn-danger {
-        background-color: #dc3545;
-        color: white;
-        padding: 5px 10px;
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s;
-    }
+.btn-success:hover {
+    background-color: #218838;
+}
 
-    .btn-success:hover {
-        background-color: #218838;
-    }
+.btn-search {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
 
-    .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3em;
-        padding: 0.3em 0.6em;
-        border-radius: 0.5rem;
-        font-size: 0.9em;
-    }
+.btn-search i {
+    margin-right: 5px;
+}
 
-    .badge-secondary {
-        background-color: #e0e0e0; /* Abu-abu minimalis */
-        color: #333;
-    }
+.btn-search:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
 
-    .badge-success {
-        background-color: #d4edda; /* Hijau lembut */
-        color: #155724;
-    }
+/* Input Styling */
+.search-input {
+    padding: 10px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
 
-    .badge-danger {
-        background-color: #f8d7da; /* Merah lembut */
-        color: #721c24;
-    }
+.search-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
 
+/* Badge Styling */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
 
-    .search-input {
-        padding: 8px;
-        width: 200px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    
-    .btn-search {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    
-    .btn-search i {
-        margin-right: 5px;
-    }
-    
-    .btn-search:hover {
-        background-color: #0056b3;
-    }
-    
+.badge-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Box Shadow Hover Effect */
+.box-hover {
+    transition: box-shadow 0.3s ease;
+}
+
+.box-hover:hover {
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Additional Hover Effect for Links */
+a:hover {
+    text-decoration: underline;
+    color: #4CAF50;
+}

@@ -54,6 +54,7 @@
     @endif
 
     <button type="submit" class="btn-submit">Simpan Perubahan</button>
+    <a href="{{ route('siswa.show', $siswa->id) }}" class="btn-back">Kembali</a>
 </form>
 
 @endsection

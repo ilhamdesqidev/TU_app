@@ -32,7 +32,9 @@
     </form>
     
     <div style="display: flex; justify-content: flex-end; gap:10px;">
-                <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus"><i class='bx bx-plus-circle'></i></a>
+    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus">
+    <i class="fas fa-user-plus"></i> Tambah Data
+</a>
 
     <!-- Button to trigger the modal -->
     <button type="button" class="btn-lulus" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
