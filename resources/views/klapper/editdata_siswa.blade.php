@@ -41,8 +41,8 @@
     <label for="tanggal_masuk">Tanggal Masuk:</label>
     <input type="date" name="tanggal_masuk" value="{{ $siswa->tanggal_masuk }}" required>
 
-    <!-- Tambahkan Input untuk Foto -->
-    <label for="foto">Foto:</label>
+       <!-- Tambahkan Input untuk Foto -->
+       <label for="foto">Foto:</label>
     <input type="file" name="foto" id="foto">
 
     <!-- Tampilkan Foto Saat Ini -->
@@ -53,8 +53,10 @@
         </div>
     @endif
 
-    <button type="submit" class="btn-submit">Simpan Perubahan</button>
-    <a href="{{ route('siswa.show', $siswa->id) }}" class="btn-back">Kembali</a>
+    <div class="button-group">
+        <a href="{{ route('siswa.show', $siswa->id) }}" class="btn-back">Kembali</a>
+        <button type="submit" class="btn-submit">Simpan</button>
+    </div>
 </form>
 
 @endsection

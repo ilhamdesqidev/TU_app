@@ -18,15 +18,15 @@
                 <div class="btn-container">
                     @if ($siswa->status != 1 && $siswa->status != 2) <!-- Tampilkan tombol edit hanya jika status siswa bukan Lulus (1) atau Keluar (2) -->
                         <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn-add">
-                            <i class="fas fa-plus"></i> Edit Data 
+                            <i class="fas fa-edit"></i> Edit Data 
                         </a>
                     @endif
                 </div>
                 <div class="btn-container">
-                <a href="{{ route('klapper.siswa', $siswa->klapper_id) }}" class="back-link">Kembali</a>
-                </a>
+                    <a href="{{ route('klapper.siswa', $siswa->klapper_id) }}" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
                 </div>
-
             </div>
 
             <!-- Kolom untuk Detail Siswa -->
@@ -45,35 +45,35 @@
                         <span>{{ $siswa->nisn }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Tempat,Tanggal Lahir</span>
+                        <span class="detail-label">Tempat,Tanggal Lahir:</span>
                         <span> {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Jenis Kelamin</span>
+                        <span class="detail-label">Jenis Kelamin:</span>
                         <span>{{ $siswa->gender }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Kelas</span>
+                        <span class="detail-label">Kelas:</span>
                         <span>{{ $siswa->kelas }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Jurusan</span>
+                        <span class="detail-label">Jurusan:</span>
                         <span>{{ $siswa->jurusan }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Angkatan</span>
+                        <span class="detail-label">Angkatan:</span>
                         <span>{{ $siswa->angkatan }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Nama Orang Tua</span>
+                        <span class="detail-label">Nama Orang Tua:</span>
                         <span>{{ $siswa->nama_orang_tua }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Tanggal Masuk</span>
+                        <span class="detail-label">Tanggal Masuk:</span>
                         <span>{{ $siswa->tanggal_masuk }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Naik Kelas XI</span>
+                        <span class="detail-label">Naik Kelas XI:</span>
                         <span>
                             @if ($siswa->tanggal_naik_kelas_xi)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->Isoformat('D MMMM YYYY') }}
@@ -83,7 +83,7 @@
                         </span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Naik Kelas XII</span>
+                        <span class="detail-label">Naik Kelas XII:</span>
                         <span>
                             @if ($siswa->tanggal_naik_kelas_xii)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->Isoformat('D MMMM YYYY') }}
@@ -93,9 +93,9 @@
                         </span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Tanggal Lulus</span>
+                        <span class="detail-label">Tanggal Lulus:</span>
                         <span>
-                        @if ($siswa->tanggal_lulus)
+                            @if ($siswa->tanggal_lulus)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_lulus)->Isoformat('D MMMM YYYY') }}
                             @else
                                 - (Belum Lulus)
@@ -103,9 +103,9 @@
                         </span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Tanggal Keluar</span>
+                        <span class="detail-label">Tanggal Keluar:</span>
                         <span>
-                        @if ($siswa->tanggal_keluar)
+                            @if ($siswa->tanggal_keluar)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_keluar)->Isoformat('D MMMM YYYY') }}
                             @else
                                 - (Tidak Keluar Sekolah)

@@ -1,6 +1,4 @@
- /* Style untuk halaman Edit Data Siswa */
-
- h2 {
+h2 {
     text-align: center;
     color: #333;
     font-size: 24px;
@@ -44,23 +42,45 @@ input[type="date"]:focus {
     outline: none;
 }
 
-/* Style untuk tombol submit */
-.btn-submit {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    font-size: 16px;
+/* Style untuk tombol simpan kecil */
+.btn-submit,
+.btn-back {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 14px;
     font-weight: bold;
-    text-align: center;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
+/* Tombol Simpan */
+.btn-submit {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+}
+
 .btn-submit:hover {
     background-color: #45a049;
+}
+
+/* Tombol Kembali */
+.btn-back {
+    background-color: #f44336;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+}
+
+.btn-back:hover {
+    background-color: #e53935;
+}
+
+/* Grup tombol untuk simpan dan kembali bersebelahan */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-start; /* Letakkan tombol di sebelah kiri */
 }

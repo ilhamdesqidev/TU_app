@@ -1,42 +1,87 @@
 .detail-card {
     margin: 20px auto;
     padding: 20px;
-    max-width: 800px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    max-width: 900px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #f8f9fa;
 }
+
 .detail-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    color: #343a40;
 }
+
 .detail-photo {
     width: 100%;
-    max-width: 150px;
-    border-radius: 8px;
-    margin: auto;
+    max-width: 180px;
+    border-radius: 10px;
+    margin: 20px auto;
+    border: 3px solid #4CAF50;
 }
+
 .detail-content {
     flex-grow: 1;
 }
+
 .detail-item {
     display: flex;
-    padding: 8px 0;
-    justify-self: star;
+    padding: 12px 0;
+    justify-content: space-between;
     border-bottom: 1px solid #e0e0e0;
+    font-size: 16px;
+    color: #495057;
 }
+
 .detail-nama {
     font-weight: bold;
+    font-size: 2.5rem;
 }
+
 .detail-item:last-child {
     border-bottom: none;
 }
+
 .detail-label {
     font-weight: bold;
-    color: #555;
 }
+
 .text-shadow {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
+
 .fs-custom {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.btn-container {
+    margin-top: 10px;
+}
+
+.btn-add,
+.back-link {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn-add:hover,
+.back-link:hover {
+    background-color: #45a049;
+}
+
+.back-link {
+    background-color: #f44336;
+}
+
+.back-link:hover {
+    background-color: #e53935;
 }
