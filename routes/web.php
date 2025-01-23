@@ -34,5 +34,3 @@ Route::post('/klapper/{id}/naik-kelas-xi', [KlapperController::class, 'naikKelas
 Route::post('/klapper/{id}/naik-kelas-xii', [KlapperController::class, 'naikKelasXII'])->name('klapper.naikKelasXII');
 
 // Spen
-
-Route::get('/spen', [SpenController::class, 'index'])->name('spen');
