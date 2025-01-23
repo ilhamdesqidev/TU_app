@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KlapperController;
-use App\Http\Controllers\SpenController;
+use App\Http\Controllers\TuController;
+use App\Http\Controllers\SpensasiController;
 
 Route::get('superadmin/welcome', function () {
     return view('welcome');
@@ -33,4 +34,6 @@ Route::post('/klapper/{id}/naik-kelas-xi', [KlapperController::class, 'naikKelas
 Route::post('/klapper/{id}/naik-kelas-xii', [KlapperController::class, 'naikKelasXII'])->name('klapper.naikKelasXII');
 
 // Spen
-// Route::resoure('halaman utama', controller::class);
+Route::resource('tu', TuController::class);
+
+Route::resource('spensasi', SpensasiController::class);

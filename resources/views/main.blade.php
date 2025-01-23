@@ -32,7 +32,7 @@
                 <div class="nav_list">
                     <a href="{{url('/')}}" class="nav_link {{ Request::is('/') ? 'active' : '' }}"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
                     <a href="{{url('klapper')}}" class="nav_link {{ Request::is('klapper') ? 'active' : '' }}"> <i class='bx bx-book nav_icon'></i> <span class="nav_name">Klapper</span> </a> 
-                    <a href="{{url('spen')}}" class="nav_link {{ Request::is('spen') ? 'active' : '' }}"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Messages</span> </a> 
+                    <a href="{{url('spensasi')}}" class="nav_link {{ Request::is('spensasi') ? 'active' : '' }}"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Messages</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Bookmark</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>
