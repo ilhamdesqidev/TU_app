@@ -12,7 +12,7 @@ class KlapperController extends Controller
     public function indexKlapper()
     {
         $klapper = Klapper::all();
-        return view('klapper', compact('klapper'));
+        return view('superadmin.klapper.index', compact('klapper'));
     }
 
     public function createKlapper()
@@ -47,7 +47,7 @@ class KlapperController extends Controller
             $query->orderBy('nama_siswa', 'asc');
         }])->findOrFail($id);
 
-        return view('klapper.siswa', compact('klapper', 'search'));
+        return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search'));
     }
 
     public function deleteKlapper($id)
@@ -60,12 +60,12 @@ class KlapperController extends Controller
     public function indexSiswa()
     {
         $siswa = Siswa::count();
-        return view('klapper.siswa', compact('siswa'));
+        return view('superadmin.klapper.siswa', compact('siswa'));
     }
 
     public function createSiswa($klappersId)
     {
-        return view('klapper.tambah_siswa', compact('klappersId'));
+        return view('superadmin.klapper.detail_klapper.tambah_siswa', compact('klappersId'));
     }
 
     public function storeSiswa(Request $request, $klappersId)
@@ -119,13 +119,13 @@ class KlapperController extends Controller
     public function showSiswa($id)
     {
         $siswa = Siswa::findOrFail($id);
-        return view('klapper.detail_siswa', compact('siswa'));
+        return view('superadmin.klapper.detail_klapper.detail_siswa', compact('siswa'));
     }
 
     public function editSiswa($id)
     {
         $siswa = Siswa::findOrFail($id); // Ambil siswa berdasarkan ID
-        return view('klapper.editdata_siswa', compact('siswa')); // Tampilkan form edit dengan data siswa
+        return view('superadmin.klapper.detail_klapper.editdata_siswa', compact('siswa')); // Tampilkan form edit dengan data siswa
     }
 
     public function updateSiswa(Request $request, $id)
@@ -245,7 +245,7 @@ public function naikKelasXII(Request $request, $klapperId)
     public function index()
     {
         $jumlahSiswa = Siswa::where('status', 0)->count(); // Menghitung jumlah siswa
-        return view('welcome', compact('jumlahSiswa')); // Mengirimkan jumlah siswa ke view
+        return view('superadmin/welcome', compact('jumlahSiswa')); // Mengirimkan jumlah siswa ke view
     }
 }
 

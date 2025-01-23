@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KlapperController;
 use App\Http\Controllers\SpenController;
 
-Route::get('/', function () {
+Route::get('superadmin/welcome', function () {
     return view('welcome');
 });
 Route::get('main', function () {
@@ -25,7 +25,6 @@ Route::get('siswa/{id}/edit', [KlapperController::class, 'editSiswa'])->name('si
 Route::put('siswa/{id}', [KlapperController::class, 'updateSiswa'])->name('siswa.update');
 
 Route::get('/', [KlapperController::class, 'index'])->name('welcome');
-Route::patch('/siswa/{id}/lulus', [SiswaController::class, 'lulus'])->name('siswa.lulus');
 Route::get('/siswa/lulus/{id}', [KlapperController::class, 'lulus'])->name('klapper.lulus');
 Route::get('/siswa/{id}/keluar', [KlapperController::class, 'keluar'])->name('klapper.keluar');
 Route::post('/klapper/{klapper}/lulusSemua', [KlapperController::class, 'lulusSemua'])->name('klapper.lulusSemua');
