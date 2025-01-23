@@ -34,3 +34,4 @@ Route::post('/klapper/{id}/naik-kelas-xi', [KlapperController::class, 'naikKelas
 Route::post('/klapper/{id}/naik-kelas-xii', [KlapperController::class, 'naikKelasXII'])->name('klapper.naikKelasXII');
 
 // Spen
+// Route::resoure('halaman utama', controller::class);
