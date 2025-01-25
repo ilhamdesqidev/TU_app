@@ -17,14 +17,14 @@
 <body id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+        <div class="header_img"> <img src="/asset/img/logo-12 (1).png" alt=""> </div>
     </header>
     <div class="l-navbar show" id="nav-bar">
         <nav class="nav">
             <div> 
                 <a href="#" class="nav_logo">
                 <div class="header_toggle">
-                    <img src="/asset/img/Group 1.svg" alt="Menu Icon" id="header-toggle">
+                    <img src="/asset/img/logo-12 (1).png" alt="Menu Icon" id="header-toggle">
                 </div>
                      <span class="nav_logo-name">Tata Usaha
                      <small class="nav_logo-subtitle">SMK AMALIAH 1&2</small>

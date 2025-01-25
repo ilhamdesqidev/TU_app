@@ -12,12 +12,8 @@
     <section class="home">
 </body>
 <div class="detail-container">
-    
-    
-    
     <!-- Daftar siswa terkait klapper -->
     <h1>Data Siswa</h1>
-
     <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" style="margin-bottom: 20px;">
         <div style="display: flex; gap: 10px; align-items: center;">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama atau Jurusan" class="search-input">
@@ -29,40 +25,37 @@
                 <option value="2" {{ request('amaliah') == '2' ? 'selected' : '' }}>SMK Amaliah 2</option>
             </select>
         </div>
-    </form>
-    
-    <div style="display: flex; justify-content: flex-end; gap:10px;">
-    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus">
-    <i class="fas fa-user-plus"></i> Tambah Data
-</a>
+    </form> 
+        <div style="display: flex; justify-content: flex-end; gap:10px;">
+            <a href="{{ route('siswa.create', $klapper->id) }}" class="btn-lulus"> <i class="fas fa-user-plus"></i> Tambah Data</a>
 
     <!-- Button to trigger the modal -->
     <button type="button" class="btn-lulus" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
-    Luluskan Semua Pelajar
-</button>
+        Luluskan Semua Pelajar
+    </button>
 
-<!-- Modal -->
-<div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tanggalLulusModalLabel">Masukkan Tanggal Lulus</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
-                    <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Luluskan Semua</button>
-                </div>
-            </form>
+    <!-- Modal -->
+    <div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tanggalLulusModalLabel">Masukkan Tanggal Lulus</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
+                        <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Luluskan Semua</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
     

@@ -153,16 +153,6 @@ class KlapperController extends Controller
         $siswa->save();
         return redirect()->route('siswa.show', $siswa->id)->with('success', 'Data siswa berhasil diperbarui.');
     }
-    
-    public function lulus($id)
-    {
-        $siswa = Siswa::findOrFail($id);
-        $siswa->status = 1; // Set status ke 1 untuk "Lulus"
-        $siswa->tanggal_lulus = now();
-        $siswa->save();
-    
-        return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Lulus.');
-    }
 
     public function lulusSemua(Request $request, $klapperId)
 {
