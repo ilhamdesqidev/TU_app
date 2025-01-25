@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('gender');
             $table->string('kelas');
             $table->string('jurusan');
-            $table->year('angkatan');
             $table->string('nama_orang_tua');
             $table->date('tanggal_masuk');
             $table->date('tanggal_naik_kelas_xi')->nullable();

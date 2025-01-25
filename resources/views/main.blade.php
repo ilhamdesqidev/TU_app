@@ -19,7 +19,7 @@
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
     </header>
-    <div class="l-navbar" id="nav-bar">
+    <div class="l-navbar show" id="nav-bar">
         <nav class="nav">
             <div> 
                 <a href="#" class="nav_logo">

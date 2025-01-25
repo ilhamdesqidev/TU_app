@@ -57,11 +57,6 @@
         </div>
 
         <div class="form-input">
-            <label for="angkatan">Angkatan</label>
-            <input type="text" name="angkatan" id="angkatan" required>
-        </div>
-
-        <div class="form-input">
             <label for="nama_orang_tua">Nama Orang Tua</label>
             <input type="text" name="nama_orang_tua" id="nama_orang_tua" required>
         </div>

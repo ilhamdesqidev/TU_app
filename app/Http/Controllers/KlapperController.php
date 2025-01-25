@@ -79,7 +79,6 @@ class KlapperController extends Controller
             'gender' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'angkatan' => 'required',
             'nama_orang_tua' => 'required',
             'tanggal_masuk' => 'required|date',
             'tanggal_naik_kelas_xi' => 'nullable|date',
@@ -98,7 +97,6 @@ class KlapperController extends Controller
         $siswa->gender = $request->gender;
         $siswa->kelas = $request->kelas;
         $siswa->jurusan = $request->jurusan;
-        $siswa->angkatan = $request->angkatan;
         $siswa->nama_orang_tua = $request->nama_orang_tua;
         $siswa->tanggal_masuk = $request->tanggal_masuk;
         $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;

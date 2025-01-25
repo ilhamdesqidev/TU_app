@@ -61,10 +61,6 @@
                         <span>{{ $siswa->jurusan }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Angkatan:</span>
-                        <span>{{ $siswa->angkatan }}</span>
-                    </div>
-                    <div class="detail-item">
                         <span class="detail-label">Nama Orang Tua:</span>
                         <span>{{ $siswa->nama_orang_tua }}</span>
                     </div>

@@ -4,7 +4,7 @@
 
 <h2>Edit Data Siswa</h2>
 
-<form action="{{ route('siswa.update', $siswa->id) }}" method="POST">
+<form action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -31,9 +31,6 @@
 
     <label for="jurusan">Jurusan:</label>
     <input type="text" name="jurusan" value="{{ $siswa->jurusan }}" required>
-
-    <label for="angkatan">Angkatan:</label>
-    <input type="text" name="angkatan" value="{{ $siswa->angkatan }}" required>
 
     <label for="nama_orang_tua">Nama Orang Tua:</label>
     <input type="text" name="nama_orang_tua" value="{{ $siswa->nama_orang_tua }}" required>
