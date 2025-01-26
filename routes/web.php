@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KlapperController;
 use App\Http\Controllers\TuController;
 use App\Http\Controllers\SpensasiController;
+use App\Http\Controllers\GuruController;
 
 Route::get('superadmin/welcome', function () {
     return view('welcome');
@@ -33,7 +34,25 @@ Route::post('/klapper/{klapper}/lulusSemua', [KlapperController::class, 'lulusSe
 Route::post('/klapper/{id}/naik-kelas-xi', [KlapperController::class, 'naikKelasXI'])->name('klapper.naikKelasXI');
 Route::post('/klapper/{id}/naik-kelas-xii', [KlapperController::class, 'naikKelasXII'])->name('klapper.naikKelasXII');
 
-// Spen
-Route::resource('tu', TuController::class);
+// Spen// Route manual untuk approve, reject, dan index
+Route::get('superadmin/spensasi/tu', [TuController::class, 'index'])->name('superadmin.spensasi.tu.index');
+Route::post('superadmin/spensasi/tu/approve/{id}', [TuController::class, 'approve'])->name('superadmin.spensasi.tu.approve');
+Route::post('superadmin/spensasi/tu/reject/{id}', [TuController::class, 'reject'])->name('superadmin.spensasi.tu.reject');
 
-Route::resource('spensasi', SpensasiController::class);
+// Resource route untuk operasi lainnya
+Route::resource('tu', TuController::class)->except(['index']); // Menyertakan semua metode kecuali index
+
+
+//super
+Route::resource('spensasi', SpensasiController::class)->names([
+    'index' => 'superadmin.spensasi.index',
+    'create' => 'superadmin.spensasi.create',
+    'store' => 'superadmin.spensasi.store',
+    'edit' => 'superadmin.spensasi.edit',
+    // 'update' => 'superadmin.spensasi.update',
+    'destroy' => 'superadmin.spensasi.destroy'
+]);
+
+//guru
+Route::resource('guru', GuruController::class);
+Route::get('spensasi/guru', [GuruController::class, 'guruIndex'])->name('superadmin.spensasi.guru.index');
