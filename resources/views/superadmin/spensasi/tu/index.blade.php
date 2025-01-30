@@ -44,7 +44,6 @@
             @endforeach
         </tbody>
     </table>
-
     {{ $surat->links() }}
 </div>
 @endsection
