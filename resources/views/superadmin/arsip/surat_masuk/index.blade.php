@@ -17,7 +17,9 @@
                 <th>Nomor Surat</th>
                 <th>Pengirim</th>
                 <th>Perihal</th>
-                <th>Tanggal Masuk</th>
+                <th>Tanggal Surat</th>
+                <th>Penerima</th>
+                <th>File</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -28,7 +30,15 @@
                 <td>{{ $surat->nomor_surat }}</td>
                 <td>{{ $surat->pengirim }}</td>
                 <td>{{ $surat->perihal }}</td>
-                <td>{{ $surat->tanggal_masuk }}</td>
+                <td>{{ $surat->tanggal_surat }}</td>
+                <td>{{ $surat->penerima }}</td>
+                <td>
+                    @if($surat->file)
+                        <a href="{{ asset('storage/' . $surat->file) }}" target="_blank" class="btn btn-sm btn-info">Lihat File</a>
+                    @else
+                        Tidak ada file
+                    @endif
+                </td>
                 <td>
                     <button class="btn btn-sm btn-warning">Edit</button>
                     <button class="btn btn-sm btn-danger">Hapus</button>
@@ -48,7 +58,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('arsip.surat_masuk.store') }}" method="POST">
+                <form action="{{ route('arsip.surat_masuk.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="nomor_surat" class="form-label">Nomor Surat</label>
@@ -63,8 +73,16 @@
                         <input type="text" class="form-control" id="perihal" name="perihal" required>
                     </div>
                     <div class="mb-3">
-                        <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
-                        <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" required>
+                        <label for="tanggal_surat" class="form-label">Tanggal Surat</label>
+                        <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="penerima" class="form-label">Penerima</label>
+                        <input type="text" class="form-control" id="penerima" name="penerima" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Upload File</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".pdf,.doc,.docx,.jpg,.png">
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>

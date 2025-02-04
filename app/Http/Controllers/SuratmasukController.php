@@ -29,17 +29,24 @@ class SuratmasukController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nomor_surat' => 'required',
-            'pengirim' => 'required',
-            'perihal' => 'required',
-            'tanggal_masuk' => 'required|date',
+        $validated = $request->validate([
+            'nomor_surat' => 'required|string',
+            'pengirim' => 'required|string',
+            'perihal' => 'required|string',
+            'tanggal_surat' => 'required|date',
+            'penerima' => 'required|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
         ]);
 
-        SuratMasuk::create($request->all());
+        if ($request->hasFile('file')) {
+            $validated['file'] = $request->file('file')->store('surat_masuk', 'public');
+        }
 
-        return redirect()->route('arsip.surat_masuk.index')->with('success', 'Surat masuk berhasil ditambahkan.');
+        SuratMasuk::create($validated);
+
+        return redirect()->route('arsip.surat_masuk.index')->with('success', 'Surat berhasil ditambahkan!');
     }
+
 
 
     /**
