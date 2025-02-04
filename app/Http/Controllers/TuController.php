@@ -28,7 +28,8 @@ class TuController extends Controller
         $surat->save();
 
         // Redirect ke halaman index dengan pesan sukses
-        return redirect()->route('superadmin.spensasi.tu.index')->with('success', 'Surat disetujui!');
+        return redirect()->route('tu.index')->with('success', 'Surat disetujui!');
+
     }
 
     /**
@@ -44,7 +45,8 @@ class TuController extends Controller
         $surat->save();
 
         // Redirect ke halaman index dengan pesan sukses
-        return redirect()->route('superadmin.spensasi.tu.index')->with('success', 'Surat ditolak!');
+        return redirect()->route('tu.index')->with('success', 'Surat ditolak!');
+
     }
 
     /**
