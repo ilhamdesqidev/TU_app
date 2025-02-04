@@ -35,6 +35,7 @@ Route::post('/klapper/{id}/naik-kelas-xi', [KlapperController::class, 'naikKelas
 Route::post('/klapper/{id}/naik-kelas-xii', [KlapperController::class, 'naikKelasXII'])->name('klapper.naikKelasXII');
 
 //Resource route untuk operasi lainnya
+Route::get('/tu', [TuController::class, 'index'])->name('tu.index');
 Route::resource('tu', TuController::class)->except(['index']); // Menyertakan semua metode kecuali index
 Route::post('superadmin/spensasi/tu/approve/{id}', [TuController::class, 'approve'])->name('superadmin.spensasi.tu.approve');
 Route::post('superadmin/spensasi/tu/reject/{id}', [TuController::class, 'reject'])->name('superadmin.spensasi.tu.reject');
