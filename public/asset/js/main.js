@@ -34,4 +34,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     }
     linkColor.forEach(l => l.addEventListener('click', colorLink));
+
+    // Handle dropdown toggle
+    const bookmarkDropdown = document.getElementById('bookmarkDropdown');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const dropdownIcon = document.getElementById('dropdownIcon');
+
+    bookmarkDropdown.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('show');
+        dropdownIcon.classList.toggle('bx-chevron-up');
+        dropdownIcon.classList.toggle('bx-chevron-down');
+    });
 });
