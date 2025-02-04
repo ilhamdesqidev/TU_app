@@ -34,14 +34,16 @@
                     <a href="{{url('klapper')}}" class="nav_link {{ Request::is('klapper') ? 'active' : '' }}"> <i class='bx bx-book nav_icon'></i> <span class="nav_name">Klapper</span> </a> 
                     <a href="{{url('spensasi')}}" class="nav_link {{ Request::is('spensasi') ? 'active' : '' }}"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Spensasi</span> </a> 
                     <a href="#" class="nav_link" id="bookmarkDropdown">
-                        <i class='bx bx-bookmark nav_icon'></i>
-                        <span class="nav_name">Bookmark</span>
+                        <i class='bx bx-folder nav_icon'></i>
+                        <span class="nav_name">Arsip
                         <i class='bx bx-chevron-down nav_icon' id="dropdownIcon"></i>
+                        </span>
                     </a>
                     <div id="dropdownMenu" class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Surat Masuk</a>
+                        <a href="{{url('surat_masuk')}}" class="dropdown-item">Surat Masuk</a>
                         <a href="#" class="dropdown-item">Surat Keluar</a>
                     </div>
+
 
                     <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>
