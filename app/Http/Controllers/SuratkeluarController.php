@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SuratMasuk;
 
-class SuratmasukController extends Controller
+class SuratkeluarController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $suratmasuk = SuratMasuk::all();
-        return view('superadmin.arsip.surat_masuk.index',compact('suratmasuk')) ;
+        return view('superadmin.arsip.surat_keluar.index');
     }
 
     /**
@@ -29,18 +27,8 @@ class SuratmasukController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nomor_surat' => 'required',
-            'pengirim' => 'required',
-            'perihal' => 'required',
-            'tanggal_masuk' => 'required|date',
-        ]);
-
-        SuratMasuk::create($request->all());
-
-        return redirect()->route('arsip.surat_masuk.index')->with('success', 'Surat masuk berhasil ditambahkan.');
+        //
     }
-
 
     /**
      * Display the specified resource.

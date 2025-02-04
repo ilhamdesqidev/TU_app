@@ -6,6 +6,7 @@ use App\Http\Controllers\TuController;
 use App\Http\Controllers\SpensasiController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SuratmasukController;
+use App\Http\Controllers\SuratkeluarController;
 
 Route::get('superadmin/welcome', function () {
     return view('welcome');
@@ -59,3 +60,6 @@ Route::get('spensasi/guru', [GuruController::class, 'guruIndex'])->name('superad
 //surat masuk
 Route::resource('surat_masuk', SuratmasukController::class);
 Route::get('arsip/surat_masuk', [SuratmasukController::class, 'surat_masukIndex'])->name('superadmin.arsip.surat_masuk.index');
+//surat keluar
+Route::resource('surat_keluar', SuratkeluarController::class);
+Route::get('arsip/surat_keluar', [SuratkeluarController::class, 'surat_keluarIndex'])->name('superadmin.arsip.surat_keluar.index');
