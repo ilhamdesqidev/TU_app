@@ -41,7 +41,7 @@
                     </a>
                     <div id="dropdownMenu" class="dropdown-menu">
                         <a href="{{url('surat_masuk')}}" class="dropdown-item">Surat Masuk</a>
-                        <a href="#" class="dropdown-item">Surat Keluar</a>
+                        <a href="{{url('surat_keluar')}}" class="dropdown-item">Surat Keluar</a>
                     </div>
 
 
