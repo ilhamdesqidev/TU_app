@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h1 class="mb-4">Welcome to Arsip Surat Masuk</h1>
+    <h1 class="mb-4 mt-5">Welcome to Arsip Surat Masuk</h1>
 
     <!-- Tombol Tambah Surat Masuk -->
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahSuratModal">
@@ -78,7 +78,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="penerima" class="form-label">Penerima</label>
-                        <input type="text" class="form-control" id="penerima" name="penerima" required>
+                        <input type="text" class="form-control" id="penerima" name="penerima">
                     </div>
                     <div class="mb-3">
                         <label for="file" class="form-label">Upload File</label>

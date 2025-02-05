@@ -34,7 +34,7 @@ class SuratmasukController extends Controller
             'pengirim' => 'required|string',
             'perihal' => 'required|string',
             'tanggal_surat' => 'required|date',
-            'penerima' => 'required|string',
+            'penerima' => 'nullable|string',
             'file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
         ]);
 
