@@ -4,100 +4,105 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Spensasi;
+use App\Models\Siswa;
 
 class SpensasiController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan daftar surat spensasi dengan filter status.
      */
     public function index(Request $request)
     {
         $status = $request->input('status', 'semua');
-        
+
         $query = Spensasi::query();
-        
         if ($status !== 'semua') {
             $query->where('status', $status);
         }
-        
+
         $surat = $query->paginate(10);
-        return view('superadmin.spensasi.index',  compact('surat', 'status'));
+        return view('superadmin.spensasi.index', compact('surat', 'status'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Form tambah surat spensasi baru.
      */
     public function create()
     {
+        $siswa = Siswa::select('id', 'nama_siswa', 'kelas')->get();
+
         $kategoriSpensasi = [
-            'keluar' => 'keluar',
-            'sakit' => 'sakit',
-            'pulang' => 'pulang',
+            'keluar' => 'Keluar',
+            'sakit' => 'Sakit',
+            'pulang' => 'Pulang',
         ];
-        
-        return view('superadmin.spensasi.create', compact('kategoriSpensasi'));
+
+        return view('superadmin.spensasi.create', compact('kategoriSpensasi', 'siswa'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan surat spensasi yang baru dibuat.
      */
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nama_siswa' => 'required|string|max:255',
-            'kelas' => 'required|string|max:50',
-            'kategori_spensasi' => 'required|in:keluar,sakit,pulang',
-            'jam_pelajaran' => 'nullable|string|max:100',
-            'detail_spensasi' => 'required|string',
-            'tanggal_spensasi' => 'required|date'
+{
+    $validatedData = $request->validate([
+        'siswa_terpilih' => 'required', // Data siswa dikirim dalam format JSON
+        'kategori_spensasi' => 'required|in:keluar,sakit,pulang',
+        'jam_pelajaran' => 'nullable|string|max:100',
+        'detail_spensasi' => 'required|string',
+        'tanggal_spensasi' => 'required|date'
+    ]);
+
+    // Decode JSON siswa yang dipilih
+    $siswaTerpilih = json_decode($request->siswa_terpilih, true);
+
+    foreach ($siswaTerpilih as $siswa) {
+        // Pastikan siswa ada di database
+        $siswaDB = Siswa::where('nama_siswa', $siswa['nama'])->first();
+        if (!$siswaDB) {
+            return redirect()->back()->withErrors(['siswa_terpilih' => 'Salah satu nama siswa tidak valid!'])->withInput();
+        }
+
+        Spensasi::create([
+            'nama_siswa' => $siswa['nama'],
+            'kelas' => $siswa['kelas'],
+            'jurusan' => $siswa['jurusan'], // Tambahkan jurusan
+            'kategori_spensasi' => $request->kategori_spensasi,
+            'jam_pelajaran' => $request->jam_pelajaran,
+            'detail_spensasi' => $request->detail_spensasi,
+            'tanggal_spensasi' => $request->tanggal_spensasi,
+            'status' => 'menunggu'
         ]);
-
-        $validatedData['status'] = 'menunggu';
-
-        Spensasi::create($validatedData);
-
-        return redirect()->route('superadmin.spensasi.index')
-            ->with('sukses', 'Surat spensasi berhasil dibuat');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil dibuat untuk beberapa siswa.');
+}
 
     /**
-     * Show the form for editing the specified resource.
+     * Form edit surat spensasi.
      */
-    public function edit(string $id)
+    public function edit(Spensasi $spensasi)
     {
-        $surat = Spensasi::findOrFail($id); // Ambil data surat berdasarkan ID
-
-        if ($surat->status !== 'menunggu') {
-            return redirect()->back()->with('error', 'Hanya surat dengan status menunggu yang bisa diedit');
+        if ($spensasi->status !== 'menunggu') {
+            return redirect()->back()->with('error', 'Hanya surat dengan status "menunggu" yang bisa diedit.');
         }
 
         $kategoriSpensasi = [
-            'keluar' => 'keluar',
-            'sakit' => 'sakit',
-            'pulang' => 'pulang',
+            'keluar' => 'Keluar',
+            'sakit' => 'Sakit',
+            'pulang' => 'Pulang',
         ];
 
-        return view('superadmin.spensasi.edit', compact('surat', 'kategoriSpensasi'));
+        return view('superadmin.spensasi.edit', compact('spensasi', 'kategoriSpensasi'));
     }
 
-
     /**
-     * Update the specified resource in storage.
+     * Perbarui surat spensasi.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Spensasi $spensasi)
     {
-        $surat = Spensasi::findOrFail($id); // Ambil data surat berdasarkan ID
-
-        if ($surat->status !== 'menunggu') {
-            return redirect()->back()->with('error', 'Hanya surat dengan status menunggu yang bisa diupdate');
+        if ($spensasi->status !== 'menunggu') {
+            return redirect()->back()->with('error', 'Hanya surat dengan status "menunggu" yang bisa diupdate.');
         }
 
         $validatedData = $request->validate([
@@ -109,23 +114,43 @@ class SpensasiController extends Controller
             'tanggal_spensasi' => 'required|date'
         ]);
 
-        $surat->update($validatedData);
-
-        return redirect()->route('superadmin.spensasi.index')
-            ->with('sukses', 'Surat spensasi berhasil diperbarui');
-    }
-
-    public function destroy(string $id)
-    {
-        $surat = Spensasi::findOrFail($id); // Ambil data surat berdasarkan ID
-
-        if ($surat->status !== 'menunggu') {
-            return redirect()->back()->with('error', 'Hanya surat dengan status menunggu yang bisa dihapus');
+        // Pastikan nama siswa ada di database
+        $siswa = Siswa::where('nama_siswa', $request->nama_siswa)->first();
+        if (!$siswa) {
+            return redirect()->back()->withErrors(['nama_siswa' => 'Nama siswa tidak valid! Pilih dari daftar.'])->withInput();
         }
 
-        $surat->delete();
+        $spensasi->update($validatedData);
 
-        return redirect()->route('superadmin.spensasi.index')
-            ->with('sukses', 'Surat spensasi berhasil dihapus');
+        return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil diperbarui.');
     }
+
+    /**
+     * Hapus surat spensasi.
+     */
+    public function destroy(Spensasi $spensasi)
+    {
+        if ($spensasi->status !== 'menunggu') {
+            return redirect()->back()->with('error', 'Hanya surat dengan status "menunggu" yang bisa dihapus.');
+        }
+
+        $spensasi->delete();
+
+        return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil dihapus.');
+    }
+
+    /**
+     * Live search untuk mencari siswa berdasarkan nama.
+     */
+    public function searchSiswa(Request $request)
+    {
+        $query = $request->input('query');
+    
+        $siswa = Siswa::where('nama_siswa', 'LIKE', "%$query%")
+            ->select('nama_siswa', 'kelas', 'jurusan') // Tambahkan 'jurusan'
+            ->get();
+    
+        return response()->json($siswa);
+    }
+
 }

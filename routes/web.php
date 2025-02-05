@@ -56,6 +56,12 @@ Route::resource('spensasi', SpensasiController::class)->names([
 Route::resource('guru', GuruController::class);
 Route::get('spensasi/guru', [GuruController::class, 'guruIndex'])->name('superadmin.spensasi.guru.index');
 
+//
+Route::get('/getSiswa/{nama_siswa}', [KlapperController::class, 'getSiswa']);
+Route::get('/searchSiswa', [SpensasiController::class, 'searchSiswa']);
+Route::get('/superadmin/spensasi/searchSiswa', [SpensasiController::class, 'searchSiswa'])->name('superadmin.spensasi.searchSiswa');
+
+
 //arsip
 //surat masuk
 Route::resource('surat_masuk', SuratmasukController::class);

@@ -12,6 +12,7 @@ class Spensasi extends Model
     protected $fillable = [
         'nama_siswa', 
         'kelas', 
+        'jurusan',
         'kategori_spensasi', 
         'jam_pelajaran', 
         'detail_spensasi', 

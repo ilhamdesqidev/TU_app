@@ -235,5 +235,17 @@ public function naikKelasXII(Request $request, $klapperId)
         $jumlahSiswa = Siswa::where('status', 0)->count(); // Menghitung jumlah siswa
         return view('superadmin/welcome', compact('jumlahSiswa')); // Mengirimkan jumlah siswa ke view
     }
+
+
+    public function getSiswa($nama_siswa) {
+    $siswa = Siswa::where('nama_siswa', $nama_siswa)->first();
+    
+    if (!$siswa) {
+        return response()->json(['error' => 'Siswa tidak ditemukan'], 404);
+    }
+
+    return response()->json($siswa);
 }
 
+
+}
