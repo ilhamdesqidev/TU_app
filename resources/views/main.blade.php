@@ -12,6 +12,12 @@
 
     <!-- Boxicons CSS -->
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- bootsrap -->
+     <!-- Tambahkan di dalam <head> -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <title>Tata Usaha</title>
 </head>
 <body id="body-pd">
@@ -41,7 +47,7 @@
                     </a>
                     <div id="dropdownMenu" class="dropdown-menu">
                         <a href="{{url('surat_masuk')}}" class="dropdown-item">Surat Masuk</a>
-                        <a href="#" class="dropdown-item">Surat Keluar</a>
+                        <a href="{{url('surat_keluar')}}" class="dropdown-item">Surat Keluar</a>
                     </div>
 
 
