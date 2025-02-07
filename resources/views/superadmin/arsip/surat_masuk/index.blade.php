@@ -5,9 +5,11 @@
     <h1 class="mb-4 mt-5">Welcome to Arsip Surat Masuk</h1>
 
     <!-- Tombol Tambah Surat Masuk -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahSuratModal">
-        Tambah Arsip Surat Masuk
-    </button>
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahSuratModal">
+            Tambah Arsip Surat Masuk
+        </button>
+    </div>
 
     <!-- Tabel Surat Masuk -->
     <table class="table table-bordered">
@@ -60,29 +62,31 @@
             <div class="modal-body">
                 <form action="{{ route('arsip.surat_masuk.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="mb-3">
-                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
-                        <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="pengirim" class="form-label">Pengirim</label>
-                        <input type="text" class="form-control" id="pengirim" name="pengirim" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="perihal" class="form-label">Perihal</label>
-                        <input type="text" class="form-control" id="perihal" name="perihal" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tanggal_surat" class="form-label">Tanggal Surat</label>
-                        <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="penerima" class="form-label">Penerima</label>
-                        <input type="text" class="form-control" id="penerima" name="penerima">
-                    </div>
-                    <div class="mb-3">
-                        <label for="file" class="form-label">Upload File</label>
-                        <input type="file" class="form-control" id="file" name="file" accept=".pdf,.doc,.docx,.jpg,.png">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                            <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="pengirim" class="form-label">Pengirim</label>
+                            <input type="text" class="form-control" id="pengirim" name="pengirim" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="perihal" class="form-label">Perihal</label>
+                            <input type="text" class="form-control" id="perihal" name="perihal" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="tanggal_surat" class="form-label">Tanggal Surat</label>
+                            <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="penerima" class="form-label">Penerima</label>
+                            <input type="text" class="form-control" id="penerima" name="penerima">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="file" class="form-label">Upload File</label>
+                            <input type="file" class="form-control" id="file" name="file" accept=".pdf,.doc,.docx,.jpg,.png">
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
