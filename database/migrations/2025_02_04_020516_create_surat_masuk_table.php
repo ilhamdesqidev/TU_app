@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('surat_masuk', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_surat')->unique();
-            $table->string('pengirim')->nullable();
-            $table->string('perihal')->nullable();
-            $table->date('tanggal_surat')->nullable();
-            $table->string('penerima')->nullable();
+            $table->date('tanggal_surat');
+            $table->date('tanggal_terima');
+            $table->string('asal_surat');
+            $table->string('perihal');
             $table->string('file')->nullable();
             $table->timestamps();
         });

@@ -29,22 +29,30 @@ class SuratmasukController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nomor_surat' => 'required|string',
-            'pengirim' => 'required|string',
-            'perihal' => 'required|string',
+        $request->validate([
+            'nomor_surat' => 'required|unique:surat_masuk',
             'tanggal_surat' => 'required|date',
-            'penerima' => 'nullable|string',
+            'tanggal_terima' => 'required|date',
+            'asal_surat' => 'required|string',
+            'perihal' => 'required|string',
             'file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
         ]);
 
+        $filePath = null;
         if ($request->hasFile('file')) {
-            $validated['file'] = $request->file('file')->store('surat_masuk', 'public');
+            $filePath = $request->file('file')->store('surat_masuk', 'public');
         }
 
-        SuratMasuk::create($validated);
+        SuratMasuk::create([
+            'nomor_surat' => $request->nomor_surat,
+            'tanggal_surat' => $request->tanggal_surat,
+            'tanggal_terima' => $request->tanggal_terima,
+            'asal_surat' => $request->asal_surat,
+            'perihal' => $request->perihal,
+            'file' => $filePath,
+        ]);
 
-        return redirect()->route('arsip.surat_masuk.index')->with('success', 'Surat berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Surat masuk berhasil ditambahkan!');
     }
 
 
@@ -76,8 +84,13 @@ class SuratmasukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SuratMasuk $suratMasuk)
     {
-        //
+        if ($suratMasuk->file) {
+            Storage::disk('public')->delete($suratMasuk->file);
+        }
+
+        $suratMasuk->delete();
+        return redirect()->route('arsip.surat_masuk.index')->with('success', 'Surat berhasil dihapus');
     }
 }
