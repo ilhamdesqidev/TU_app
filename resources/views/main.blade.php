@@ -11,14 +11,18 @@
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
     <!-- Boxicons CSS -->
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- bootsrap -->
-     <!-- Tambahkan di dalam <head> -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <title>Tata Usaha</title>
+    <style>
+        a {
+            text-decoration: none !important;
+        }
+    </style>
 </head>
 <body id="body-pd">
     <header class="header" id="header">
@@ -50,16 +54,14 @@
                         <a href="{{url('surat_keluar')}}" class="dropdown-item">Surat Keluar</a>
                     </div>
 
-
                     <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a> 
-                    <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>
-            </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
+                    <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> 
+                </div>
+            </div> 
+            <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
         </nav>
     </div>
     <script src="/asset/js/main.js"></script>
 </body>
 @yield('content')
 </html>
-
-<!-- link template sidebar : https://bbbootstrap.com/snippets/bootstrap-5-sidebar-menu-toggle-button-34132202 -->
-<!-- https://www.canva.com/design/DAGbrsyVeYk/UqAp5jrRcFZN10YxBNcL7A/edit?utm_content=DAGbrsyVeYk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton -->
