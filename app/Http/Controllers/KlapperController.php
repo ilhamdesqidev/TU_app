@@ -37,17 +37,27 @@ class KlapperController extends Controller
     public function showKlapper($id, Request $request)
     {
         $search = $request->input('search');
+        $amaliah = $request->input('amaliah');
 
-        $klapper = Klapper::with(['siswas' => function ($query) use ($search) {
+        $klapper = Klapper::with(['siswas' => function ($query) use ($search, $amaliah) {
             if ($search) {
                 $query->where('nama_siswa', 'like', "%$search%")
-                      ->orwhere('nis', 'like', "%$search%")
-                      ->orWhere('jurusan', 'like', "%$search%");
+                    ->orWhere('nis', 'like', "%$search%")
+                    ->orWhere('jurusan', 'like', "%$search%");
             }
+            
+            if ($amaliah) {
+                if ($amaliah == 1) {
+                    $query->whereIn('jurusan', ['pplg', 'tjkt', 'an']);
+                } elseif ($amaliah == 2) {
+                    $query->whereIn('jurusan', ['dpb', 'lps', 'akl', 'mp', 'br']);
+                }
+            }
+
             $query->orderBy('nama_siswa', 'asc');
         }])->findOrFail($id);
 
-        return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search'));
+        return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah'));
     }
 
     public function deleteKlapper($id)
