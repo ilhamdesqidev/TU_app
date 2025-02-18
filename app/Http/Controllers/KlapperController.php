@@ -245,7 +245,8 @@ public function naikKelasXII(Request $request, $klapperId)
     public function index()
     {
         $jumlahSiswa = Siswa::where('status', 0)->count(); // Menghitung jumlah siswa
-        return view('superadmin/welcome', compact('jumlahSiswa')); // Mengirimkan jumlah siswa ke view
+        $jumlahAngkatan = Klapper::count(); // Menghitung jumlah Klapper
+        return view('superadmin/welcome', compact('jumlahSiswa', 'jumlahAngkatan')); // Mengirimkan jumlah siswa ke view
     }
 
 

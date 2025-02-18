@@ -50,7 +50,7 @@
             <i class="fa fa-user-circle"></i>
         </div>
         <div class="content">
-            <h1>17</h1>
+            <h1>{{ $jumlahAngkatan }}</h1>
             <p>Angkatan</p>
         </div>
     </div>
