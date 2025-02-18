@@ -46,7 +46,7 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tempat,Tanggal Lahir:</span>
-                        <span> {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
+                        <span> {{ $siswa->tempat_lahir }}, {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Jenis Kelamin:</span>
@@ -61,8 +61,12 @@
                         <span>{{ $siswa->jurusan }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Nama Orang Tua:</span>
-                        <span>{{ $siswa->nama_orang_tua }}</span>
+                        <span class="detail-label">Nama Ibu:</span>
+                        <span>{{ $siswa->nama_ibu }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Nama Ayah:</span>
+                        <span>{{ $siswa->nama_ayah }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Masuk:</span>

@@ -1,4 +1,7 @@
 @extends('main')
+
+@section('content')
+
 <link rel="stylesheet" href="/asset/css/siswa.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -8,7 +11,6 @@
 <!-- Bootstrap JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-@section('content')
     <section class="home">
 </body>
 <div class="detail-container">

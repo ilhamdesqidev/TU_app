@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
+use Illuminate\Support\Facades\Storage;
 
 class SuratmasukController extends Controller
 {
@@ -13,15 +14,7 @@ class SuratmasukController extends Controller
     public function index()
     {
         $suratmasuk = SuratMasuk::all();
-        return view('superadmin.arsip.surat_masuk.index',compact('suratmasuk')) ;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('superadmin.arsip.surat_masuk.index', compact('suratmasuk'));
     }
 
     /**
@@ -55,30 +48,39 @@ class SuratmasukController extends Controller
         return redirect()->back()->with('success', 'Surat masuk berhasil ditambahkan!');
     }
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(SuratMasuk $suratMasuk)
     {
-        //
+        return response()->json($suratMasuk);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, SuratMasuk $suratMasuk)
     {
-        //
+        $request->validate([
+            'nomor_surat' => 'required|unique:surat_masuk,nomor_surat,' . $suratMasuk->id,
+            'tanggal_surat' => 'required|date',
+            'tanggal_terima' => 'required|date',
+            'asal_surat' => 'required|string',
+            'perihal' => 'required|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('file')) {
+            if ($suratMasuk->file) {
+                Storage::disk('public')->delete($suratMasuk->file);
+            }
+            $filePath = $request->file('file')->store('surat_masuk', 'public');
+            $suratMasuk->file = $filePath;
+        }
+
+        $suratMasuk->update($request->except('file'));
+
+        return redirect()->back()->with('success', 'Surat masuk berhasil diperbarui!');
     }
 
     /**
