@@ -37,17 +37,27 @@ class KlapperController extends Controller
     public function showKlapper($id, Request $request)
     {
         $search = $request->input('search');
+        $amaliah = $request->input('amaliah');
 
-        $klapper = Klapper::with(['siswas' => function ($query) use ($search) {
+        $klapper = Klapper::with(['siswas' => function ($query) use ($search, $amaliah) {
             if ($search) {
                 $query->where('nama_siswa', 'like', "%$search%")
-                      ->orwhere('nis', 'like', "%$search%")
-                      ->orWhere('jurusan', 'like', "%$search%");
+                    ->orWhere('nis', 'like', "%$search%")
+                    ->orWhere('jurusan', 'like', "%$search%");
             }
+            
+            if ($amaliah) {
+                if ($amaliah == 1) {
+                    $query->whereIn('jurusan', ['pplg', 'tjkt', 'an']);
+                } elseif ($amaliah == 2) {
+                    $query->whereIn('jurusan', ['dpb', 'lps', 'akl', 'mp', 'br']);
+                }
+            }
+
             $query->orderBy('nama_siswa', 'asc');
         }])->findOrFail($id);
 
-        return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search'));
+        return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah'));
     }
 
     public function deleteKlapper($id)
@@ -79,7 +89,8 @@ class KlapperController extends Controller
             'gender' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
-            'nama_orang_tua' => 'required',
+            'nama_ibu' => 'required',
+            'nama_ayah' => 'required',
             'tanggal_masuk' => 'required|date',
             'tanggal_naik_kelas_xi' => 'nullable|date',
             'tanggal_naik_kelas_xii' => 'nullable|date',
@@ -97,7 +108,8 @@ class KlapperController extends Controller
         $siswa->gender = $request->gender;
         $siswa->kelas = $request->kelas;
         $siswa->jurusan = $request->jurusan;
-        $siswa->nama_orang_tua = $request->nama_orang_tua;
+        $siswa->nama_ibu = $request->nama_ibu;
+        $siswa->nama_ayah = $request->nama_ayah;
         $siswa->tanggal_masuk = $request->tanggal_masuk;
         $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;
         $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
@@ -233,7 +245,8 @@ public function naikKelasXII(Request $request, $klapperId)
     public function index()
     {
         $jumlahSiswa = Siswa::where('status', 0)->count(); // Menghitung jumlah siswa
-        return view('superadmin/welcome', compact('jumlahSiswa')); // Mengirimkan jumlah siswa ke view
+        $jumlahAngkatan = Klapper::count(); // Menghitung jumlah Klapper
+        return view('superadmin/welcome', compact('jumlahSiswa', 'jumlahAngkatan')); // Mengirimkan jumlah siswa ke view
     }
 
 

@@ -1,4 +1,7 @@
 @extends('main')
+
+@section('content')
+
 <link rel="stylesheet" href="/asset/css/siswa.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -8,7 +11,6 @@
 <!-- Bootstrap JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-@section('content')
     <section class="home">
 </body>
 <div class="detail-container">
@@ -38,21 +40,22 @@
     <div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="tanggalLulusModalLabel">Masukkan Tanggal Lulus</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
-                        <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Luluskan Semua</button>
-                    </div>
-                </form>
+            <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Masukkan Tanggal Lulus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
+                    <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Luluskan Semua</button>
+                </div>
+            </form>
+
             </div>
         </div>
     </div>

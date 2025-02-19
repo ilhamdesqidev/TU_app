@@ -46,7 +46,7 @@
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tempat,Tanggal Lahir:</span>
-                        <span> {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
+                        <span> {{ $siswa->tempat_lahir }}, {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Jenis Kelamin:</span>
@@ -61,12 +61,16 @@
                         <span>{{ $siswa->jurusan }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Nama Orang Tua:</span>
-                        <span>{{ $siswa->nama_orang_tua }}</span>
+                        <span class="detail-label">Nama Ibu:</span>
+                        <span>{{ $siswa->nama_ibu }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Nama Ayah:</span>
+                        <span>{{ $siswa->nama_ayah }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Tanggal Masuk:</span>
-                        <span>{{ $siswa->tanggal_masuk }}</span>
+                        <span>{{ \Carbon\Carbon::parse($siswa->tanggal_masuk)->isoFormat('D MMMM YYYY') }}</span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Naik Kelas XI:</span>
@@ -74,7 +78,7 @@
                             @if ($siswa->tanggal_naik_kelas_xi)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->Isoformat('D MMMM YYYY') }}
                             @else
-                                - (Belum Naik Kelas XI)
+                                -
                             @endif
                         </span>
                     </div>
@@ -84,7 +88,7 @@
                             @if ($siswa->tanggal_naik_kelas_xii)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->Isoformat('D MMMM YYYY') }}
                             @else
-                                - (Belum Naik Kelas XII)
+                                -
                             @endif
                         </span>
                     </div>
@@ -94,7 +98,7 @@
                             @if ($siswa->tanggal_lulus)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_lulus)->Isoformat('D MMMM YYYY') }}
                             @else
-                                - (Belum Lulus)
+                                -
                             @endif
                         </span>
                     </div>
@@ -104,7 +108,7 @@
                             @if ($siswa->tanggal_keluar)
                                 {{ \Carbon\Carbon::parse($siswa->tanggal_keluar)->Isoformat('D MMMM YYYY') }}
                             @else
-                                - (Tidak Keluar Sekolah)
+                                -
                             @endif
                         </span>
                     </div>

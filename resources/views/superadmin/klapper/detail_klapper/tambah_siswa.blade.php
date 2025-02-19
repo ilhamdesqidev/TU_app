@@ -57,8 +57,13 @@
         </div>
 
         <div class="form-input">
-            <label for="nama_orang_tua">Nama Orang Tua</label>
-            <input type="text" name="nama_orang_tua" id="nama_orang_tua" required>
+            <label for="nama_ibu">Nama Ibu</label>
+            <input type="text" name="nama_ibu" id="nama_ibu" required>
+        </div>
+        
+        <div class="form-input">
+            <label for="nama_ayah">Nama Ayah</label>
+            <input type="text" name="nama_ayah" id="nama_ayah" required>
         </div>
 
         <div class="form-input">

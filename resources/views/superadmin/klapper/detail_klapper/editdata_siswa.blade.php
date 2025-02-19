@@ -32,8 +32,11 @@
     <label for="jurusan">Jurusan:</label>
     <input type="text" name="jurusan" value="{{ $siswa->jurusan }}" required>
 
-    <label for="nama_orang_tua">Nama Orang Tua:</label>
-    <input type="text" name="nama_orang_tua" value="{{ $siswa->nama_orang_tua }}" required>
+    <label for="nama_ibu">Nama Ibu</label>
+    <input type="text" name="nama_ibu" value="{{ $siswa->nama_ibu }}" required>
+    
+    <label for="nama_ayah">Nama Ayah</label>
+    <input type="text" name="nama_ayah" value="{{ $siswa->nama_ayah }}" required>
 
     <label for="tanggal_masuk">Tanggal Masuk:</label>
     <input type="date" name="tanggal_masuk" value="{{ $siswa->tanggal_masuk }}" required>
