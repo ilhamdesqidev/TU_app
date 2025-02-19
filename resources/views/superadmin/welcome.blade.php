@@ -1,60 +1,59 @@
-@extends ('main')
- <link rel="stylesheet" href="/asset/css/dashboard2.css">
- <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-@section ('content')
+@extends('main')
+
+@section('content')
 <body>
 
-
-<section class="home">
+<section class="container text-center mt-5">
 
     <div>
-        <img src="/asset/img/logo-12 (1).png" class="image">
+        <img src="/asset/img/logo-12 (1).png" class="img-fluid" style="max-width: 150px;">
     </div>
 
-    <h1>SMK AMALIAH 1&2</h1>
-    <p>"Sekolah Menengah Kejuruan Berkualitas yang Menyatu Dalam Tauhid"</p>
+    <h1 class="mt-3">SMK AMALIAH 1&2</h1>
+    <p class="lead">"Sekolah Menengah Kejuruan Berkualitas yang Menyatu Dalam Tauhid"</p>
 
-<div class="cards-container">
-    <div class="card">
-        <div class="icon">
-            <i class="fa fa-user-circle"></i>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <i class="fa fa-user-circle fa-3x mb-3"></i>
+                    <h1>{{ $jumlahSiswa }}</h1>
+                    <p class="text-muted">Siswa</p>
+                </div>
+            </div>
         </div>
-        <div class="content">
-        <h1>{{ $jumlahSiswa }}</h1>
-        <p>Siswa</p>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <i class="fa fa-user-circle fa-3x mb-3"></i>
+                    <h1>108</h1>
+                    <p class="text-muted">Guru</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <i class="fa fa-user-circle fa-3x mb-3"></i>
+                    <h1>107</h1>
+                    <p class="text-muted">Staf</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <i class="fa fa-user-circle fa-3x mb-3"></i>
+                    <h1>{{ $jumlahAngkatan }}</h1>
+                    <p class="text-muted">Angkatan</p>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <div class="card">
-        <div class="icon">
-            <i class="fa fa-user-circle"></i>
-        </div>
-        <div class="content">
-            <h1>108</h1>
-            <p>Guru</p>
-        </div>
-    </div>
-    
-    <div class="card">
-        <div class="icon">
-            <i class="fa fa-user-circle"></i>
-        </div>
-        <div class="content">
-            <h1>107</h1>
-            <p>Staf</p>
-        </div>
-    </div>
-    <div class="card">
-        <div class="icon">
-            <i class="fa fa-user-circle"></i>
-        </div>
-        <div class="content">
-            <h1>{{ $jumlahAngkatan }}</h1>
-            <p>Angkatan</p>
-        </div>
-    </div>
-</div>
+
 </section>
 
 <script>
@@ -66,11 +65,8 @@
         currentSlide = currentSlide < totalSlides ? currentSlide + 1 : 1;
     }
 
-    setInterval(autoSlide, 2000); // Ganti 3000 untuk kecepatan, 3000ms = 3 detik
+    setInterval(autoSlide, 2000);
 </script>
 
-</body>
-</html>
-   
 </body>
 @endsection

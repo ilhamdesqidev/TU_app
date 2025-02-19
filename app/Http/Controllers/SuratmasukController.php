@@ -95,4 +95,12 @@ class SuratmasukController extends Controller
         $suratMasuk->delete();
         return redirect()->route('arsip.surat_masuk.index')->with('success', 'Surat berhasil dihapus');
     }
+
+    public function show(SuratMasuk $suratMasuk)
+    {
+        $surat = SuratMasuk::findOrFail($id);
+
+        return response()->json($surat);
+    }
+
 }

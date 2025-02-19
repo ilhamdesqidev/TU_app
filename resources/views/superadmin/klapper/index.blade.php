@@ -1,201 +1,181 @@
 @extends('main')
-<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #f9f9f9; /* Warna netral */
-        color: #333;
-    }
-
-    .home {
-        padding: 3rem 2rem;
-        text-align: center;
-    }
-
-    .home .text {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #444;
-        margin-bottom: 2rem;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-    }
-
-    .btn-container {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .btn-add {
-        background: #007bff; /* Warna biru */
-        color: #fff;
-        padding: 0.75rem 2rem;
-        border-radius: 30px;
-        text-decoration: none;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-add:hover {
-        background: #0056b3; /* Warna biru lebih gelap */
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
-    }
-
-    /* Notifikasi dengan animasi */
-    @keyframes slideIn {
-        0% {
-            top: -50px; /* Mulai di luar layar (atas) */
-            opacity: 0;
-        }
-        100% {
-            top: 20px; /* Posisi akhir notifikasi */
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideOut {
-        0% {
-            opacity: 1;
-            top: 20px; /* Posisi akhir notifikasi */
-        }
-        100% {
-            opacity: 0;
-            top: -50px; /* Pindah keluar layar ke atas */
-        }
-    }
-
-    .alert {
-        background: #28a745; /* Hijau */
-        color: #fff;
-        padding: 1rem;
-        border-radius: 8px;
-        text-align: center;
-        margin-bottom: 2rem;
-        position: absolute;
-        top: 20px; /* Posisi notifikasi di atas tengah layar */
-        left: 50%;
-        transform: translateX(-50%); /* Menjaga posisi tetap di tengah */
-        width: auto;
-        animation: slideIn 2s ease forwards, slideOut 2s 2s forwards; /* Animasi muncul dan hilang */
-        z-index: 9999; /* Memastikan berada di atas elemen lainnya */
-    }
-
-    .card-container {
-        display: flex;
-        flex-wrap: wrap; /* Memungkinkan konten berpindah ke baris baru */
-        justify-content: flex-start; /* Mengisi dari kiri ke kanan */
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-
-    .card {
-        flex: 0 1 calc(25% - 2rem);
-        max-width: calc(25% - 2rem);
-        background: #fff;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-    }
-
-    @media (max-width: 1024px) {
-        .card {
-            flex: 0 1 calc(33.33% - 2rem);
-            max-width: calc(33.33% - 2rem);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .card {
-            flex: 0 1 calc(50% - 2rem);
-            max-width: calc(50% - 2rem);
-        }
-    }
-
-    @media (max-width: 576px) {
-        .card {
-            flex: 0 1 100%;
-            max-width: 100%;
-        }
-    }
-
-    .card-content {
-        display: flex;
-        align-items: center; /* Memastikan konten sejajar secara vertikal */
-        padding: 1.5rem;
-    }
-
-    .card-icon {
-        color: #007bff;
-        font-size: 3rem; /* Ukuran ikon lebih besar */
-        margin-right: 1rem; /* Jarak dengan teks */
-    }
-
-    .card-info {
-        text-align: left; /* Menyelaraskan teks ke kiri */
-        flex: 1;
-    }
-
-    .card-info h3 {
-        margin: 0;
-        font-size: 1.25rem; /* Ukuran nama buku */
-        font-weight: bold;
-        color: #333;
-        flex: 1;
-    }
-
-    .card-info p {
-        margin: 0;
-        font-size: 0.9rem; /* Ukuran tahun ajaran lebih kecil */
-        color: #777;
-    }
-</style>
 
 @section('content')
-<section class="home">
-    <div class="text">Klapper</div>
-
+<div class="bg-light py-3">
     <div class="container">
-        <div class="btn-container">
-            <a href="{{ url('klapper/tambahdataklapper') }}" class="btn-add">
-                <i class="fas fa-plus"></i> Tambah Data
-            </a>
+        <!-- Header Section -->
+        <div class="row my-3">
+            <div class="col-lg-6 col-md-8 mx-auto text-center">
+                <h3 class="fw-bold text-primary mb-2">Koleksi Klapper</h3>
+                <p class="text-muted small mb-3">Akses pustaka digital dan materi pembelajaran</p>
+                <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
+                    <i class="fas fa-plus me-1"></i> Tambah Data
+                </a>
+            </div>
         </div>
 
+        <!-- Alert Message -->
         @if (session('status'))
-        <div class="alert">
-            {{ session('status') }}
+        <div class="row mb-3">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm py-2" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <span>{{ session('status') }}</span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
         @endif
+    </div>
+</div>
 
-        <div class="card-container">
-            @foreach ($klapper as $item)
-            <div class="card" onclick="window.location='{{ url('klapper/' . $item->id) }}'">
-                <div class="card-content">
-                    <!-- Ikon buku di sebelah kiri -->
-                    <div class="card-icon">
-                        <i class="bx bxs-book"></i>
+<div class="container py-3">
+    <!-- Filter/Search -->
+    <div class="row mb-3">
+        <div class="col-md-5 mb-2 mb-md-0">
+            <div class="input-group input-group-sm">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Cari buku...">
+            </div>
+        </div>
+        <div class="col-md-7 text-md-end">
+            <div class="btn-group btn-group-sm" id="view-toggle">
+                <button class="btn btn-outline-secondary active" id="grid-view-btn">
+                    <i class="fas fa-th me-1"></i>Grid
+                </button>
+                <button class="btn btn-outline-secondary" id="list-view-btn">
+                    <i class="fas fa-list me-1"></i>List
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid View Content (Default) -->
+    <div class="row g-3" id="grid-view">
+        @foreach ($klapper as $item)
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card h-100 rounded-3 shadow-sm border-0" 
+                 onclick="window.location='{{ url('klapper/' . $item->id) }}'" 
+                 role="button">
+                <div class="card-body p-3">
+                    <div class="d-flex">
+                        <div class="p-2 me-2 bg-primary bg-opacity-10 rounded-circle">
+                            <i class="bx bxs-book text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">{{ $item->nama_buku }}</h6>
+                            <p class="text-muted small mb-0">{{ $item->tahun_ajaran }}</p>
+                        </div>
                     </div>
-                    <!-- Informasi buku di sebelah kanan -->
-                    <div class="card-info">
-                        <h3>{{ $item->nama_buku }}</h3>
-                        <p>{{ $item->tahun_ajaran }}</p>
+                    
+                    <hr class="text-muted opacity-25 my-2">
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-light text-primary small">Klapper</span>
+                        <button class="btn btn-sm btn-outline-primary rounded-circle" style="width: 24px; height: 24px; padding: 0; line-height: 24px;">
+                            <i class="fas fa-arrow-right small"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-            @endforeach
+        </div>
+        @endforeach
+    </div>
+
+    <!-- Enhanced List View Content (Initially Hidden) -->
+    <div class="row" id="list-view" style="display: none;">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="list-group list-group-flush rounded-3">
+                    @foreach ($klapper as $item)
+                    <a href="{{ url('klapper/' . $item->id) }}" class="list-group-item list-group-item-action p-3 border-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <div class="bg-primary bg-opacity-10 rounded-3 p-3 text-center">
+                                    <i class="bx bxs-book-alt text-primary fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <h6 class="fw-bold mb-0 text-truncate">{{ $item->nama_buku }}</h6>
+                                <div class="d-flex align-items-center mt-1">
+                                    <i class="fas fa-calendar-alt text-muted me-1 small"></i>
+                                    <span class="text-muted small">{{ $item->tahun_ajaran }}</span>
+                                </div>
+                            </div>
+                            <div class="col-auto ms-auto">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary me-3 px-2 py-1">
+                                        Klapper
+                                    </span>
+                                    <div class="btn btn-outline-primary btn-sm rounded-pill px-2">
+                                        Detail <i class="fas fa-chevron-right ms-1 small"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
-</section>
+
+    <!-- Empty State -->
+    @if(count($klapper) == 0)
+    <div class="row">
+        <div class="col-md-6 mx-auto text-center py-4 my-3">
+            <div class="p-3 rounded-3 bg-light">
+                <i class="fas fa-books fs-1 text-muted opacity-25 mb-3"></i>
+                <h5 class="fw-bold text-muted">Belum Ada Data Klapper</h5>
+                <p class="text-muted small mb-3">Silakan tambahkan data baru</p>
+                <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary btn-sm rounded-pill px-3">
+                    <i class="fas fa-plus me-1"></i> Tambah Data
+                </a>
+            </div>
+        </div>
+    </div>
+    @endif
+</div>
+
+<!-- JavaScript untuk fungsi toggle view -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const gridViewBtn = document.getElementById('grid-view-btn');
+    const listViewBtn = document.getElementById('list-view-btn');
+    const gridView = document.getElementById('grid-view');
+    const listView = document.getElementById('list-view');
+    
+    // Fungsi untuk menampilkan view grid
+    gridViewBtn.addEventListener('click', function() {
+        gridView.style.display = 'flex';
+        listView.style.display = 'none';
+        gridViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+        
+        // Simpan preferensi pengguna di localStorage
+        localStorage.setItem('klapperViewPreference', 'grid');
+    });
+    
+    // Fungsi untuk menampilkan view list
+    listViewBtn.addEventListener('click', function() {
+        gridView.style.display = 'none';
+        listView.style.display = 'block';
+        listViewBtn.classList.add('active');
+        gridViewBtn.classList.remove('active');
+        
+        // Simpan preferensi pengguna di localStorage
+        localStorage.setItem('klapperViewPreference', 'list');
+    });
+    
+    // Cek preferensi yang tersimpan
+    const savedViewPreference = localStorage.getItem('klapperViewPreference');
+    if (savedViewPreference === 'list') {
+        listViewBtn.click();
+    }
+});
+</script>
 @endsection

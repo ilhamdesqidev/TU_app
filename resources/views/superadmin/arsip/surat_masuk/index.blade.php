@@ -41,14 +41,17 @@
                     <td>{{ $surat->perihal }}</td>
                     <td class="text-center">
                         <div class="btn-group">
+                            <button class="btn btn-sm btn-info btn-detail" data-id="{{ $surat->id }}" data-bs-toggle="modal" data-bs-target="#detailSuratModal">
+                                <i class="bi bi-eye"></i> Detail
+                            </button>
                             <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i> Edit</button>
-                            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Hapus</button>
-                            @if($surat->file)
-                            <a href="{{ asset('storage/' . $surat->file) }}" target="_blank"
-                                class="btn btn-sm btn-info">
-                                <i class="bi bi-file-earmark-text"></i> Lihat
-                            </a>
-                            @endif
+                            <form action="{{ route('arsip.surat_masuk.destroy', $surat->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -99,4 +102,62 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Detail Surat Masuk -->
+<div class="modal fade" id="detailSuratModal" tabindex="-1" aria-labelledby="detailSuratModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailSuratModalLabel">Detail Arsip Surat Masuk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nomor Surat:</strong> <span id="nomor_surat"></span></p>
+                <p><strong>Tanggal Surat:</strong> <span id="tanggal_surat"></span></p>
+                <p><strong>Tanggal Terima:</strong> <span id="tanggal_terima"></span></p>
+                <p><strong>Asal Surat:</strong> <span id="asal_surat"></span></p>
+                <p><strong>Perihal:</strong> <span id="perihal"></span></p>
+                <div id="file"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".btn-detail").forEach(button => {
+            button.addEventListener("click", function () {
+                let suratId = this.getAttribute("data-id");
+
+                fetch(`/arsip/surat_masuk/${suratId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("detail_nomor_surat").innerText = data.nomor_surat;
+                        document.getElementById("detail_tanggal_surat").innerText = new Date(data.tanggal_surat).toLocaleDateString("id-ID");
+                        document.getElementById("detail_tanggal_terima").innerText = new Date(data.tanggal_terima).toLocaleDateString("id-ID");
+                        document.getElementById("detail_asal_surat").innerText = data.asal_surat;
+                        document.getElementById("detail_perihal").innerText = data.perihal;
+
+                        let fileContainer = document.getElementById("detail_file_container");
+                        if (data.file) {
+                            fileContainer.innerHTML = `
+                                <p><strong>File:</strong></p>
+                                <a href="/storage/${data.file}" class="btn btn-sm btn-primary" target="_blank">
+                                    <i class="bi bi-file-earmark-text"></i> Lihat File
+                                </a>
+                                <a href="/arsip/surat_masuk/${suratId}/download" class="btn btn-sm btn-success">
+                                    <i class="bi bi-download"></i> Download File
+                                </a>
+                            `;
+                        } else {
+                            fileContainer.innerHTML = `<p class="text-danger"><i class="bi bi-x-circle"></i> Tidak ada file tersedia</p>`;
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+        });
+    });
+</script>
+
+
 @endsection

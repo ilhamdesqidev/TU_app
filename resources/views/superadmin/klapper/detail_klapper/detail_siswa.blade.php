@@ -1,117 +1,52 @@
 @extends('main')
-<link rel="stylesheet" href="/asset/css/detailsiswa.css">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 @section('content')
-<div class="container">
-    <div class="card detail-card">
-        <div class="detail-header">
-            <h2>Profil Siswa</h2>
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <div class="text-center mb-4">
+            <h2 class="text-dark">Profil Siswa</h2>
         </div>
         <div class="row">
-            <!-- Kolom untuk Foto -->
             <div class="col-md-4 text-center">
                 @if ($siswa->foto)
-                    <img src="{{ asset('image/' . $siswa->foto) }}" alt="Foto {{ $siswa->nama_siswa }}" class="detail-photo">
+                    <img src="{{ asset('image/' . $siswa->foto) }}" alt="Foto {{ $siswa->nama_siswa }}" class="img-thumbnail rounded-circle" style="max-width: 180px;">
                 @else
-                    <p>Tidak ada foto</p>
+                    <p class="text-muted">Tidak ada foto</p>
                 @endif
-                <div class="btn-container">
-                    @if ($siswa->status != 1 && $siswa->status != 2) <!-- Tampilkan tombol edit hanya jika status siswa bukan Lulus (1) atau Keluar (2) -->
-                        <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn-add">
-                            <i class="fas fa-edit"></i> Edit Data 
+                <div class="mt-3">
+                    @if ($siswa->status != 1 && $siswa->status != 2)
+                        <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-edit"></i> Edit Data
                         </a>
                     @endif
                 </div>
-                <div class="btn-container">
-                    <a href="{{ route('klapper.siswa', $siswa->klapper_id) }}" class="back-link">
+                <div class="mt-2">
+                    <a href="{{ route('klapper.siswa', $siswa->klapper_id) }}" class="btn btn-danger btn-sm">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                 </div>
             </div>
-
-            <!-- Kolom untuk Detail Siswa -->
             <div class="col-md-8">
-                <div class="detail-content">
-                    <div class="detail-nama pb-2">
-                        <span class="display-4 text-shadow fs-custom">{{ $siswa->nama_siswa }}</span>
-                    </div>
-
-                    <div class="detail-item">
-                        <span class="detail-label">NIS:</span>
-                        <span>{{ $siswa->nis }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">NISN:</span>
-                        <span>{{ $siswa->nisn }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Tempat,Tanggal Lahir:</span>
-                        <span> {{ $siswa->tempat_lahir }}, {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Jenis Kelamin:</span>
-                        <span>{{ $siswa->gender }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Kelas:</span>
-                        <span>{{ $siswa->kelas }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Jurusan:</span>
-                        <span>{{ $siswa->jurusan }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Nama Ibu:</span>
-                        <span>{{ $siswa->nama_ibu }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Nama Ayah:</span>
-                        <span>{{ $siswa->nama_ayah }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Tanggal Masuk:</span>
-                        <span>{{ \Carbon\Carbon::parse($siswa->tanggal_masuk)->isoFormat('D MMMM YYYY') }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Naik Kelas XI:</span>
-                        <span>
-                            @if ($siswa->tanggal_naik_kelas_xi)
-                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->Isoformat('D MMMM YYYY') }}
-                            @else
-                                -
-                            @endif
-                        </span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Naik Kelas XII:</span>
-                        <span>
-                            @if ($siswa->tanggal_naik_kelas_xii)
-                                {{ \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->Isoformat('D MMMM YYYY') }}
-                            @else
-                                -
-                            @endif
-                        </span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Tanggal Lulus:</span>
-                        <span>
-                            @if ($siswa->tanggal_lulus)
-                                {{ \Carbon\Carbon::parse($siswa->tanggal_lulus)->Isoformat('D MMMM YYYY') }}
-                            @else
-                                -
-                            @endif
-                        </span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Tanggal Keluar:</span>
-                        <span>
-                            @if ($siswa->tanggal_keluar)
-                                {{ \Carbon\Carbon::parse($siswa->tanggal_keluar)->Isoformat('D MMMM YYYY') }}
-                            @else
-                                -
-                            @endif
-                        </span>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><th class="bg-light">Nama Siswa</th><td>{{ $siswa->nama_siswa }}</td></tr>
+                            <tr><th class="bg-light">NIS</th><td>{{ $siswa->nis }}</td></tr>
+                            <tr><th class="bg-light">NISN</th><td>{{ $siswa->nisn }}</td></tr>
+                            <tr><th class="bg-light">Tempat, Tanggal Lahir</th><td>{{ $siswa->tempat_lahir }}, {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}</td></tr>
+                            <tr><th class="bg-light">Jenis Kelamin</th><td>{{ $siswa->gender }}</td></tr>
+                            <tr><th class="bg-light">Kelas</th><td>{{ $siswa->kelas }}</td></tr>
+                            <tr><th class="bg-light">Jurusan</th><td>{{ $siswa->jurusan }}</td></tr>
+                            <tr><th class="bg-light">Nama Ibu</th><td>{{ $siswa->nama_ibu }}</td></tr>
+                            <tr><th class="bg-light">Nama Ayah</th><td>{{ $siswa->nama_ayah }}</td></tr>
+                            <tr><th class="bg-light">Tanggal Masuk</th><td>{{ \Carbon\Carbon::parse($siswa->tanggal_masuk)->isoFormat('D MMMM YYYY') }}</td></tr>
+                            <tr><th class="bg-light">Naik Kelas XI</th><td>{{ $siswa->tanggal_naik_kelas_xi ? \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->isoFormat('D MMMM YYYY') : '-' }}</td></tr>
+                            <tr><th class="bg-light">Naik Kelas XII</th><td>{{ $siswa->tanggal_naik_kelas_xii ? \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->isoFormat('D MMMM YYYY') : '-' }}</td></tr>
+                            <tr><th class="bg-light">Tanggal Lulus</th><td>{{ $siswa->tanggal_lulus ? \Carbon\Carbon::parse($siswa->tanggal_lulus)->isoFormat('D MMMM YYYY') : '-' }}</td></tr>
+                            <tr><th class="bg-light">Tanggal Keluar</th><td>{{ $siswa->tanggal_keluar ? \Carbon\Carbon::parse($siswa->tanggal_keluar)->isoFormat('D MMMM YYYY') : '-' }}</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

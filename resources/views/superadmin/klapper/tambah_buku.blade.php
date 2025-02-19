@@ -1,146 +1,56 @@
 @extends('main')
 
 @section('content')
-<style>
-    /* Gaya untuk keseluruhan halaman */
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f7f7f7;
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
-
-    /* Gaya container form */
-    .form-container {
-        background-color: #fff;
-        width: 100%;
-        max-width: 600px;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        background-image: linear-gradient(135deg, #f2f2f2, #ffffff);
-    }
-
-    /* Gaya judul */
-    h2 {
-        text-align: center;
-        color: #4CAF50;
-        margin-bottom: 20px;
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    /* Gaya untuk elemen input */
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #555;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="date"],
-    .form-group input[type="file"] {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 16px;
-        box-sizing: border-box;
-        transition: border-color 0.3s ease;
-    }
-
-    /* Efek focus pada input */
-    .form-group input:focus {
-        border-color: #4CAF50;
-        box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
-    }
-
-    /* Gaya untuk tombol submit */
-    button[type="submit"] {
-        width: 100%;
-        background-color: #4CAF50;
-        color: white;
-        padding: 14px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background-color 0.3s ease;
-    }
-
-    /* Efek hover pada tombol */
-    button[type="submit"]:hover {
-        background-color: #45a049;
-    }
-
-    /* Gaya untuk link kembali */
-    .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        color: #4CAF50;
-        text-decoration: none;
-        font-size: 16px;
-    }
-
-    .back-link:hover {
-        color: #388E3C;
-    }
-
-    /* Gaya untuk error message */
-    .error-message {
-        color: red;
-        margin-bottom: 15px;
-        font-size: 14px;
-    }
-
-    /* Responsif untuk perangkat kecil */
-    @media (max-width: 600px) {
-        .form-container {
-            padding: 20px;
-        }
-
-        h2 {
-            font-size: 22px;
-        }
-    }
-</style>
-
-<div class="form-container">
-    <h2>Tambah Klapper</h2>
-    @if ($errors->any())
-        <div class="error-message">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+<div class="bg-light py-4">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="row my-3">
+            <div class="col-lg-6 col-md-8 mx-auto text-center">
+                <h3 class="fw-bold text-primary mb-2">Tambah Klapper</h3>
+                <p class="text-muted small mb-3">Masukkan data klapper dengan lengkap</p>
+            </div>
         </div>
-    @endif
-    <form action="{{ route('klapper.store') }}" method="POST">
-        @csrf
-        <div class="form-group">
-            <label for="nama_buku">Nama Buku:</label>
-            <input type="text" name="nama_buku" id="nama_buku" required>
+    </div>
+</div>
+
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    
+                    <form action="{{ route('klapper.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="nama_buku" class="form-label fw-semibold">Nama Buku</label>
+                            <input type="text" name="nama_buku" id="nama_buku" class="form-control rounded-3" placeholder="Masukkan nama buku" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tahun_ajaran" class="form-label fw-semibold">Tahun Ajaran</label>
+                            <input type="text" name="tahun_ajaran" id="tahun_ajaran" class="form-control rounded-3" placeholder="Masukkan tahun ajaran" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill shadow-sm">
+                            <i class="fas fa-save me-2"></i> Simpan Data
+                        </button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="{{ route('klapper.index') }}" class="text-decoration-none text-primary fw-semibold">
+                            <i class="fas fa-arrow-left me-1"></i> Kembali
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="tahun_ajaran">Tahun Ajaran:</label>
-            <input type="text" name="tahun_ajaran" id="tahun_ajaran" required>
-        </div>
-        <button type="submit">
-            <i class="fa fa-save"></i> Simpan
-        </button>
-    </form>
-    <a href="{{ route('klapper.index') }}" class="back-link">Kembali</a>
+    </div>
 </div>
 @endsection
-    
