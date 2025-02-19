@@ -153,7 +153,7 @@
            var query = $(this).val();
            if (query.length >= 3) {
                $.ajax({
-                   url: '{{ route("superadmin.spensasi.searchSiswa") }}',
+                   url: {!! json_encode(route("superadmin.spensasi.searchSiswa")) !!},
                    type: 'GET',
                    data: { query: query },
                    success: function (data) {
@@ -205,7 +205,7 @@
 
            if (siswaTerpilih.length === 0) {
                container.html('<p class="text-muted">Belum ada siswa yang dipilih.</p>');
-               $('#kelas').val(''); // Kosongkan input kelas jika tidak ada siswa
+               $('#kelas').val('');
            } else {
                siswaTerpilih.forEach(siswa => {
                    container.append(
@@ -216,14 +216,17 @@
                    );
                });
 
-               // Gabungkan kelas dan jurusan dari semua siswa yang dipilih
-               var kelasJurusanList = siswaTerpilih.map(s => s.kelas + ' - ' + s.jurusan);
-               $('#kelas').val(kelasJurusanList.join(', '));
+               // Menggabungkan kelas dan jurusan dari semua siswa yang dipilih
+               var kelasSet = [...new Set(siswaTerpilih.map(s => s.kelas))].join(', ');
+               var jurusanSet = [...new Set(siswaTerpilih.map(s => s.jurusan))].join(', ');
+               
+               $('#kelas').val(kelasSet + ' - ' + jurusanSet);
            }
 
            $('#siswa_terpilih').val(JSON.stringify(siswaTerpilih));
        }
    });
 </script>
+
 
 @endsection

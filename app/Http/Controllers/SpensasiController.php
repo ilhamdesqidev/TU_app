@@ -44,40 +44,45 @@ class SpensasiController extends Controller
      * Simpan surat spensasi yang baru dibuat.
      */
     public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'siswa_terpilih' => 'required', // Data siswa dikirim dalam format JSON
-        'kategori_spensasi' => 'required|in:keluar,sakit,pulang',
-        'jam_pelajaran' => 'nullable|string|max:100',
-        'detail_spensasi' => 'required|string',
-        'tanggal_spensasi' => 'required|date'
-    ]);
-
-    // Decode JSON siswa yang dipilih
-    $siswaTerpilih = json_decode($request->siswa_terpilih, true);
-
-    foreach ($siswaTerpilih as $siswa) {
-        // Pastikan siswa ada di database
-        $siswaDB = Siswa::where('nama_siswa', $siswa['nama'])->first();
-        if (!$siswaDB) {
-            return redirect()->back()->withErrors(['siswa_terpilih' => 'Salah satu nama siswa tidak valid!'])->withInput();
-        }
-
-        Spensasi::create([
-            'nama_siswa' => $siswa['nama'],
-            'kelas' => $siswa['kelas'],
-            'jurusan' => $siswa['jurusan'], // Tambahkan jurusan
-            'kategori_spensasi' => $request->kategori_spensasi,
-            'jam_pelajaran' => $request->jam_pelajaran,
-            'detail_spensasi' => $request->detail_spensasi,
-            'tanggal_spensasi' => $request->tanggal_spensasi,
-            'status' => 'menunggu'
+    {
+        $validatedData = $request->validate([
+            'siswa_terpilih' => 'required', // Data siswa dikirim dalam format JSON
+            'kategori_spensasi' => 'required|in:keluar,sakit,pulang',
+            'jam_pelajaran' => 'nullable|string|max:100',
+            'detail_spensasi' => 'required|string',
+            'tanggal_spensasi' => 'required|date'
         ]);
+    
+        // Decode JSON siswa yang dipilih
+        $siswaTerpilih = json_decode($request->siswa_terpilih, true);
+    
+        foreach ($siswaTerpilih as $siswa) {
+            // Pastikan siswa ada di database dan belum lulus
+            $siswaDB = Siswa::where('nama_siswa', $siswa['nama'])->first();
+    
+            if (!$siswaDB) {
+                return redirect()->back()->withErrors(['siswa_terpilih' => 'Salah satu nama siswa tidak valid!'])->withInput();
+            }
+    
+            if ($siswaDB->status === 'lulus') {
+                return redirect()->back()->withErrors(['siswa_terpilih' => 'Siswa ' . $siswa['nama'] . ' sudah lulus dan tidak bisa dimasukkan ke Spensasi!'])->withInput();
+            }
+    
+            Spensasi::create([
+                'nama_siswa' => $siswa['nama'],
+                'kelas' => $siswa['kelas'],
+                'jurusan' => $siswa['jurusan'],
+                'kategori_spensasi' => $request->kategori_spensasi,
+                'jam_pelajaran' => $request->jam_pelajaran,
+                'detail_spensasi' => $request->detail_spensasi,
+                'tanggal_spensasi' => $request->tanggal_spensasi,
+                'status' => 'menunggu'
+            ]);
+        }
+    
+        return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil dibuat.');
     }
-
-    return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil dibuat untuk beberapa siswa.');
-}
-
+    
     /**
      * Form edit surat spensasi.
      */
@@ -143,14 +148,14 @@ class SpensasiController extends Controller
      * Live search untuk mencari siswa berdasarkan nama.
      */
     public function searchSiswa(Request $request)
-    {
-        $query = $request->input('query');
-    
-        $siswa = Siswa::where('nama_siswa', 'LIKE', "%$query%")
-            ->select('nama_siswa', 'kelas', 'jurusan') // Tambahkan 'jurusan'
-            ->get();
-    
-        return response()->json($siswa);
-    }
+{
+    $query = $request->input('query');
 
+    $siswa = Siswa::where('nama_siswa', 'LIKE', "%$query%")
+        ->where('status', '!=', 'lulus') // Hanya tampilkan siswa yang belum lulus
+        ->select('nama_siswa', 'kelas', 'jurusan')
+        ->get();
+
+    return response()->json($siswa);
+}
 }
