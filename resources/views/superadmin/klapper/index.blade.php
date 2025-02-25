@@ -8,14 +8,6 @@
             <div class="col-lg-6 col-md-8 mx-auto text-center">
                 <h3 class="fw-bold text-primary mb-2">Koleksi Klapper</h3>
                 <p class="text-muted small mb-3">Akses pustaka digital dan materi pembelajaran</p>
-                <div class="d-flex justify-content-center gap-2">
-                    <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
-                        <i class="fas fa-plus me-1"></i> Tambah Data Siswa
-                    </a>
-                    <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
-                        <i class="fas fa-plus me-1"></i> Tambah Data Guru
-                    </a>
-                </div>
             </div>
         </div>
 
@@ -42,6 +34,9 @@
         <h5 class="fw-bold mb-0">
             <i class="fas fa-user-graduate me-2 text-primary"></i>Klapper Siswa
         </h5>
+        <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
+            <i class="fas fa-plus me-1"></i> Tambah Data Siswa
+        </a>
     </div>
 
     <!-- Filter/Search for Students -->
@@ -160,6 +155,9 @@
         <h5 class="fw-bold mb-0">
             <i class="fas fa-chalkboard-teacher me-2 text-success"></i>Data Guru
         </h5>
+        <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
+            <i class="fas fa-plus me-1"></i> Tambah Data Guru
+        </a>
     </div>
 
     <!-- Filter/Search for Teachers -->

@@ -27,24 +27,42 @@
                 <!-- Search and filter card -->
                 <div class="card shadow-sm mb-4 border-0 rounded-3">
                     <div class="card-body">
-                        <form action="{{ route('klapper.show', $klapper->id) }}" method="GET">
-                            <div class="row g-3 align-items-end">
-                                <div class="col-md-6">
-                                    <label class="form-label small text-muted">Cari Siswa</label>
+                        <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" id="searchForm">
+                            <div class="row g-3 align-items-center">
+                            <div class="card shadow-sm mb-4 border-0 rounded-3">
+                    <div class="card-body">
+                        <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" id="searchForm">
+                            <div class="row g-2 align-items-center">
+                                <!-- Input Cari Siswa -->
+                                <div class="col-md-5">
+                                    <label class="form-label fw-semibold text-secondary">Cari Siswa</label>
                                     <div class="input-group">
-                                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama atau Jurusan" class="form-control">
-                                        <button type="submit" class="btn btn-primary px-3">
-                                            <i class="fas fa-search me-1"></i> Cari
-                                        </button>
+                                        <span class="input-group-text bg-white border-end-0">
+                                            <i class="fas fa-search text-muted"></i>
+                                        </span>
+                                        <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Nama atau Jurusan" class="form-control rounded-end">
+                                        <div class="input-group-text bg-white border-start-0 d-none" id="loadingIndicator">
+                                            <i class="fas fa-spinner fa-spin text-primary"></i>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Filter Sekolah -->
                                 <div class="col-md-4">
-                                    <label class="form-label small text-muted">Filter Sekolah</label>
+                                    <label class="form-label fw-semibold text-secondary">Filter Sekolah</label>
                                     <select name="amaliah" onchange="this.form.submit()" class="form-select">
                                         <option value="" {{ request('amaliah') == '' ? 'selected' : '' }}>Semua Sekolah</option>
                                         <option value="1" {{ request('amaliah') == '1' ? 'selected' : '' }}>SMK Amaliah 1</option>
                                         <option value="2" {{ request('amaliah') == '2' ? 'selected' : '' }}>SMK Amaliah 2</option>
                                     </select>
+                                </div>
+
+                                <!-- Tombol Reset -->
+                                <div class="col-md-3">
+                                    <label class="form-label d-none d-md-block">&nbsp;</label>
+                                    <a href="{{ route('klapper.show', $klapper->id) }}" class="btn btn-outline-secondary w-100">
+                                        <i class="fas fa-sync-alt me-1"></i> Reset
+                                    </a>
                                 </div>
                             </div>
                         </form>
@@ -263,4 +281,24 @@
         </div>
     </div>
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let searchInput = document.getElementById("searchInput");
+    let searchForm = document.getElementById("searchForm");
+    let typingTimer;
+    let doneTypingInterval = 500; // Waktu delay sebelum pencarian otomatis (ms)
+
+    searchInput.addEventListener("input", function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+            searchForm.submit();
+        }, doneTypingInterval);
+    });
+
+    // Jika pengguna masih mengetik, hentikan pengiriman form sementara
+    searchInput.addEventListener("keydown", function () {
+        clearTimeout(typingTimer);
+    });
+});
+</script>
 @endsection
