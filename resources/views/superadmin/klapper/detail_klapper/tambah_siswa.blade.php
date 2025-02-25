@@ -79,9 +79,23 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="kelas" class="form-label fw-semibold">Kelas</label>
-                            <input type="text" name="kelas" id="kelas" class="form-control rounded-3" value="X" required>
+                            <label class="form-label fw-semibold">Kelas</label>
+                            <div class="d-flex">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="kelas" id="kelasX" value="X" checked>
+                                    <label class="form-check-label" for="kelasX">X</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXI" value="XI">
+                                    <label class="form-check-label" for="kelasXI">XI</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXII" value="XII">
+                                    <label class="form-check-label" for="kelasXII">XII</label>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="nama_ibu" class="form-label fw-semibold">Nama Ibu</label>
