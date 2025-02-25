@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -28,10 +28,6 @@
                 <div class="card shadow-sm mb-4 border-0 rounded-3">
                     <div class="card-body">
                         <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" id="searchForm">
-                            <div class="row g-3 align-items-center">
-                            <div class="card shadow-sm mb-4 border-0 rounded-3">
-                    <div class="card-body">
-                        <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" id="searchForm">
                             <div class="row g-2 align-items-center">
                                 <!-- Input Cari Siswa -->
                                 <div class="col-md-5">
@@ -40,7 +36,7 @@
                                         <span class="input-group-text bg-white border-end-0">
                                             <i class="fas fa-search text-muted"></i>
                                         </span>
-                                        <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Nama atau Jurusan" class="form-control rounded-end">
+                                        <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Nama" class="form-control rounded-end">
                                         <div class="input-group-text bg-white border-start-0 d-none" id="loadingIndicator">
                                             <i class="fas fa-spinner fa-spin text-primary"></i>
                                         </div>
@@ -69,109 +65,111 @@
                     </div>
                 </div>
                 
-                <!-- Action buttons card -->
-                <div class="card shadow-sm mb-4 border-0 rounded-3">
-                    <div class="card-body">
-                        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
-                            <h5 class="mb-0 text-dark">Aksi Massal</h5>
-                            <div class="d-flex flex-wrap gap-2">
-                                <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary">
-                                    <i class="fas fa-user-plus me-1"></i> Tambah Data
-                                </a>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-cog me-1"></i> Aksi Kelas
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
-                                                <i class="fas fa-graduation-cap me-2 text-success"></i> Luluskan Semua Pelajar
-                                            </button>
-                                        </li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#naikKelasXIModal">
-                                                <i class="fas fa-arrow-up me-2 text-primary"></i> Naik Kelas XI
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#naikKelasXIIModal">
-                                                <i class="fas fa-arrow-up me-2 text-primary"></i> Naik Kelas XII
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                <div class="container mt-5">
+    <!-- Card Aksi Massal -->
+    <div class="card shadow-sm mb-4 border-0 rounded-3">
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                <h5 class="mb-0 text-dark">Aksi Massal</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-1"></i> Tambah Data
+                    </a>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cog me-1"></i> Aksi Kelas
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button type="button" class="dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
+                                    <i class="fas fa-graduation-cap me-2 text-success"></i> Luluskan Semua Pelajar
+                                </button>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <button type="button" class="dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#naikKelasXIModal">
+                                    <i class="fas fa-arrow-up me-2 text-primary"></i> Naik Kelas XI
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#naikKelasXIIModal">
+                                    <i class="fas fa-arrow-up me-2 text-primary"></i> Naik Kelas XII
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <!-- Modals -->
-                <div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Masukkan Tanggal Lulus</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
-                                    <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary">Luluskan Semua</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<!-- Modals -->
+<div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tanggalLulusModalLabel">Masukkan Tanggal Lulus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
+                    <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Luluskan Semua</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                <div class="modal fade" id="naikKelasXIModal" tabindex="-1" aria-labelledby="naikKelasXIModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form action="{{ route('klapper.naikKelasXI', $klapper->id) }}" method="POST">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="naikKelasXIModalLabel">Masukkan Tanggal Naik Kelas XI</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <label for="tanggal_naik_kelas_xi" class="form-label">Tanggal:</label>
-                                    <input type="date" name="tanggal_naik_kelas_xi" id="tanggal_naik_kelas_xi" class="form-control" required>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary">Konfirmasi</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<div class="modal fade" id="naikKelasXIModal" tabindex="-1" aria-labelledby="naikKelasXIModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{{ route('klapper.naikKelasXI', $klapper->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="naikKelasXIModalLabel">Masukkan Tanggal Naik Kelas XI</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <label for="tanggal_naik_kelas_xi" class="form-label">Tanggal:</label>
+                    <input type="date" name="tanggal_naik_kelas_xi" id="tanggal_naik_kelas_xi" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                <div class="modal fade" id="naikKelasXIIModal" tabindex="-1" aria-labelledby="naikKelasXIIModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form action="{{ route('klapper.naikKelasXII', $klapper->id) }}" method="POST">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="naikKelasXIIModalLabel">Masukkan Tanggal Naik Kelas XII</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <label for="tanggal_naik_kelas_xii" class="form-label">Tanggal:</label>
-                                    <input type="date" name="tanggal_naik_kelas_xii" id="tanggal_naik_kelas_xii" class="form-control" required>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-primary">Konfirmasi</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<div class="modal fade" id="naikKelasXIIModal" tabindex="-1" aria-labelledby="naikKelasXIIModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{{ route('klapper.naikKelasXII', $klapper->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="naikKelasXIIModalLabel">Masukkan Tanggal Naik Kelas XII</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <label for="tanggal_naik_kelas_xii" class="form-label">Tanggal:</label>
+                    <input type="date" name="tanggal_naik_kelas_xii" id="tanggal_naik_kelas_xii" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
                 <!-- Improved Data Table Card -->
                 <div class="card shadow border-0 rounded-3">
@@ -281,23 +279,65 @@
         </div>
     </div>
 </section>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    // Search input functionality
     let searchInput = document.getElementById("searchInput");
     let searchForm = document.getElementById("searchForm");
+    let loadingIndicator = document.getElementById("loadingIndicator");
     let typingTimer;
     let doneTypingInterval = 500; // Waktu delay sebelum pencarian otomatis (ms)
 
     searchInput.addEventListener("input", function () {
         clearTimeout(typingTimer);
+        
+        // Show loading indicator
+        if (loadingIndicator) {
+            loadingIndicator.classList.remove("d-none");
+        }
+        
         typingTimer = setTimeout(() => {
             searchForm.submit();
         }, doneTypingInterval);
     });
 
-    // Jika pengguna masih mengetik, hentikan pengiriman form sementara
+    // Jika pengguna masih menketik, hentikan pengiriman form sementara
     searchInput.addEventListener("keydown", function () {
         clearTimeout(typingTimer);
+    });
+
+    // Modal functionality
+    const modals = [
+        { id: 'tanggalLulusModal', formId: 'tanggal_lulus' },
+        { id: 'naikKelasXIModal', formId: 'tanggal_naik_kelas_xi' },
+        { id: 'naikKelasXIIModal', formId: 'tanggal_naik_kelas_xii' }
+    ];
+
+    // Set today's date as default for all date inputs
+    const today = new Date().toISOString().split('T')[0];
+    
+    modals.forEach(modal => {
+        const modalElement = document.getElementById(modal.id);
+        if (modalElement) {
+            // When modal is shown, set default date
+            modalElement.addEventListener('shown.bs.modal', function () {
+                const dateInput = document.getElementById(modal.formId);
+                if (dateInput && !dateInput.value) {
+                    dateInput.value = today;
+                }
+            });
+        }
+    });
+
+    // Konfirmasi sebelum melakukan tindakan massal
+    const massActionForms = document.querySelectorAll('.modal form');
+    massActionForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if (!confirm('Apakah Anda yakin ingin melakukan tindakan ini? Tindakan ini tidak dapat dibatalkan.')) {
+                e.preventDefault();
+            }
+        });
     });
 });
 </script>
