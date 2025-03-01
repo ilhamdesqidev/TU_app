@@ -10,6 +10,15 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-12">
+                <!-- Back button -->
+                <div class="card shadow-sm mb-4 border-0 rounded-3">
+                    <div class="card-body">
+                        <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Kembali
+                        </a>
+                    </div>
+                </div>
+                
                 <!-- Header with card design -->
                 <div class="card shadow-sm mb-4 border-0 rounded-3">
                     <div class="card-body">
@@ -18,7 +27,7 @@
                                 <i class="fas fa-user-graduate me-2"></i>Data Siswa
                             </h1>
                             <div class="badge bg-primary bg-opacity-10 text-primary py-2 px-3 rounded-pill">
-                                Klapper ID: {{ $klapper->id }}
+                               Angkatan: {{ $klapper->id }}
                             </div>
                         </div>
                     </div>
@@ -104,6 +113,7 @@
     </div>
 </div>
 
+<!-- Rest of the code remains the same -->
 <!-- Modals -->
 <div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

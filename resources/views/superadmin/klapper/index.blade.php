@@ -138,9 +138,9 @@
             <div class="p-3 rounded-3 bg-light">
                 <i class="fas fa-user-graduate fs-1 text-muted opacity-25 mb-3"></i>
                 <h5 class="fw-bold text-muted">Belum Ada Data Klapper Siswa</h5>
-                <p class="text-muted small mb-3">Silakan tambahkan data siswa baru</p>
+                <p class="text-muted small mb-3">Silakan tambahkan data klapper</p>
                 <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary btn-sm rounded-pill px-3">
-                    <i class="fas fa-plus me-1"></i> Tambah Data Siswa
+                    <i class="fas fa-plus me-1"></i> Tambah Klapper
                 </a>
             </div>
         </div>
@@ -212,58 +212,6 @@
             </div>
         </div>
         @endforeach
-
-        <!-- Example cards for visualization (remove in production) -->
-        <div class="col-xl-3 col-lg-4 col-md-6 teacher-item">
-            <div class="card h-100 rounded-3 shadow-sm border-0" role="button">
-                <div class="card-body p-3">
-                    <div class="d-flex">
-                        <div class="p-2 me-2 bg-success bg-opacity-10 rounded-circle">
-                            <i class="bx bxs-user text-success"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold mb-1">Budi Santoso, S.Pd</h6>
-                            <p class="text-muted small mb-0">Matematika</p>
-                        </div>
-                    </div>
-                    
-                    <hr class="text-muted opacity-25 my-2">
-                    
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-light text-success small">Guru</span>
-                        <button class="btn btn-sm btn-outline-success rounded-circle" style="width: 24px; height: 24px; padding: 0; line-height: 24px;">
-                            <i class="fas fa-arrow-right small"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-lg-4 col-md-6 teacher-item">
-            <div class="card h-100 rounded-3 shadow-sm border-0" role="button">
-                <div class="card-body p-3">
-                    <div class="d-flex">
-                        <div class="p-2 me-2 bg-success bg-opacity-10 rounded-circle">
-                            <i class="bx bxs-user text-success"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold mb-1">Siti Rahayu, M.Pd</h6>
-                            <p class="text-muted small mb-0">Bahasa Indonesia</p>
-                        </div>
-                    </div>
-                    
-                    <hr class="text-muted opacity-25 my-2">
-                    
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-light text-success small">Guru</span>
-                        <button class="btn btn-sm btn-outline-success rounded-circle" style="width: 24px; height: 24px; padding: 0; line-height: 24px;">
-                            <i class="fas fa-arrow-right small"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- List View for Teachers (Initially Hidden) -->
     <div class="row" id="teacher-list-view" style="display: none;">
