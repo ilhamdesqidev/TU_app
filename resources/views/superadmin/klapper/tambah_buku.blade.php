@@ -33,11 +33,11 @@
                         @csrf
                         <div class="mb-3">
                             <label for="nama_buku" class="form-label fw-semibold">Nama Buku</label>
-                            <input type="text" name="nama_buku" id="nama_buku" class="form-control rounded-3" placeholder="Masukkan nama buku" required>
+                            <input type="text" name="nama_buku" id="nama_buku" class="form-control rounded-3" value="{{ old('nama_buku', $newNamaBuku) }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="tahun_ajaran" class="form-label fw-semibold">Tahun Ajaran</label>
-                            <input type="text" name="tahun_ajaran" id="tahun_ajaran" class="form-control rounded-3" placeholder="Masukkan tahun ajaran" required>
+                            <input type="text" name="tahun_ajaran" id="tahun_ajaran" class="form-control rounded-3" value="{{ old('tahun_ajaran', $newTahunAjaran) }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 rounded-pill shadow-sm">
                             <i class="fas fa-save me-2"></i> Simpan Data

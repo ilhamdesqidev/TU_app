@@ -16,9 +16,23 @@ class KlapperController extends Controller
     }
 
     public function createKlapper()
-    {
-        return view('superadmin.klapper.tambah_buku');
+{
+    // Ambil klapper terakhir berdasarkan ID tertinggi
+    $lastKlapper = Klapper::latest()->first();
+
+    // Tentukan nama buku baru
+    $newNamaBuku = $lastKlapper ? 'Angkatan ' . ((int) filter_var($lastKlapper->nama_buku, FILTER_SANITIZE_NUMBER_INT) + 1) : 'Angkatan 1';
+
+    // Tentukan tahun ajaran baru (misalnya, tambah 1 tahun jika formatnya "2023/2024")
+    if ($lastKlapper && preg_match('/(\d{4})\/(\d{4})/', $lastKlapper->tahun_ajaran, $matches)) {
+        $newTahunAjaran = ($matches[1] + 1) . '/' . ($matches[2] + 1);
+    } else {
+        $newTahunAjaran = date('Y') . '/' . (date('Y') + 1);
     }
+
+    return view('superadmin.klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran'));
+}
+
 
     public function storeKlapper(Request $request)
     {
