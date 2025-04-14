@@ -7,7 +7,7 @@
         <div class="row my-3">
             <div class="col-lg-6 col-md-8 mx-auto text-center">
                 <h3 class="fw-bold text-primary mb-2">Koleksi Klapper</h3>
-                <p class="text-muted small mb-3">Akses pustaka digital dan materi pembelajaran</p>
+                <p class="text-muted small mb-3">Akses data siswa siswi smk amaliah 1&2</p>
             </div>
         </div>
 

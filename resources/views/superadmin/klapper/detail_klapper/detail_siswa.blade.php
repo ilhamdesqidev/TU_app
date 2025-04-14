@@ -12,7 +12,7 @@
                 @if ($siswa->foto)
                     <img src="{{ asset('image/' . $siswa->foto) }}" alt="Foto {{ $siswa->nama_siswa }}" class="img-thumbnail rounded-circle" style="max-width: 180px;">
                 @else
-                    <p class="text-muted">Tidak ada foto</p>
+                    <img src="{{ asset('image/default.jpg') }}" alt="Foto Default" class="img-thumbnail rounded-circle" style="max-width: 180px;">
                 @endif
                 <div class="mt-3">
                     @if ($siswa->status != 1 && $siswa->status != 2)

@@ -13,7 +13,7 @@
                 <!-- Back button -->
                 <div class="card shadow-sm mb-4 border-0 rounded-3">
                     <div class="card-body">
-                        <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('klapper.index') }}" class="btn btn-outline-secondary">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
