@@ -3,21 +3,24 @@
 @section('content')
 <div class="bg-light py-3">
     <div class="container">
-        <!-- Header Section -->
+        <!-- Header Section with Improved Styling -->
         <div class="row my-3">
             <div class="col-lg-6 col-md-8 mx-auto text-center">
-                <h3 class="fw-bold text-primary mb-2">Koleksi Klapper</h3>
-                <p class="text-muted small mb-3">Akses data siswa siswi smk amaliah 1&2</p>
+                <h3 class="fw-bold text-primary mb-0">Koleksi Klapper</h3>
+                <p class="text-muted small mb-2">Akses data siswa siswi smk amaliah 1&2</p>
+                <div class="d-flex justify-content-center">
+                    <div class="border-bottom border-primary" style="width: 50px; height: 3px;"></div>
+                </div>
             </div>
         </div>
 
-        <!-- Alert Message -->
+        <!-- Improved Alert Message -->
         @if (session('status'))
         <div class="row mb-3">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm py-2" role="alert">
                     <div class="d-flex align-items-center">
-                        <i class="fas fa-check text-success me-2"></i>
+                        <i class="fas fa-check-circle text-success me-2"></i>
                         <span>{{ session('status') }}</span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -25,309 +28,550 @@
             </div>
         </div>
         @endif
+
+        <!-- Redesigned Category Navigation Tabs -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="bg-white rounded-4 shadow-sm p-2">
+                    <ul class="nav nav-pills nav-fill gap-2" id="data-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active px-4 py-2 rounded-pill" id="klapper-tab" data-bs-toggle="pill" data-bs-target="#klapper-content" type="button" role="tab" aria-controls="klapper-content" aria-selected="true">
+                                <i class="fas fa-user-graduate me-2"></i>Data Klapper
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link px-4 py-2 rounded-pill" id="guru-tab" data-bs-toggle="pill" data-bs-target="#guru-content" type="button" role="tab" aria-controls="guru-content" aria-selected="false">
+                                <i class="fas fa-chalkboard-teacher me-2"></i>Data Guru
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="container py-3">
-    <!-- SECTION: KLAPPER SISWA -->
-    <div class="section-header d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0">
-            <i class="fas fa-user-graduate me-2 text-primary"></i>Klapper
-        </h5>
-        <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
-            <i class="fas fa-plus me-1"></i> Tambah Klapper
-        </a>
-    </div>
-
-    <!-- Filter/Search for Students -->
-    <div class="row mb-3">
-        <div class="col-md-5 mb-2 mb-md-0">
-            <div class="input-group input-group-sm">
-                <span class="input-group-text bg-white border-end-0">
-                    <i class="fas fa-search text-muted"></i>
-                </span>
-                <input type="text" class="form-control border-start-0" id="searchSiswa" placeholder="Cari Angkatan Klapper...">
-            </div>
-        </div>
-        <div class="col-md-7 text-md-end">
-            <div class="btn-group btn-group-sm" id="student-view-toggle">
-                <button class="btn btn-outline-secondary active" id="student-grid-btn">
-                    <i class="fas fa-th me-1"></i>Grid
-                </button>
-                <button class="btn btn-outline-secondary" id="student-list-btn">
-                    <i class="fas fa-list me-1"></i>List
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Grid View for Students (Default) -->
-    <div class="row g-3" id="student-grid-view">
-        @foreach ($klapper as $item)
-        <div class="col-xl-3 col-lg-4 col-md-6 student-item">
-            <div class="card h-100 rounded-3 shadow-sm border-0" 
-                    onclick="window.location='{{ url('klapper/' . $item->id) }}'" 
-                    role="button">
-                <div class="card-body p-3">
-                    <div class="d-flex">
-                        <div class="p-2 me-2 bg-primary bg-opacity-10 rounded-circle">
-                            <i class="bx bxs-book text-primary"></i>
-                        </div>
+<div class="container py-4">
+    <!-- Tab Content with Enhanced UI -->
+    <div class="tab-content" id="data-tabs-content">
+        <!-- KLAPPER TAB CONTENT -->
+        <div class="tab-pane fade show active" id="klapper-content" role="tabpanel" aria-labelledby="klapper-tab">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body">
+                    <div class="section-header d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h6 class="fw-bold mb-1">{{ $item->nama_buku }}</h6>
-                            <p class="text-muted small mb-0">{{ $item->tahun_ajaran }}</p>
+                            <h5 class="fw-bold mb-0">
+                                <i class="fas fa-user-graduate me-2 text-primary"></i>Klapper Siswa
+                            </h5>
+                            <p class="text-muted small mt-1 mb-0">Menampilkan seluruh data klapper siswa</p>
+                        </div>
+                        <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary rounded-pill px-3 shadow-sm">
+                            <i class="fas fa-plus me-2"></i> Tambah Klapper
+                        </a>
+                    </div>
+
+                    <!-- Enhanced Filter Controls -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-lg-5 col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 ps-0" id="searchSiswa" placeholder="Cari Angkatan Klapper...">
+                                <button class="btn btn-outline-secondary border-start-0 bg-white" type="button" id="clearSearchSiswa">
+                                    <i class="fas fa-times text-muted"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <select class="form-select" id="filterTahunAjaran">
+                                <option value="">Semua Tahun Ajaran</option>
+                                <option value="2023/2024">2023/2024</option>
+                                <option value="2022/2023">2022/2023</option>
+                                <option value="2021/2022">2021/2022</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-12 text-lg-end">
+                            <div class="btn-group" id="student-view-toggle">
+                                <button class="btn btn-outline-primary active rounded-start-pill" id="student-grid-btn">
+                                    <i class="fas fa-th me-2"></i>Grid
+                                </button>
+                                <button class="btn btn-outline-primary rounded-end-pill" id="student-list-btn">
+                                    <i class="fas fa-list me-2"></i>List
+                                </button>
+                            </div>
+                            <button class="btn btn-outline-primary ms-2 rounded-pill" id="exportDataSiswa">
+                                <i class="fas fa-file-export me-2"></i>Export
+                            </button>
                         </div>
                     </div>
-                    
-                    <hr class="text-muted opacity-25 my-2">
-                    
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-light text-primary small">Siswa</span>
-                        <button class="btn btn-sm btn-outline-primary rounded-circle" style="width: 24px; height: 24px; padding: 0; line-height: 24px;">
-                            <i class="fas fa-arrow-right small"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
 
-    <!-- List View for Students (Initially Hidden) -->
-    <div class="row" id="student-list-view" style="display: none;">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="list-group list-group-flush rounded-3">
-                    @foreach ($klapper as $item)
-                    <a href="{{ url('klapper/' . $item->id) }}" class="list-group-item list-group-item-action p-3 border-bottom student-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="bg-primary bg-opacity-10 rounded-3 p-3 text-center">
-                                    <i class="bx bxs-book-alt text-primary fs-4"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <h6 class="fw-bold mb-0 text-truncate">{{ $item->nama_buku }}</h6>
-                                <div class="d-flex align-items-center mt-1">
-                                    <i class="fas fa-calendar-alt text-muted me-1 small"></i>
-                                    <span class="text-muted small">{{ $item->tahun_ajaran }}</span>
-                                </div>
-                            </div>
-                            <div class="col-auto ms-auto">
-                                <div class="d-flex align-items-center">
-                                    <span class="badge bg-primary bg-opacity-10 text-primary me-3 px-2 py-1">
-                                        Siswa
-                                    </span>
-                                    <div class="btn btn-outline-primary btn-sm rounded-pill px-2">
-                                        Detail <i class="fas fa-chevron-right ms-1 small"></i>
+                    <!-- Redesigned Grid View for Students -->
+                    <div class="row g-3" id="student-grid-view">
+                        @foreach ($klapper as $item)
+                        <div class="col-xl-3 col-lg-4 col-md-6 student-item" data-tahun="{{ $item->tahun_ajaran }}">
+                            <div class="card h-100 rounded-4 border-0 shadow-sm hover-card" 
+                                    onclick="window.location='{{ url('klapper/' . $item->id) }}'" 
+                                    role="button">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
+                                            <i class="fas fa-book-open text-primary fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-truncate">{{ $item->nama_buku }}</h6>
+                                            <div class="d-flex align-items-center mt-1">
+                                                <i class="fas fa-calendar-alt text-muted me-1 small"></i>
+                                                <span class="text-muted small">{{ $item->tahun_ajaran }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 small">
+                                            <i class="fas fa-user-graduate me-1"></i> Siswa
+                                        </span>
+                                        <div class="dropdown klapper-actions">
+                                            <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id) }}"><i class="fas fa-eye me-2 text-primary"></i>Lihat Detail</a></li>
+                                                <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </a>
-                    @endforeach
+                        @endforeach
+                    </div>
+
+                    <!-- Enhanced List View for Students -->
+                    <div id="student-list-view" style="display: none;">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" width="5%">#</th>
+                                        <th scope="col" width="40%">Nama Buku</th>
+                                        <th scope="col" width="20%">Tahun Ajaran</th>
+                                        <th scope="col" width="15%">Kategori</th>
+                                        <th scope="col" width="20%" class="text-end">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($klapper as $index => $item)
+                                    <tr class="student-item" data-tahun="{{ $item->tahun_ajaran }}">
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
+                                                    <i class="fas fa-book-open text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold mb-0">{{ $item->nama_buku }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ $item->tahun_ajaran }}</td>
+                                        <td>
+                                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2">
+                                                <i class="fas fa-user-graduate me-1"></i> Siswa
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <a href="{{ url('klapper/' . $item->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                    <i class="fas fa-eye me-1"></i> Detail
+                                                </a>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-outline-secondary rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                        <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Empty State for Students with Animation -->
+                    @if(count($klapper) == 0)
+                    <div class="empty-state text-center py-5">
+                        <div class="empty-state-icon mb-4">
+                            <i class="fas fa-book-open text-muted opacity-25 fa-5x"></i>
+                        </div>
+                        <h5 class="fw-bold text-muted">Belum Ada Data Klapper Siswa</h5>
+                        <p class="text-muted mb-4">Silakan tambahkan data klapper baru untuk mulai mengelola data siswa</p>
+                        <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
+                            <i class="fas fa-plus me-2"></i> Tambah Klapper Baru
+                        </a>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Empty State for Students -->
-    @if(count($klapper) == 0)
-    <div class="row">
-        <div class="col-md-6 mx-auto text-center py-4 my-3">
-            <div class="p-3 rounded-3 bg-light">
-                <i class="fas fa-user-graduate fs-1 text-muted opacity-25 mb-3"></i>
-                <h5 class="fw-bold text-muted">Belum Ada Data Klapper Siswa</h5>
-                <p class="text-muted small mb-3">Silakan tambahkan data klapper</p>
-                <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary btn-sm rounded-pill px-3">
-                    <i class="fas fa-plus me-1"></i> Tambah Klapper
-                </a>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Spacer between sections -->
-    <div class="my-5"></div>
-
-    <!-- SECTION: DATA GURU -->
-    <div class="section-header d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0">
-            <i class="fas fa-chalkboard-teacher me-2 text-success"></i>Data Guru
-        </h5>
-        <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
-            <i class="fas fa-plus me-1"></i> Tambah Data Guru
-        </a>
-    </div>
-
-    <!-- Filter/Search for Teachers -->
-    <div class="row mb-3">
-        <div class="col-md-5 mb-2 mb-md-0">
-            <div class="input-group input-group-sm">
-                <span class="input-group-text bg-white border-end-0">
-                    <i class="fas fa-search text-muted"></i>
-                </span>
-                <input type="text" class="form-control border-start-0" id="searchGuru" placeholder="Cari data guru...">
-            </div>
-        </div>
-        <div class="col-md-7 text-md-end">
-            <div class="btn-group btn-group-sm" id="teacher-view-toggle">
-                <button class="btn btn-outline-secondary active" id="teacher-grid-btn">
-                    <i class="fas fa-th me-1"></i>Grid
-                </button>
-                <button class="btn btn-outline-secondary" id="teacher-list-btn">
-                    <i class="fas fa-list me-1"></i>List
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Grid View for Teachers (Default) -->
-    <div class="row g-3" id="teacher-grid-view">
-        @foreach ($guru ?? [] as $item)
-        <div class="col-xl-3 col-lg-4 col-md-6 teacher-item">
-            <div class="card h-100 rounded-3 shadow-sm border-0" 
-                    onclick="window.location='{{ url('klapper/guru/' . $item->id) }}'" 
-                    role="button">
-                <div class="card-body p-3">
-                    <div class="d-flex">
-                        <div class="p-2 me-2 bg-success bg-opacity-10 rounded-circle">
-                            <i class="bx bxs-user text-success"></i>
-                        </div>
+        <!-- GURU TAB CONTENT -->
+        <div class="tab-pane fade" id="guru-content" role="tabpanel" aria-labelledby="guru-tab">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body">
+                    <div class="section-header d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h6 class="fw-bold mb-1">{{ $item->nama_guru ?? 'Nama Guru' }}</h6>
-                            <p class="text-muted small mb-0">{{ $item->mata_pelajaran ?? 'Mata Pelajaran' }}</p>
+                            <h5 class="fw-bold mb-0">
+                                <i class="fas fa-chalkboard-teacher me-2 text-success"></i>Data Guru
+                            </h5>
+                            <p class="text-muted small mt-1 mb-0">Menampilkan seluruh data guru pengajar</p>
+                        </div>
+                        <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success rounded-pill px-3 shadow-sm">
+                            <i class="fas fa-plus me-2"></i> Tambah Data Guru
+                        </a>
+                    </div>
+
+                    <!-- Enhanced Filter Controls for Teachers -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-lg-5 col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 ps-0" id="searchGuru" placeholder="Cari nama guru atau mata pelajaran...">
+                                <button class="btn btn-outline-secondary border-start-0 bg-white" type="button" id="clearSearchGuru">
+                                    <i class="fas fa-times text-muted"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <select class="form-select" id="filterMapel">
+                                <option value="">Semua Mata Pelajaran</option>
+                                <option value="Matematika">Matematika</option>
+                                <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                                <option value="Bahasa Inggris">Bahasa Inggris</option>
+                                <!-- Add more options based on your data -->
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-12 text-lg-end">
+                            <div class="btn-group" id="teacher-view-toggle">
+                                <button class="btn btn-outline-success active rounded-start-pill" id="teacher-grid-btn">
+                                    <i class="fas fa-th me-2"></i>Grid
+                                </button>
+                                <button class="btn btn-outline-success rounded-end-pill" id="teacher-list-btn">
+                                    <i class="fas fa-list me-2"></i>List
+                                </button>
+                            </div>
+                            <button class="btn btn-outline-success ms-2 rounded-pill" id="exportDataGuru">
+                                <i class="fas fa-file-export me-2"></i>Export
+                            </button>
                         </div>
                     </div>
-                    
-                    <hr class="text-muted opacity-25 my-2">
-                    
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-light text-success small">Guru</span>
-                        <button class="btn btn-sm btn-outline-success rounded-circle" style="width: 24px; height: 24px; padding: 0; line-height: 24px;">
-                            <i class="fas fa-arrow-right small"></i>
-                        </button>
+
+                    <!-- Redesigned Grid View for Teachers -->
+                    <div class="row g-3" id="teacher-grid-view">
+                        @foreach ($guru ?? [] as $item)
+                        <div class="col-xl-3 col-lg-4 col-md-6 teacher-item" data-mapel="{{ $item->mata_pelajaran }}">
+                            <div class="card h-100 rounded-4 border-0 shadow-sm hover-card" 
+                                    onclick="window.location='{{ url('klapper/guru/' . $item->id) }}'" 
+                                    role="button">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
+                                            <i class="fas fa-user-tie text-success fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-truncate">{{ $item->nama_guru ?? 'Nama Guru' }}</h6>
+                                            <div class="d-flex align-items-center mt-1">
+                                                <i class="fas fa-book text-muted me-1 small"></i>
+                                                <span class="text-muted small">{{ $item->mata_pelajaran ?? 'Mata Pelajaran' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 small">
+                                            <i class="fas fa-chalkboard-teacher me-1"></i> Guru
+                                        </span>
+                                        <div class="dropdown guru-actions">
+                                            <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                <li><a class="dropdown-item" href="{{ url('klapper/guru/' . $item->id) }}"><i class="fas fa-eye me-2 text-success"></i>Lihat Detail</a></li>
+                                                <li><a class="dropdown-item" href="{{ url('klapper/guru/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-danger" href="#" onclick="confirmDeleteGuru({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+
+                        <!-- Example Teacher Card -->
+                        @if(empty($guru) || count($guru) == 0)
+                        <div class="col-xl-3 col-lg-4 col-md-6 teacher-item" data-mapel="Matematika">
+                            <div class="card h-100 rounded-4 border-0 shadow-sm hover-card" role="button">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
+                                            <i class="fas fa-user-tie text-success fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-truncate">Budi Santoso, S.Pd</h6>
+                                            <div class="d-flex align-items-center mt-1">
+                                                <i class="fas fa-book text-muted me-1 small"></i>
+                                                <span class="text-muted small">Matematika</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 small">
+                                            <i class="fas fa-chalkboard-teacher me-1"></i> Guru
+                                        </span>
+                                        <div class="dropdown guru-actions">
+                                            <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-success"></i>Lihat Detail</a></li>
+                                                <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
 
-    <!-- List View for Teachers (Initially Hidden) -->
-    <div class="row" id="teacher-list-view" style="display: none;">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="list-group list-group-flush rounded-3">
-                    <!-- Loop through teacher data (if available) -->
-                    @foreach ($guru ?? [] as $item)
-                    <a href="{{ url('klapper/guru/' . $item->id) }}" class="list-group-item list-group-item-action p-3 border-bottom teacher-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="bg-success bg-opacity-10 rounded-3 p-3 text-center">
-                                    <i class="bx bxs-user text-success fs-4"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <h6 class="fw-bold mb-0 text-truncate">{{ $item->nama_guru }}</h6>
-                                <div class="d-flex align-items-center mt-1">
-                                    <i class="fas fa-book text-muted me-1 small"></i>
-                                    <span class="text-muted small">{{ $item->mata_pelajaran }}</span>
-                                </div>
-                            </div>
-                            <div class="col-auto ms-auto">
-                                <div class="d-flex align-items-center">
-                                    <span class="badge bg-success bg-opacity-10 text-success me-3 px-2 py-1">
-                                        Guru
-                                    </span>
-                                    <div class="btn btn-outline-success btn-sm rounded-pill px-2">
-                                        Detail <i class="fas fa-chevron-right ms-1 small"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    @endforeach
+                    <!-- Enhanced List View for Teachers -->
+                    <div id="teacher-list-view" style="display: none;">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" width="5%">#</th>
+                                        <th scope="col" width="35%">Nama Guru</th>
+                                        <th scope="col" width="25%">Mata Pelajaran</th>
+                                        <th scope="col" width="15%">Status</th>
+                                        <th scope="col" width="20%" class="text-end">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($guru ?? [] as $index => $item)
+                                    <tr class="teacher-item" data-mapel="{{ $item->mata_pelajaran }}">
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
+                                                    <i class="fas fa-user-tie text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold mb-0">{{ $item->nama_guru }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ $item->mata_pelajaran }}</td>
+                                        <td>
+                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
+                                                <i class="fas fa-chalkboard-teacher me-1"></i> Guru
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <a href="{{ url('klapper/guru/' . $item->id) }}" class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                                    <i class="fas fa-eye me-1"></i> Detail
+                                                </a>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-outline-secondary rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                        <li><a class="dropdown-item" href="{{ url('klapper/guru/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        <li><a class="dropdown-item text-danger" href="#" onclick="confirmDeleteGuru({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
 
-                    <!-- Example items for visualization (remove in production) -->
-                    <a href="#" class="list-group-item list-group-item-action p-3 border-bottom teacher-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="bg-success bg-opacity-10 rounded-3 p-3 text-center">
-                                    <i class="bx bxs-user text-success fs-4"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <h6 class="fw-bold mb-0 text-truncate">Budi Santoso, S.Pd</h6>
-                                <div class="d-flex align-items-center mt-1">
-                                    <i class="fas fa-book text-muted me-1 small"></i>
-                                    <span class="text-muted small">Matematika</span>
-                                </div>
-                            </div>
-                            <div class="col-auto ms-auto">
-                                <div class="d-flex align-items-center">
-                                    <span class="badge bg-success bg-opacity-10 text-success me-3 px-2 py-1">
-                                        Guru
-                                    </span>
-                                    <div class="btn btn-outline-success btn-sm rounded-pill px-2">
-                                        Detail <i class="fas fa-chevron-right ms-1 small"></i>
-                                    </div>
-                                </div>
-                            </div>
+                                    <!-- Example row for visualization -->
+                                    @if(empty($guru) || count($guru) == 0)
+                                    <tr class="teacher-item" data-mapel="Matematika">
+                                        <td>1</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
+                                                    <i class="fas fa-user-tie text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="fw-bold mb-0">Budi Santoso, S.Pd</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Matematika</td>
+                                        <td>
+                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
+                                                <i class="fas fa-chalkboard-teacher me-1"></i> Guru
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <a href="#" class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                                    <i class="fas fa-eye me-1"></i> Detail
+                                                </a>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-outline-secondary rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                        <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
                         </div>
-                    </a>
-                    
-                    <a href="#" class="list-group-item list-group-item-action p-3 border-bottom teacher-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="bg-success bg-opacity-10 rounded-3 p-3 text-center">
-                                    <i class="bx bxs-user text-success fs-4"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <h6 class="fw-bold mb-0 text-truncate">Siti Rahayu, M.Pd</h6>
-                                <div class="d-flex align-items-center mt-1">
-                                    <i class="fas fa-book text-muted me-1 small"></i>
-                                    <span class="text-muted small">Bahasa Indonesia</span>
-                                </div>
-                            </div>
-                            <div class="col-auto ms-auto">
-                                <div class="d-flex align-items-center">
-                                    <span class="badge bg-success bg-opacity-10 text-success me-3 px-2 py-1">
-                                        Guru
-                                    </span>
-                                    <div class="btn btn-outline-success btn-sm rounded-pill px-2">
-                                        Detail <i class="fas fa-chevron-right ms-1 small"></i>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+
+                    <!-- Empty State for Teachers with Animation -->
+                    @if(empty($guru) || count($guru) == 0)
+                    <div class="empty-state text-center py-5" id="teacher-empty-state">
+                        <div class="empty-state-icon mb-4">
+                            <i class="fas fa-chalkboard-teacher text-muted opacity-25 fa-5x"></i>
                         </div>
-                    </a>
+                        <h5 class="fw-bold text-muted">Belum Ada Data Guru</h5>
+                        <p class="text-muted mb-4">Silakan tambahkan data guru untuk mulai mengelola data pengajar</p>
+                        <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success rounded-pill px-4 py-2 shadow-sm">
+                            <i class="fas fa-plus me-2"></i> Tambah Data Guru
+                        </a>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Empty State for Teachers -->
-    @if(empty($guru) || count($guru) == 0)
-    <div class="row" id="teacher-empty-state">
-        <div class="col-md-6 mx-auto text-center py-4 my-3">
-            <div class="p-3 rounded-3 bg-light">
-                <i class="fas fa-chalkboard-teacher fs-1 text-muted opacity-25 mb-3"></i>
-                <h5 class="fw-bold text-muted">Belum Ada Data Guru</h5>
-                <p class="text-muted small mb-3">Silakan tambahkan data guru baru</p>
-                <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success btn-sm rounded-pill px-3">
-                    <i class="fas fa-plus me-1"></i> Tambah Data Guru
-                </a>
-            </div>
-        </div>
-    </div>
-    @endif
 </div>
 
-<!-- JavaScript untuk fungsi toggle view dan search -->
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                    <h5 class="fw-bold">Apakah Anda yakin?</h5>
+                    <p class="text-muted">Data yang dihapus tidak dapat dikembalikan.</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                    Batal
+                </button>
+                <form id="deleteForm" method="POST" style="display: inline-block;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger rounded-pill px-4">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Action Button for Quick Add -->
+<div class="position-fixed bottom-0 end-0 m-4">
+    <div class="dropup">
+        <button class="btn btn-primary rounded-circle shadow p-3" type="button" id="quickAddBtn" data-bs-toggle="dropdown" aria-expanded="false" style="width: 56px; height: 56px;">
+            <i class="fas fa-plus"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="quickAddBtn">
+            <li>
+                <h6 class="dropdown-header">Tambah Data Baru</h6>
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="{{ url('klapper/tambahdataklapper') }}">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
+                        <i class="fas fa-user-graduate text-primary"></i>
+                    </div>
+                    <div>
+                        <span>Tambah Klapper</span>
+                        <p class="text-muted small mb-0">Data siswa baru</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="{{ url('klapper/tambahdataguru') }}">
+                    <div class="rounded-circle bg-success bg-opacity-10 p-2 me-2">
+                        <i class="fas fa-chalkboard-teacher text-success"></i>
+                    </div>
+                    <div>
+                        <span>Tambah Guru</span>
+                        <p class="text-muted small mb-0">Data pengajar baru</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- JavaScript for toggling views, search functionality, and remembering tab selection -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Student view toggle
+    // Store the active tab in localStorage
+    const saveActiveTab = function(tabId) {
+        localStorage.setItem('activeKlapperTab', tabId);
+    };
+
+    // Set active tab based on localStorage
+    const setActiveTab = function() {
+        const activeTab = localStorage.getItem('activeKlapperTab');
+        if (activeTab) {
+            const tabEl = document.querySelector(`#${activeTab}`);
+            if (tabEl) {
+                const tab = new bootstrap.Tab(tabEl);
+                tab.show();
+            }
+        }
+    };
+
+    // Initialize tabs with Bootstrap
+    const tabs = document.querySelectorAll('button[data-bs-toggle="pill"]');
+    tabs.forEach(function(tab) {
+        tab.addEventListener('shown.bs.tab', function(e) {
+            saveActiveTab(e.target.id);
+        });
+    });
+
+    // Restore active tab when page loads
+    setActiveTab();
+
+    // Student view toggle with animation
     const studentGridBtn = document.getElementById('student-grid-btn');
     const studentListBtn = document.getElementById('student-list-btn');
     const studentGridView = document.getElementById('student-grid-view');
@@ -349,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('studentViewPreference', 'list');
     });
     
-    // Teacher view toggle
+    // Teacher view toggle with animation
     const teacherGridBtn = document.getElementById('teacher-grid-btn');
     const teacherListBtn = document.getElementById('teacher-list-btn');
     const teacherGridView = document.getElementById('teacher-grid-view');
@@ -371,7 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('teacherViewPreference', 'list');
     });
     
-    // Load saved preferences
+    // Load saved view preferences
     const studentViewPref = localStorage.getItem('studentViewPreference');
     if (studentViewPref === 'list') {
         studentListBtn.click();
@@ -382,57 +626,321 @@ document.addEventListener('DOMContentLoaded', function() {
         teacherListBtn.click();
     }
     
-    // Search functionality for students
+    // Enhanced search functionality for students
     const searchSiswa = document.getElementById('searchSiswa');
+    const clearSearchSiswa = document.getElementById('clearSearchSiswa');
+    
     searchSiswa.addEventListener('keyup', function() {
-        const searchValue = this.value.toLowerCase();
+        filterStudents();
+    });
+    
+    clearSearchSiswa.addEventListener('click', function() {
+        searchSiswa.value = '';
+        filterStudents();
+    });
+    
+    function filterStudents() {
+        const searchValue = searchSiswa.value.toLowerCase();
+        const filterTahun = document.getElementById('filterTahunAjaran').value;
         const studentItems = document.querySelectorAll('.student-item');
+        let count = 0;
         
         studentItems.forEach(item => {
             const text = item.textContent.toLowerCase();
-            if (text.includes(searchValue)) {
+            const tahun = item.getAttribute('data-tahun');
+            const showBySearch = text.includes(searchValue);
+            const showByTahun = filterTahun === '' || tahun === filterTahun;
+            
+            if (showBySearch && showByTahun) {
                 item.style.display = '';
+                count++;
             } else {
                 item.style.display = 'none';
             }
         });
+        
+        // Show no results message if needed
+        const emptyStateDiv = document.querySelector('#klapper-content .empty-state');
+        if (count === 0 && studentItems.length > 0) {
+            if (!emptyStateDiv) {
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'empty-state text-center py-4';
+                noResultsDiv.innerHTML = `
+                    <div class="empty-state-icon mb-3">
+                        <i class="fas fa-search text-muted opacity-25 fa-3x"></i>
+                    </div>
+                    <h5 class="fw-bold text-muted">Tidak Ada Hasil</h5>
+                    <p class="text-muted mb-3">Coba ubah filter pencarian Anda</p>
+                    <button id="resetFilterSiswa" class="btn btn-outline-primary rounded-pill px-4">
+                        <i class="fas fa-redo me-2"></i> Reset Filter
+                    </button>
+                `;
+                
+                if (studentGridView.style.display !== 'none') {
+                    studentGridView.appendChild(noResultsDiv);
+                } else {
+                    studentListView.appendChild(noResultsDiv);
+                }
+                
+                document.getElementById('resetFilterSiswa').addEventListener('click', function() {
+                    searchSiswa.value = '';
+                    document.getElementById('filterTahunAjaran').value = '';
+                    filterStudents();
+                });
+            }
+        } else {
+            const noResultsDiv = document.querySelector('.empty-state:not(#teacher-empty-state)');
+            if (noResultsDiv && noResultsDiv.parentNode) {
+                noResultsDiv.parentNode.removeChild(noResultsDiv);
+            }
+        }
+    }
+    
+    // Filter for tahun ajaran
+    const filterTahunAjaran = document.getElementById('filterTahunAjaran');
+    filterTahunAjaran.addEventListener('change', function() {
+        filterStudents();
     });
     
-    // Search functionality for teachers
+    // Enhanced search functionality for teachers
     const searchGuru = document.getElementById('searchGuru');
+    const clearSearchGuru = document.getElementById('clearSearchGuru');
+    
     searchGuru.addEventListener('keyup', function() {
-        const searchValue = this.value.toLowerCase();
+        filterTeachers();
+    });
+    
+    clearSearchGuru.addEventListener('click', function() {
+        searchGuru.value = '';
+        filterTeachers();
+    });
+    
+    function filterTeachers() {
+        const searchValue = searchGuru.value.toLowerCase();
+        const filterMapel = document.getElementById('filterMapel').value;
         const teacherItems = document.querySelectorAll('.teacher-item');
+        let count = 0;
         
         teacherItems.forEach(item => {
             const text = item.textContent.toLowerCase();
-            if (text.includes(searchValue)) {
+            const mapel = item.getAttribute('data-mapel');
+            const showBySearch = text.includes(searchValue);
+            const showByMapel = filterMapel === '' || mapel === filterMapel;
+            
+            if (showBySearch && showByMapel) {
                 item.style.display = '';
+                count++;
             } else {
                 item.style.display = 'none';
             }
         });
+        
+        // Show no results message if needed
+        if (count === 0 && teacherItems.length > 0) {
+            const emptyStateDiv = document.querySelector('#teacher-empty-state');
+            if (!emptyStateDiv || emptyStateDiv.style.display === 'none') {
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'empty-state text-center py-4';
+                noResultsDiv.innerHTML = `
+                    <div class="empty-state-icon mb-3">
+                        <i class="fas fa-search text-muted opacity-25 fa-3x"></i>
+                    </div>
+                    <h5 class="fw-bold text-muted">Tidak Ada Hasil</h5>
+                    <p class="text-muted mb-3">Coba ubah filter pencarian Anda</p>
+                    <button id="resetFilterGuru" class="btn btn-outline-success rounded-pill px-4">
+                        <i class="fas fa-redo me-2"></i> Reset Filter
+                    </button>
+                `;
+                
+                if (teacherGridView.style.display !== 'none') {
+                    teacherGridView.appendChild(noResultsDiv);
+                } else {
+                    teacherListView.appendChild(noResultsDiv);
+                }
+                
+                document.getElementById('resetFilterGuru').addEventListener('click', function() {
+                    searchGuru.value = '';
+                    document.getElementById('filterMapel').value = '';
+                    filterTeachers();
+                });
+            }
+        } else {
+            const noResultsDiv = document.querySelector('#guru-content .empty-state:not(#teacher-empty-state)');
+            if (noResultsDiv && noResultsDiv.parentNode) {
+                noResultsDiv.parentNode.removeChild(noResultsDiv);
+            }
+        }
+    }
+    
+    // Filter for mata pelajaran
+    const filterMapel = document.getElementById('filterMapel');
+    filterMapel.addEventListener('change', function() {
+        filterTeachers();
+    });
+    
+    // Delete confirmation
+    window.confirmDelete = function(id, event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = `{{ url('klapper') }}/${id}`;
+        const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        modal.show();
+    };
+    
+    window.confirmDeleteGuru = function(id, event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = `{{ url('klapper/guru') }}/${id}`;
+        const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        modal.show();
+    };
+    
+    // Export functionality
+    document.getElementById('exportDataSiswa').addEventListener('click', function() {
+        // Add export functionality for students
+        alert('Export data siswa sedang diproses...');
+    });
+    
+    document.getElementById('exportDataGuru').addEventListener('click', function() {
+        // Add export functionality for teachers
+        alert('Export data guru sedang diproses...');
     });
     
     // Add CSS for visual styling
     const style = document.createElement('style');
     style.textContent = `
-        .section-header {
-            position: relative;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
+        /* Global Styles */
+        body {
+            background-color: #f8f9fa;
         }
-        .section-header:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            height: 3px;
-            width: 50px;
+        
+        /* Card Hover Effects */
+        .hover-card {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+            border-color: var(--bs-primary);
+        }
+        #guru-content .hover-card:hover {
+            border-color: var(--bs-success);
+        }
+        
+        /* Tab Navigation Styling */
+        #data-tabs .nav-link {
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.6rem 1.5rem;
+        }
+        #klapper-tab.active {
+            background: linear-gradient(135deg, #3a8ffe 0%, #0062cc 100%);
+            box-shadow: 0 4px 10px rgba(58, 143, 254, 0.3);
+        }
+        #guru-tab.active {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+        #data-tabs .nav-link:not(.active):hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        /* Empty State Animation */
+        .empty-state-icon {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        
+        /* Action Buttons */
+        .dropdown-menu {
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+        }
+        .dropdown-item {
+            padding: 0.6rem 1rem;
+            transition: background-color 0.2s ease;
+        }
+        .dropdown-item:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .dropdown-item:active {
             background-color: var(--bs-primary);
         }
-        .section-header:nth-of-type(2):after {
+        #guru-content .dropdown-item:active {
             background-color: var(--bs-success);
+        }
+        
+        /* Table Styling */
+        .table {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .table tr:hover {
+            transition: background-color 0.2s ease;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            .section-header a {
+                margin-top: 1rem;
+                align-self: flex-start;
+            }
+        }
+        
+        /* Form Controls */
+        .form-control, .form-select, .btn {
+            font-size: 0.875rem;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        #guru-content .form-control:focus, #guru-content .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.15);
+        }
+        
+        /* Floating Action Button Animation */
+        #quickAddBtn {
+            transition: all 0.3s ease;
+        }
+        #quickAddBtn:hover {
+            transform: rotate(45deg);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
         }
     `;
     document.head.appendChild(style);
