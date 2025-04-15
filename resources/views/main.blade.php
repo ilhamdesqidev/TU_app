@@ -183,6 +183,49 @@
         .sidebar.collapsed .logo-img {
             margin: 0;
         }
+
+        /* Untuk menyelaraskan icon sidebar saat collapsed */
+        .sidebar.collapsed .nav-link .icon-wrapper {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Pastikan padding tidak hilang di navbar saat sidebar collapsed */
+        .navbar-top {
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Atur transisi agar mulus saat sidebar berubah */
+        .navbar-top, .main-content {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Rapiin toggle sidebar button */
+        #sidebarToggle {
+            border: none;
+            background: none;
+            outline: none;
+        }
+
+        /* Sidebar yang collapsed agar ikon center */
+        .sidebar.collapsed .icon-wrapper {
+            margin: 0 auto;
+            display: block;
+            text-align: center;
+        }
+
+        .sidebar.collapsed .nav-link {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Navbar kanan tetap tampil rapi saat collapse */
+        .navbar-top .d-flex.align-items-center {
+            gap: 1rem;
+        }
+
     </style>
 </head>
 <body>
@@ -332,11 +375,16 @@
             const archiveMenu = document.getElementById('archiveMenu');
             
             // Toggle sidebar
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
-                navbarTop.classList.toggle('expanded');
-            });
+           sidebarToggle.addEventListener('click', function () {
+    sidebar.classList.toggle('collapsed');
+    mainContent.classList.toggle('expanded');
+    navbarTop.classList.toggle('expanded');
+
+    // Untuk menyesuaikan ukuran dropdown jika ada
+    const dropdowns = document.querySelectorAll('.dropdown-menu');
+    dropdowns.forEach(dropdown => {
+        dropdown.style.right = sidebar.classList.contains('collapsed') ? '10px' : '';
+    });
             
             // Toggle archive dropdown
             archiveToggle.addEventListener('click', function(e) {
