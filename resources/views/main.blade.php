@@ -296,65 +296,64 @@
     </div>
 
     <!-- Top Navbar -->
-    <nav class="navbar-top" id="navbar-top">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center h-100">
-                <!-- Toggle Button -->
-                <button class="btn btn-link text-dark" id="sidebarToggle">
-                    <i class='bx bx-menu fs-4'></i>
-                </button>
-                
-                <!-- Right Navbar Items -->
-                <div class="d-flex align-items-center">
-                    <!-- Notifications -->
-                    <div class="dropdown mx-2">
-                        <a class="btn btn-light position-relative rounded-circle p-2" href="#" role="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bx bx-bell fs-5"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                3
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px;">
-                            <li><h6 class="dropdown-header">Notifikasi</h6></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item py-2" href="#">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="p-2 bg-primary bg-opacity-10 rounded-circle text-primary">
-                                            <i class="bx bx-envelope"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <p class="mb-0 small">Surat masuk baru</p>
-                                        <span class="text-muted x-small">15 menit yang lalu</span>
+<nav class="navbar-top" id="navbar-top">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center h-100">
+            <!-- Spacer to keep layout -->
+            <div style="width: 40px;"></div> <!-- Ini menggantikan tombol toggle agar spacing tetap -->
+
+            <!-- Right Navbar Items -->
+            <div class="d-flex align-items-center">
+                <!-- Notifications -->
+                <div class="dropdown mx-2">
+                    <a class="btn btn-light position-relative rounded-circle p-2" href="#" role="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bx bx-bell fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px;">
+                        <li><h6 class="dropdown-header">Notifikasi</h6></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="p-2 bg-primary bg-opacity-10 rounded-circle text-primary">
+                                        <i class="bx bx-envelope"></i>
                                     </div>
                                 </div>
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-center small text-primary" href="#">Lihat Semua Notifikasi</a></li>
-                        </ul>
-                    </div>
-                    
-                    <!-- User Profile -->
-                    <div class="dropdown">
-                        <a class="d-flex align-items-center dropdown-toggle text-dark text-decoration-none" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/asset/img/logo-12 (1).png" alt="Profile" class="user-avatar">
-                            <div class="ms-2 d-none d-lg-block">
-                                <div class="fw-bold">Admin</div>
-                                <div class="small text-muted">Tata Usaha</div>
+                                <div class="flex-grow-1 ms-3">
+                                    <p class="mb-0 small">Surat masuk baru</p>
+                                    <span class="text-muted x-small">15 menit yang lalu</span>
+                                </div>
                             </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i>Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i>Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#"><i class="bx bx-log-out me-2"></i>Logout</a></li>
-                        </ul>
-                    </div>
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-center small text-primary" href="#">Lihat Semua Notifikasi</a></li>
+                    </ul>
+                </div>
+                
+                <!-- User Profile -->
+                <div class="dropdown">
+                    <a class="d-flex align-items-center dropdown-toggle text-dark text-decoration-none" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/asset/img/logo-12 (1).png" alt="Profile" class="user-avatar">
+                        <div class="ms-2 d-none d-lg-block">
+                            <div class="fw-bold">Admin</div>
+                            <div class="small text-muted">Tata Usaha</div>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i>Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="bx bx-log-out me-2"></i>Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
     
     <!-- Main Content -->
     <div class="main-content" id="main-content">
