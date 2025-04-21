@@ -28,26 +28,6 @@
             </div>
         </div>
         @endif
-
-        <!-- Redesigned Category Navigation Tabs -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="bg-white rounded-4 shadow-sm p-2">
-                    <ul class="nav nav-pills nav-fill gap-2" id="data-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active px-4 py-2 rounded-pill" id="klapper-tab" data-bs-toggle="pill" data-bs-target="#klapper-content" type="button" role="tab" aria-controls="klapper-content" aria-selected="true">
-                                <i class="fas fa-user-graduate me-2"></i>Data Klapper
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link px-4 py-2 rounded-pill" id="guru-tab" data-bs-toggle="pill" data-bs-target="#guru-content" type="button" role="tab" aria-controls="guru-content" aria-selected="false">
-                                <i class="fas fa-chalkboard-teacher me-2"></i>Data Guru
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -209,242 +189,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- GURU TAB CONTENT -->
-        <div class="tab-pane fade" id="guru-content" role="tabpanel" aria-labelledby="guru-tab">
-            <div class="card border-0 shadow-sm rounded-4 mb-4">
-                <div class="card-body">
-                    <div class="section-header d-flex justify-content-between align-items-center mb-4">
-                        <div>
-                            <h5 class="fw-bold mb-0">
-                                <i class="fas fa-chalkboard-teacher me-2 text-success"></i>Data Guru
-                            </h5>
-                            <p class="text-muted small mt-1 mb-0">Menampilkan seluruh data guru pengajar</p>
-                        </div>
-                        <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success rounded-pill px-3 shadow-sm">
-                            <i class="fas fa-plus me-2"></i> Tambah Data Guru
-                        </a>
-                    </div>
-
-                    <div class="row g-3 mb-4">
-                        <div class="col-lg-8 col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text bg-white border-end-0">
-                                    <i class="fas fa-search text-muted"></i>
-                                </span>
-                                <input type="text" class="form-control border-start-0 ps-0" id="searchGuru" placeholder="Cari nama guru atau mata pelajaran...">
-                                <button class="btn btn-outline-secondary border-start-0 bg-white" type="button" id="clearSearchGuru">
-                                    <i class="fas fa-times text-muted"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 text-end">
-                            <div class="btn-group" id="teacher-view-toggle">
-                                <button class="btn btn-outline-success active rounded-start-pill" id="teacher-grid-btn">
-                                    <i class="fas fa-th me-2"></i>Grid
-                                </button>
-                                <button class="btn btn-outline-success rounded-end-pill" id="teacher-list-btn">
-                                    <i class="fas fa-list me-2"></i>List
-                                </button>
-                            </div>
-                        </div>
-                    </div>  
-
-                    <!-- Redesigned Grid View for Teachers -->
-                    <div class="row g-3" id="teacher-grid-view">
-                        @foreach ($guru ?? [] as $item)
-                        <div class="col-xl-3 col-lg-4 col-md-6 teacher-item" data-mapel="{{ $item->mata_pelajaran }}">
-                            <div class="card h-100 rounded-4 border-0 shadow-sm hover-card" 
-                                    onclick="window.location='{{ url('klapper/guru/' . $item->id) }}'" 
-                                    role="button">
-                                <div class="card-body p-3">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
-                                            <i class="fas fa-user-tie text-success fs-5"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="fw-bold mb-0 text-truncate">{{ $item->nama_guru ?? 'Nama Guru' }}</h6>
-                                            <div class="d-flex align-items-center mt-1">
-                                                <i class="fas fa-book text-muted me-1 small"></i>
-                                                <span class="text-muted small">{{ $item->mata_pelajaran ?? 'Mata Pelajaran' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 small">
-                                            <i class="fas fa-chalkboard-teacher me-1"></i> Guru
-                                        </span>
-                                        <div class="dropdown guru-actions">
-                                            <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                <li><a class="dropdown-item" href="{{ url('klapper/guru/' . $item->id) }}"><i class="fas fa-eye me-2 text-success"></i>Lihat Detail</a></li>
-                                                <li><a class="dropdown-item" href="{{ url('klapper/guru/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li><a class="dropdown-item text-danger" href="#" onclick="confirmDeleteGuru({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-
-                        <!-- Example Teacher Card -->
-                        @if(empty($guru) || count($guru) == 0)
-                        <div class="col-xl-3 col-lg-4 col-md-6 teacher-item" data-mapel="Matematika">
-                            <div class="card h-100 rounded-4 border-0 shadow-sm hover-card" role="button">
-                                <div class="card-body p-3">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
-                                            <i class="fas fa-user-tie text-success fs-5"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="fw-bold mb-0 text-truncate">Budi Santoso, S.Pd</h6>
-                                            <div class="d-flex align-items-center mt-1">
-                                                <i class="fas fa-book text-muted me-1 small"></i>
-                                                <span class="text-muted small">Matematika</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 small">
-                                            <i class="fas fa-chalkboard-teacher me-1"></i> Guru
-                                        </span>
-                                        <div class="dropdown guru-actions">
-                                            <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-success"></i>Lihat Detail</a></li>
-                                                <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                    </div>
-
-                    <!-- Enhanced List View for Teachers -->
-                    <div id="teacher-list-view" style="display: none;">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col" width="5%">#</th>
-                                        <th scope="col" width="35%">Nama Guru</th>
-                                        <th scope="col" width="25%">Mata Pelajaran</th>
-                                        <th scope="col" width="15%">Status</th>
-                                        <th scope="col" width="20%" class="text-end">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($guru ?? [] as $index => $item)
-                                    <tr class="teacher-item" data-mapel="{{ $item->mata_pelajaran }}">
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
-                                                    <i class="fas fa-user-tie text-success"></i>
-                                                </div>
-                                                <div>
-                                                    <h6 class="fw-bold mb-0">{{ $item->nama_guru }}</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>{{ $item->mata_pelajaran }}</td>
-                                        <td>
-                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
-                                                <i class="fas fa-chalkboard-teacher me-1"></i> Guru
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <a href="{{ url('klapper/guru/' . $item->id) }}" class="btn btn-sm btn-outline-success rounded-pill px-3">
-                                                    <i class="fas fa-eye me-1"></i> Detail
-                                                </a>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-outline-secondary rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                        <li><a class="dropdown-item" href="{{ url('klapper/guru/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
-                                                        <li><hr class="dropdown-divider"></li>
-                                                        <li><a class="dropdown-item text-danger" href="#" onclick="confirmDeleteGuru({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-
-                                    <!-- Example row for visualization -->
-                                    @if(empty($guru) || count($guru) == 0)
-                                    <tr class="teacher-item" data-mapel="Matematika">
-                                        <td>1</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
-                                                    <i class="fas fa-user-tie text-success"></i>
-                                                </div>
-                                                <div>
-                                                    <h6 class="fw-bold mb-0">Budi Santoso, S.Pd</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Matematika</td>
-                                        <td>
-                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
-                                                <i class="fas fa-chalkboard-teacher me-1"></i> Guru
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <a href="#" class="btn btn-sm btn-outline-success rounded-pill px-3">
-                                                    <i class="fas fa-eye me-1"></i> Detail
-                                                </a>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-outline-secondary rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                        <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
-                                                        <li><hr class="dropdown-divider"></li>
-                                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Empty State for Teachers with Animation -->
-                    @if(empty($guru) || count($guru) == 0)
-                    <div class="empty-state text-center py-5" id="teacher-empty-state">
-                        <div class="empty-state-icon mb-4">
-                            <i class="fas fa-chalkboard-teacher text-muted opacity-25 fa-5x"></i>
-                        </div>
-                        <h5 class="fw-bold text-muted">Belum Ada Data Guru</h5>
-                        <p class="text-muted mb-4">Silakan tambahkan data guru untuk mulai mengelola data pengajar</p>
-                        <a href="{{ url('klapper/tambahdataguru') }}" class="btn btn-success rounded-pill px-4 py-2 shadow-sm">
-                            <i class="fas fa-plus me-2"></i> Tambah Data Guru
-                        </a>
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -499,17 +243,6 @@
                     </div>
                 </a>
             </li>
-            <li>
-                <a class="dropdown-item d-flex align-items-center" href="{{ url('klapper/tambahdataguru') }}">
-                    <div class="rounded-circle bg-success bg-opacity-10 p-2 me-2">
-                        <i class="fas fa-chalkboard-teacher text-success"></i>
-                    </div>
-                    <div>
-                        <span>Tambah Guru</span>
-                        <p class="text-muted small mb-0">Data pengajar baru</p>
-                    </div>
-                </a>
-            </li>
         </ul>
     </div>
 </div>
@@ -545,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Restore active tab when page loads
     setActiveTab();
 
-    // Student view toggle with animation
+    // Student view toggle
     const studentGridBtn = document.getElementById('student-grid-btn');
     const studentListBtn = document.getElementById('student-list-btn');
     const studentGridView = document.getElementById('student-grid-view');
@@ -567,40 +300,13 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('studentViewPreference', 'list');
     });
     
-    // Teacher view toggle with animation
-    const teacherGridBtn = document.getElementById('teacher-grid-btn');
-    const teacherListBtn = document.getElementById('teacher-list-btn');
-    const teacherGridView = document.getElementById('teacher-grid-view');
-    const teacherListView = document.getElementById('teacher-list-view');
-    
-    teacherGridBtn.addEventListener('click', function() {
-        teacherGridView.style.display = 'flex';
-        teacherListView.style.display = 'none';
-        teacherGridBtn.classList.add('active');
-        teacherListBtn.classList.remove('active');
-        localStorage.setItem('teacherViewPreference', 'grid');
-    });
-    
-    teacherListBtn.addEventListener('click', function() {
-        teacherGridView.style.display = 'none';
-        teacherListView.style.display = 'block';
-        teacherListBtn.classList.add('active');
-        teacherGridBtn.classList.remove('active');
-        localStorage.setItem('teacherViewPreference', 'list');
-    });
-    
-    // Load saved view preferences
+    // Load saved student view
     const studentViewPref = localStorage.getItem('studentViewPreference');
     if (studentViewPref === 'list') {
         studentListBtn.click();
     }
-    
-    const teacherViewPref = localStorage.getItem('teacherViewPreference');
-    if (teacherViewPref === 'list') {
-        teacherListBtn.click();
-    }
-    
-    // Enhanced search functionality for students
+
+    // Enhanced search for students
     const searchSiswa = document.getElementById('searchSiswa');
     const clearSearchSiswa = document.getElementById('clearSearchSiswa');
     
@@ -633,7 +339,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Show no results message if needed
         const emptyStateDiv = document.querySelector('#klapper-content .empty-state');
         if (count === 0 && studentItems.length > 0) {
             if (!emptyStateDiv) {
@@ -663,95 +368,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         } else {
-            const noResultsDiv = document.querySelector('.empty-state:not(#teacher-empty-state)');
+            const noResultsDiv = document.querySelector('.empty-state');
             if (noResultsDiv && noResultsDiv.parentNode) {
                 noResultsDiv.parentNode.removeChild(noResultsDiv);
             }
         }
     }
     
-    // Filter for tahun ajaran
     const filterTahunAjaran = document.getElementById('filterTahunAjaran');
     filterTahunAjaran.addEventListener('change', function() {
         filterStudents();
     });
-    
-    // Enhanced search functionality for teachers
-    const searchGuru = document.getElementById('searchGuru');
-    const clearSearchGuru = document.getElementById('clearSearchGuru');
-    
-    searchGuru.addEventListener('keyup', function() {
-        filterTeachers();
-    });
-    
-    clearSearchGuru.addEventListener('click', function() {
-        searchGuru.value = '';
-        filterTeachers();
-    });
-    
-    function filterTeachers() {
-        const searchValue = searchGuru.value.toLowerCase();
-        const filterMapel = document.getElementById('filterMapel').value;
-        const teacherItems = document.querySelectorAll('.teacher-item');
-        let count = 0;
-        
-        teacherItems.forEach(item => {
-            const text = item.textContent.toLowerCase();
-            const mapel = item.getAttribute('data-mapel');
-            const showBySearch = text.includes(searchValue);
-            const showByMapel = filterMapel === '' || mapel === filterMapel;
-            
-            if (showBySearch && showByMapel) {
-                item.style.display = '';
-                count++;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-        
-        // Show no results message if needed
-        if (count === 0 && teacherItems.length > 0) {
-            const emptyStateDiv = document.querySelector('#teacher-empty-state');
-            if (!emptyStateDiv || emptyStateDiv.style.display === 'none') {
-                const noResultsDiv = document.createElement('div');
-                noResultsDiv.className = 'empty-state text-center py-4';
-                noResultsDiv.innerHTML = `
-                    <div class="empty-state-icon mb-3">
-                        <i class="fas fa-search text-muted opacity-25 fa-3x"></i>
-                    </div>
-                    <h5 class="fw-bold text-muted">Tidak Ada Hasil</h5>
-                    <p class="text-muted mb-3">Coba ubah filter pencarian Anda</p>
-                    <button id="resetFilterGuru" class="btn btn-outline-success rounded-pill px-4">
-                        <i class="fas fa-redo me-2"></i> Reset Filter
-                    </button>
-                `;
-                
-                if (teacherGridView.style.display !== 'none') {
-                    teacherGridView.appendChild(noResultsDiv);
-                } else {
-                    teacherListView.appendChild(noResultsDiv);
-                }
-                
-                document.getElementById('resetFilterGuru').addEventListener('click', function() {
-                    searchGuru.value = '';
-                    document.getElementById('filterMapel').value = '';
-                    filterTeachers();
-                });
-            }
-        } else {
-            const noResultsDiv = document.querySelector('#guru-content .empty-state:not(#teacher-empty-state)');
-            if (noResultsDiv && noResultsDiv.parentNode) {
-                noResultsDiv.parentNode.removeChild(noResultsDiv);
-            }
-        }
-    }
-    
-    // Filter for mata pelajaran
-    const filterMapel = document.getElementById('filterMapel');
-    filterMapel.addEventListener('change', function() {
-        filterTeachers();
-    });
-    
+
     // Delete confirmation
     window.confirmDelete = function(id, event) {
         event.preventDefault();
@@ -761,36 +389,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
         modal.show();
     };
-    
-    window.confirmDeleteGuru = function(id, event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = `{{ url('klapper/guru') }}/${id}`;
-        const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-        modal.show();
-    };
-    
+
     // Export functionality
     document.getElementById('exportDataSiswa').addEventListener('click', function() {
-        // Add export functionality for students
         alert('Export data siswa sedang diproses...');
     });
-    
-    document.getElementById('exportDataGuru').addEventListener('click', function() {
-        // Add export functionality for teachers
-        alert('Export data guru sedang diproses...');
-    });
-    
+
     // Add CSS for visual styling
     const style = document.createElement('style');
     style.textContent = `
-        /* Global Styles */
         body {
             background-color: #f8f9fa;
         }
         
-        /* Card Hover Effects */
         .hover-card {
             transition: all 0.3s ease;
             border: 1px solid transparent;
@@ -800,11 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
             box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
             border-color: var(--bs-primary);
         }
-        #guru-content .hover-card:hover {
-            border-color: var(--bs-success);
-        }
-        
-        /* Tab Navigation Styling */
+
         #data-tabs .nav-link {
             border-radius: 50px;
             font-weight: 500;
@@ -815,15 +422,10 @@ document.addEventListener('DOMContentLoaded', function() {
             background: linear-gradient(135deg, #3a8ffe 0%, #0062cc 100%);
             box-shadow: 0 4px 10px rgba(58, 143, 254, 0.3);
         }
-        #guru-tab.active {
-            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-        }
         #data-tabs .nav-link:not(.active):hover {
             background-color: rgba(0,0,0,0.05);
         }
-        
-        /* Empty State Animation */
+
         .empty-state-icon {
             animation: pulse 2s infinite;
         }
@@ -832,8 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
             50% { transform: scale(1.05); opacity: 0.8; }
             100% { transform: scale(1); opacity: 0.5; }
         }
-        
-        /* Action Buttons */
+
         .dropdown-menu {
             border-radius: 0.5rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -849,11 +450,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .dropdown-item:active {
             background-color: var(--bs-primary);
         }
-        #guru-content .dropdown-item:active {
-            background-color: var(--bs-success);
-        }
-        
-        /* Table Styling */
+
         .table {
             border-radius: 0.5rem;
             overflow: hidden;
@@ -867,8 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .table tr:hover {
             transition: background-color 0.2s ease;
         }
-        
-        /* Custom Scrollbar */
+
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -884,8 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ::-webkit-scrollbar-thumb:hover {
             background: #a8a8a8;
         }
-        
-        /* Responsive Adjustments */
+
         @media (max-width: 768px) {
             .section-header {
                 flex-direction: column;
@@ -896,19 +491,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 align-self: flex-start;
             }
         }
-        
-        /* Form Controls */
+
         .form-control, .form-select, .btn {
             font-size: 0.875rem;
         }
         .form-control:focus, .form-select:focus {
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
         }
-        #guru-content .form-control:focus, #guru-content .form-select:focus {
-            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.15);
-        }
-        
-        /* Floating Action Button Animation */
+
         #quickAddBtn {
             transition: all 0.3s ease;
         }
@@ -920,4 +510,5 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
 });
 </script>
+
 @endsection
