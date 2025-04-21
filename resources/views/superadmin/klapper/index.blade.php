@@ -70,28 +70,17 @@
                         </a>
                     </div>
 
-                    <!-- Enhanced Filter Controls -->
+                   <!-- Enhanced Filter Controls - Modified Layout -->
                     <div class="row g-3 mb-4">
-                        <div class="col-lg-5 col-md-6">
+                        <div class="col-lg-8 col-md-6">
                             <div class="input-group">
-                                <span class="input-group-text bg-white border-end-0">
-                                    <i class="fas fa-search text-muted"></i>
-                                </span>
-                                <input type="text" class="form-control border-start-0 ps-0" id="searchSiswa" placeholder="Cari Angkatan Klapper...">
-                                <button class="btn btn-outline-secondary border-start-0 bg-white" type="button" id="clearSearchSiswa">
-                                    <i class="fas fa-times text-muted"></i>
+                                <input type="text" class="form-control" id="searchSiswa" placeholder="Cari Angkatan Klapper...">
+                                <button class="btn btn-outline-secondary" type="button" id="clearSearchSiswa">
+                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
-                            <select class="form-select" id="filterTahunAjaran">
-                                <option value="">Semua Tahun Ajaran</option>
-                                <option value="2023/2024">2023/2024</option>
-                                <option value="2022/2023">2022/2023</option>
-                                <option value="2021/2022">2021/2022</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4 col-md-12 text-lg-end">
+                        <div class="col-lg-4 col-md-6 text-end">
                             <div class="btn-group" id="student-view-toggle">
                                 <button class="btn btn-outline-primary active rounded-start-pill" id="student-grid-btn">
                                     <i class="fas fa-th me-2"></i>Grid
@@ -100,11 +89,9 @@
                                     <i class="fas fa-list me-2"></i>List
                                 </button>
                             </div>
-                            <button class="btn btn-outline-primary ms-2 rounded-pill" id="exportDataSiswa">
-                                <i class="fas fa-file-export me-2"></i>Export
-                            </button>
                         </div>
                     </div>
+
 
                     <!-- Redesigned Grid View for Students -->
                     <div class="row g-3" id="student-grid-view">
@@ -239,9 +226,8 @@
                         </a>
                     </div>
 
-                    <!-- Enhanced Filter Controls for Teachers -->
                     <div class="row g-3 mb-4">
-                        <div class="col-lg-5 col-md-6">
+                        <div class="col-lg-8 col-md-6">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0">
                                     <i class="fas fa-search text-muted"></i>
@@ -252,16 +238,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
-                            <select class="form-select" id="filterMapel">
-                                <option value="">Semua Mata Pelajaran</option>
-                                <option value="Matematika">Matematika</option>
-                                <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-                                <option value="Bahasa Inggris">Bahasa Inggris</option>
-                                <!-- Add more options based on your data -->
-                            </select>
-                        </div>
-                        <div class="col-lg-4 col-md-12 text-lg-end">
+                        <div class="col-lg-4 col-md-6 text-end">
                             <div class="btn-group" id="teacher-view-toggle">
                                 <button class="btn btn-outline-success active rounded-start-pill" id="teacher-grid-btn">
                                     <i class="fas fa-th me-2"></i>Grid
@@ -270,11 +247,8 @@
                                     <i class="fas fa-list me-2"></i>List
                                 </button>
                             </div>
-                            <button class="btn btn-outline-success ms-2 rounded-pill" id="exportDataGuru">
-                                <i class="fas fa-file-export me-2"></i>Export
-                            </button>
                         </div>
-                    </div>
+                    </div>  
 
                     <!-- Redesigned Grid View for Teachers -->
                     <div class="row g-3" id="teacher-grid-view">
