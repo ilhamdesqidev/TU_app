@@ -42,12 +42,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="nama_siswa" class="form-label fw-semibold">Nama Siswa</label>
-                            <input type="text" name="nama_siswa" id="nama_siswa" class="form-control rounded-3" required>
+                            <input type="text" name="nama_siswa" id="nama_siswa" class="form-control rounded-3" required style="text-transform: capitalize;">
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="tempat_lahir" class="form-label fw-semibold">Tempat Lahir</label>
-                                <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control rounded-3" required>
+                                <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control rounded-3" required style="text-transform: capitalize;>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="tanggal_lahir" class="form-label fw-semibold">Tanggal Lahir</label>
@@ -99,11 +99,11 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="nama_ibu" class="form-label fw-semibold">Nama Ibu</label>
-                                <input type="text" name="nama_ibu" id="nama_ibu" class="form-control rounded-3" required>
+                                <input type="text" name="nama_ibu" id="nama_ibu" class="form-control rounded-3" required style="text-transform: capitalize;>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="nama_ayah" class="form-label fw-semibold">Nama Ayah</label>
-                                <input type="text" name="nama_ayah" id="nama_ayah" class="form-control rounded-3" required>
+                                <input type="text" name="nama_ayah" id="nama_ayah" class="form-control rounded-3" required style="text-transform: capitalize;>
                             </div>
                         </div>
                         <div class="mb-3">

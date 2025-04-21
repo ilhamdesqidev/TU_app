@@ -84,29 +84,18 @@
                     <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary">
                         <i class="fas fa-user-plus me-1"></i> Tambah Data
                     </a>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-cog me-1"></i> Aksi Kelas
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <button type="button" class="dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
-                                    <i class="fas fa-graduation-cap me-2 text-success"></i> Luluskan Semua Pelajar
-                                </button>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <button type="button" class="dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#naikKelasXIModal">
-                                    <i class="fas fa-arrow-up me-2 text-primary"></i> Naik Kelas XI
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item w-100" data-bs-toggle="modal" data-bs-target="#naikKelasXIIModal">
-                                    <i class="fas fa-arrow-up me-2 text-primary"></i> Naik Kelas XII
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- Setelah -->
+
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
+    <i class="fas fa-graduation-cap me-1"></i> Luluskan Semua
+</button>
+<button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#naikKelasXIModal">
+    <i class="fas fa-arrow-up me-1"></i> Naik Kelas XI
+</button>
+<button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#naikKelasXIIModal">
+    <i class="fas fa-arrow-up me-1"></i> Naik Kelas XII
+</button>
+
                 </div>
             </div>
         </div>
