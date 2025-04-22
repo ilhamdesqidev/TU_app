@@ -180,29 +180,23 @@ class KlapperController extends Controller
         return redirect()->route('siswa.show', $siswa->id)->with('success', 'Data siswa berhasil diperbarui.');
     }
 
-    public function lulusSemua(Request $request, $klapperId)
-{
-    $request->validate([
-        'tanggal_lulus' => 'required|date',
-    ]);
-
-    $klapper = Klapper::findOrFail($klapperId);
-
-    // Hanya luluskan siswa dengan status 0 DAN bukan kelas XI
-    $klapper->siswas()
-        ->where('status', 0)
-        ->whereNotIn('kelas', ['X', 'XI'])
-        ->update([
-            'status' => 1,
-            'tanggal_lulus' => $request->tanggal_lulus,
-        ]);
-
-    return redirect()->route('klapper.show', $klapperId)
-                     ->with('success', 'Semua pelajar kelas XII telah diluluskan (kelas XI tidak termasuk).');
-}
-
-
-    
+    public function lulusSemua(Request $request, $id)
+    {
+        $klapper = Klapper::findOrFail($id);
+        $counter = 0;
+        
+        foreach ($klapper->siswas as $siswa) {
+            if ($siswa->kelas == 'XII' && $siswa->status == 0) {
+                $siswa->status = 1; // Set status to graduated
+                $siswa->tanggal_lulus = $request->tanggal_lulus;
+                $siswa->save();
+                $counter++;
+            }
+        }
+        
+        return redirect()->route('klapper.show', $id)
+            ->with('success', "$counter siswa berhasil dinyatakan Lulus.");
+    }
 
     public function keluar($id)
     {
@@ -214,49 +208,42 @@ class KlapperController extends Controller
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Keluar.');
     }
     
-    public function naikKelasXI(Request $request, $klapperId)
-{
-    $request->validate([
-        'tanggal_naik_kelas_xi' => 'required|date',
-    ]);
-
-    $klapper = Klapper::findOrFail($klapperId);
-    $siswasNaikKelas = $klapper->siswas()->where('status', 0)->get();
-
-    foreach ($siswasNaikKelas as $siswa) {
-        if ($siswa->kelas == 'X') {
-            $siswa->kelas = 'XI';
-            $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;
-            $siswa->save();
+    public function naikKelasXI(Request $request, $id)
+    {
+        $klapper = Klapper::findOrFail($id);
+        $counter = 0;
+        
+        foreach ($klapper->siswas as $siswa) {
+            if ($siswa->kelas == 'X' && $siswa->status == 0) {
+                $siswa->kelas = 'XI';
+                $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;
+                $siswa->save();
+                $counter++;
+            }
         }
+        
+        return redirect()->route('klapper.show', $id)
+            ->with('success', "$counter siswa berhasil dinaikkan ke Kelas XI.");
     }
-
-    return redirect()->route('klapper.show', $klapperId)
-                     ->with('success', 'Siswa berhasil dinaikkan ke kelas XI.');
-}
-
     
 
-public function naikKelasXII(Request $request, $klapperId)
-{
-    $request->validate([
-        'tanggal_naik_kelas_xii' => 'required|date',
-    ]);
-
-    $klapper = Klapper::findOrFail($klapperId);
-    $siswasNaikKelas = $klapper->siswas()->where('status', 0)->get();
-
-    foreach ($siswasNaikKelas as $siswa) {
-        if ($siswa->kelas == 'XI') {
-            $siswa->kelas = 'XII';
-            $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
-            $siswa->save();
+    public function naikKelasXII(Request $request, $id)
+    {
+        $klapper = Klapper::findOrFail($id);
+        $counter = 0;
+        
+        foreach ($klapper->siswas as $siswa) {
+            if ($siswa->kelas == 'XI' && $siswa->status == 0) {
+                $siswa->kelas = 'XII';
+                $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
+                $siswa->save();
+                $counter++;
+            }
         }
+        
+        return redirect()->route('klapper.show', $id)
+            ->with('success', "$counter siswa berhasil dinaikkan ke Kelas XII.");
     }
-
-    return redirect()->route('klapper.show', $klapperId)
-                     ->with('success', 'Siswa berhasil dinaikkan ke kelas XII.');
-}
 
 
     public function index()

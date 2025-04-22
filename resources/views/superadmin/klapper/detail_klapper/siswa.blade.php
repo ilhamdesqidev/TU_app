@@ -19,6 +19,19 @@
                     </div>
                 </div>
                 
+                <!-- Notification Alerts -->
+                @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show mb-4 border-0 shadow-sm" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle me-2 fs-5"></i>
+                        <div>
+                            <strong>Berhasil!</strong> {{ session('success') }}
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                
                 <!-- Header with card design -->
                 <div class="card shadow-sm mb-4 border-0 rounded-3">
                     <div class="card-body">
@@ -84,25 +97,55 @@
                     <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary">
                         <i class="fas fa-user-plus me-1"></i> Tambah Data
                     </a>
-                    <!-- Setelah -->
+                    
+                    @php
+                        // Define variables to track student status
+                        $hasKelasX = false;
+                        $hasKelasXI = false;
+                        $hasKelasXII = false;
+                        $allStudentsActive = true;
+                        
+                        foreach ($klapper->siswas as $siswa) {
+                            if ($siswa->status == 0) {  // Only check active students
+                                if ($siswa->kelas == 'X') $hasKelasX = true;
+                                if ($siswa->kelas == 'XI') $hasKelasXI = true;
+                                if ($siswa->kelas == 'XII') $hasKelasXII = true;
+                            } else {
+                                $allStudentsActive = false;
+                            }
+                        }
+                        
+                        $enableNaikXI = $hasKelasX && !$hasKelasXI && !$hasKelasXII;
+                        $enableNaikXII = !$hasKelasX && $hasKelasXI && !$hasKelasXII;
+                        $enableLuluskan = !$hasKelasX && !$hasKelasXI && $hasKelasXII;
+                    @endphp
 
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tanggalLulusModal">
-    <i class="fas fa-graduation-cap me-1"></i> Luluskan Semua
-</button>
-<button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#naikKelasXIModal">
-    <i class="fas fa-arrow-up me-1"></i> Naik Kelas XI
-</button>
-<button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#naikKelasXIIModal">
-    <i class="fas fa-arrow-up me-1"></i> Naik Kelas XII
-</button>
-
+                    <!-- Button for "Naik Kelas XI" - Only enabled when there are active students in class X -->
+                    <button type="button" class="btn btn-info text-white {{ $enableNaikXI ? '' : 'disabled' }}" 
+                            data-bs-toggle="modal" data-bs-target="{{ $enableNaikXI ? '#naikKelasXIModal' : '' }}"
+                            title="{{ $enableNaikXI ? 'Naik Kelas XI' : 'Hanya tersedia untuk siswa aktif di Kelas X' }}">
+                        <i class="fas fa-arrow-up me-1"></i> Naik Kelas XI
+                    </button>
+                    
+                    <!-- Button for "Naik Kelas XII" - Only enabled when there are active students in class XI -->
+                    <button type="button" class="btn btn-info text-white {{ $enableNaikXII ? '' : 'disabled' }}" 
+                            data-bs-toggle="modal" data-bs-target="{{ $enableNaikXII ? '#naikKelasXIIModal' : '' }}"
+                            title="{{ $enableNaikXII ? 'Naik Kelas XII' : 'Hanya tersedia untuk siswa aktif di Kelas XI' }}">
+                        <i class="fas fa-arrow-up me-1"></i> Naik Kelas XII
+                    </button>
+                    
+                    <!-- Button for "Luluskan Semua" - Only enabled when there are active students in class XII -->
+                    <button type="button" class="btn btn-success {{ $enableLuluskan ? '' : 'disabled' }}" 
+                            data-bs-toggle="modal" data-bs-target="{{ $enableLuluskan ? '#tanggalLulusModal' : '' }}"
+                            title="{{ $enableLuluskan ? 'Luluskan Semua' : 'Hanya tersedia untuk siswa aktif di Kelas XII' }}">
+                        <i class="fas fa-graduation-cap me-1"></i> Luluskan Semua
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Rest of the code remains the same -->
 <!-- Modals -->
 <div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -114,6 +157,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Tindakan ini akan mengubah status semua siswa kelas XII menjadi "Lulus".
+                    </div>
                     <label for="tanggal_lulus" class="form-label">Tanggal Lulus:</label>
                     <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control" required>
                 </div>
@@ -136,6 +183,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Tindakan ini akan mengubah semua siswa kelas X menjadi kelas XI.
+                    </div>
                     <label for="tanggal_naik_kelas_xi" class="form-label">Tanggal:</label>
                     <input type="date" name="tanggal_naik_kelas_xi" id="tanggal_naik_kelas_xi" class="form-control" required>
                 </div>
@@ -158,6 +209,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Tindakan ini akan mengubah semua siswa kelas XI menjadi kelas XII.
+                    </div>
                     <label for="tanggal_naik_kelas_xii" class="form-label">Tanggal:</label>
                     <input type="date" name="tanggal_naik_kelas_xii" id="tanggal_naik_kelas_xii" class="form-control" required>
                 </div>
@@ -337,6 +392,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
             }
         });
+    });
+    
+    // Add tooltips to disabled buttons
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Auto close alerts after 5 seconds
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 5000);
     });
 });
 </script>
