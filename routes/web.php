@@ -41,7 +41,8 @@ Route::post('superadmin/spensasi/tu/approve/{id}', [TuController::class, 'approv
 Route::post('superadmin/spensasi/tu/reject/{id}', [TuController::class, 'reject'])->name('superadmin.spensasi.tu.reject');
 
 //super
-Route::resource('spensasi', SpensasiController::class)->names([
+Route::get('/spensasi/tu', [TuController::class, 'index'])->name('spensasi.tu.index');
+Route::resource('spensasi', SpensasiController::class)->except(['show'])->names([
     'index' => 'superadmin.spensasi.index',
     'create' => 'superadmin.spensasi.create',
     'store' => 'superadmin.spensasi.store',
@@ -50,9 +51,10 @@ Route::resource('spensasi', SpensasiController::class)->names([
     'destroy' => 'superadmin.spensasi.destroy'
 ]);
 
+
 //guru
 Route::resource('guru', GuruController::class);
-Route::get('spensasi/guru', [GuruController::class, 'guruIndex'])->name('superadmin.spensasi.guru.index');
+Route::get('spensasi/guru', [GuruController::class, 'index'])->name('superadmin.spensasi.guru.index');
 
 //
 Route::get('/getSiswa/{nama_siswa}', [KlapperController::class, 'getSiswa']);

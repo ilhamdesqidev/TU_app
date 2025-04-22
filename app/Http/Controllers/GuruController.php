@@ -10,12 +10,12 @@ class GuruController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function Index()
+    public function index()
     {
         $surat = Spensasi::where('status', 'disetujui')->paginate(10);
         return view('superadmin.spensasi.guru.index', compact('surat'));
     }
-
+    
 
     /**
      * Show the form for creating a new resource.
