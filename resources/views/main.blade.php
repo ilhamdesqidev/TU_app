@@ -365,51 +365,59 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('main-content');
-            const navbarTop = document.getElementById('navbar-top');
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const archiveToggle = document.getElementById('archiveToggle');
-            const archiveMenu = document.getElementById('archiveMenu');
-            
-            // Toggle sidebar
-           sidebarToggle.addEventListener('click', function () {
-    sidebar.classList.toggle('collapsed');
-    mainContent.classList.toggle('expanded');
-    navbarTop.classList.toggle('expanded');
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navbarTop = document.getElementById('navbar-top');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const archiveToggle = document.getElementById('archiveToggle');
+        const archiveMenu = document.getElementById('archiveMenu');
 
-    // Untuk menyesuaikan ukuran dropdown jika ada
-    const dropdowns = document.querySelectorAll('.dropdown-menu');
-    dropdowns.forEach(dropdown => {
-        dropdown.style.right = sidebar.classList.contains('collapsed') ? '10px' : '';
-    });
-            
-            // Toggle archive dropdown
-            archiveToggle.addEventListener('click', function(e) {
+        // Toggle sidebar
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+                navbarTop.classList.toggle('expanded');
+
+                // Untuk menyesuaikan ukuran dropdown jika ada
+                const dropdowns = document.querySelectorAll('.dropdown-menu');
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.right = sidebar.classList.contains('collapsed') ? '10px' : '';
+                });
+            });
+        }
+
+        // Toggle archive dropdown
+        if (archiveToggle) {
+            archiveToggle.addEventListener('click', function (e) {
                 e.preventDefault();
                 archiveMenu.classList.toggle('show');
                 const dropdownIcon = archiveToggle.querySelector('.dropdown-icon');
                 dropdownIcon.classList.toggle('bx-chevron-down');
                 dropdownIcon.classList.toggle('bx-chevron-up');
             });
-            
-            // Set active class based on current page
-            const currentLocation = window.location.pathname;
-            const navLinks = document.querySelectorAll('.nav-link');
-            const nestedLinks = document.querySelectorAll('.nested-link');
-            
-            [...navLinks, ...nestedLinks].forEach(link => {
-                const linkPath = link.getAttribute('href');
-                if (linkPath && currentLocation.includes(linkPath.replace('{{url(', '').replace(')', ''))) {
-                    link.classList.add('active');
-                    // If it's a nested link, show its parent menu
-                    if (link.classList.contains('nested-link')) {
-                        archiveMenu.classList.add('show');
-                    }
+        }
+
+        // Set active class based on current page
+        const currentLocation = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        const nestedLinks = document.querySelectorAll('.nested-link');
+
+        [...navLinks, ...nestedLinks].forEach(link => {
+            const linkPath = link.getAttribute('href');
+            if (linkPath && currentLocation.includes(linkPath)) {
+                link.classList.add('active');
+                if (link.classList.contains('nested-link')) {
+                    archiveMenu.classList.add('show');
+                    const dropdownIcon = archiveToggle.querySelector('.dropdown-icon');
+                    dropdownIcon.classList.remove('bx-chevron-down');
+                    dropdownIcon.classList.add('bx-chevron-up');
                 }
-            });
+            }
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>

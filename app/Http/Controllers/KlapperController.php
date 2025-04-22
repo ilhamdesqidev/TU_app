@@ -188,16 +188,19 @@ class KlapperController extends Controller
 
     $klapper = Klapper::findOrFail($klapperId);
 
+    // Hanya luluskan siswa dengan status 0 DAN bukan kelas XI
     $klapper->siswas()
         ->where('status', 0)
+        ->whereNotIn('kelas', ['X', 'XI'])
         ->update([
             'status' => 1,
             'tanggal_lulus' => $request->tanggal_lulus,
         ]);
 
     return redirect()->route('klapper.show', $klapperId)
-                     ->with('success', 'Semua pelajar telah diluluskan.');
+                     ->with('success', 'Semua pelajar kelas XII telah diluluskan (kelas XI tidak termasuk).');
 }
+
 
     
 
