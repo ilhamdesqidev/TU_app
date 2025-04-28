@@ -37,7 +37,7 @@
         <!-- KLAPPER TAB CONTENT -->
         <div class="tab-pane fade show active" id="klapper-content" role="tabpanel" aria-labelledby="klapper-tab">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
-                <div class="card-body">
+                <div class="    card-body">
                     <div class="section-header d-flex justify-content-between align-items-center mb-4">
                         <div>
                             <h5 class="fw-bold mb-0">
@@ -306,12 +306,17 @@ document.addEventListener('DOMContentLoaded', function() {
         studentListBtn.click();
     }
 
-    // Enhanced search for students
+    // Enhanced auto search for students
     const searchSiswa = document.getElementById('searchSiswa');
     const clearSearchSiswa = document.getElementById('clearSearchSiswa');
     
-    searchSiswa.addEventListener('keyup', function() {
-        filterStudents();
+    // Improved search handler with debounce
+    let searchTimeout;
+    searchSiswa.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterStudents();
+        }, 300); // 300ms debounce to prevent excessive filtering while typing
     });
     
     clearSearchSiswa.addEventListener('click', function() {
@@ -321,7 +326,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function filterStudents() {
         const searchValue = searchSiswa.value.toLowerCase();
-        const filterTahun = document.getElementById('filterTahunAjaran').value;
         const studentItems = document.querySelectorAll('.student-item');
         let count = 0;
         
@@ -329,9 +333,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const text = item.textContent.toLowerCase();
             const tahun = item.getAttribute('data-tahun');
             const showBySearch = text.includes(searchValue);
-            const showByTahun = filterTahun === '' || tahun === filterTahun;
             
-            if (showBySearch && showByTahun) {
+            if (showBySearch) {
                 item.style.display = '';
                 count++;
             } else {
@@ -339,61 +342,52 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        const emptyStateDiv = document.querySelector('#klapper-content .empty-state');
-        if (count === 0 && studentItems.length > 0) {
-            if (!emptyStateDiv) {
-                const noResultsDiv = document.createElement('div');
-                noResultsDiv.className = 'empty-state text-center py-4';
-                noResultsDiv.innerHTML = `
-                    <div class="empty-state-icon mb-3">
-                        <i class="fas fa-search text-muted opacity-25 fa-3x"></i>
-                    </div>
-                    <h5 class="fw-bold text-muted">Tidak Ada Hasil</h5>
-                    <p class="text-muted mb-3">Coba ubah filter pencarian Anda</p>
-                    <button id="resetFilterSiswa" class="btn btn-outline-primary rounded-pill px-4">
-                        <i class="fas fa-redo me-2"></i> Reset Filter
-                    </button>
-                `;
-                
-                if (studentGridView.style.display !== 'none') {
-                    studentGridView.appendChild(noResultsDiv);
-                } else {
-                    studentListView.appendChild(noResultsDiv);
-                }
-                
-                document.getElementById('resetFilterSiswa').addEventListener('click', function() {
-                    searchSiswa.value = '';
-                    document.getElementById('filterTahunAjaran').value = '';
-                    filterStudents();
-                });
-            }
-        } else {
-            const noResultsDiv = document.querySelector('.empty-state');
-            if (noResultsDiv && noResultsDiv.parentNode) {
-                noResultsDiv.parentNode.removeChild(noResultsDiv);
-            }
-        }
+        handleEmptyState(count, studentItems.length);
     }
     
-    const filterTahunAjaran = document.getElementById('filterTahunAjaran');
-    filterTahunAjaran.addEventListener('change', function() {
-        filterStudents();
-    });
+    function handleEmptyState(count, totalItems) {
+        const activeView = document.getElementById('student-grid-view').style.display !== 'none' 
+            ? document.getElementById('student-grid-view') 
+            : document.getElementById('student-list-view');
+        
+        // Remove any existing search-empty state first
+        const existingEmptyState = document.querySelector('.empty-state.search-empty');
+        if (existingEmptyState) {
+            existingEmptyState.remove();
+        }
+        
+        if (count === 0 && totalItems > 0) {
+            const noResultsDiv = document.createElement('div');
+            noResultsDiv.className = 'empty-state search-empty text-center py-4';
+            noResultsDiv.innerHTML = `
+                <div class="empty-state-icon mb-3">
+                    <i class="fas fa-search text-muted opacity-25 fa-3x"></i>
+                </div>
+                <h5 class="fw-bold text-muted">Tidak Ada Hasil</h5>
+                <p class="text-muted mb-3">Coba ubah filter pencarian Anda</p>
+                <button id="resetFilterSiswa" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="fas fa-redo me-2"></i> Reset Filter
+                </button>
+            `;
+            
+            activeView.appendChild(noResultsDiv);
+            
+            document.getElementById('resetFilterSiswa').addEventListener('click', function() {
+                searchSiswa.value = '';
+                filterStudents();
+            });
+        }
+    }
 
     // Delete confirmation
     window.confirmDelete = function(id, event) {
         event.preventDefault();
         event.stopPropagation();
         const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = `{{ url('klapper') }}/${id}`;
+        deleteForm.action = `klapper/${id}`;
         const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
         modal.show();
     };
-
-    // Export functionality
-    document.getElementById('exportDataSiswa').addEventListener('click', function() {
-        alert('Export data siswa sedang diproses...');
-    });
 
     // Add CSS for visual styling
     const style = document.createElement('style');
@@ -505,6 +499,17 @@ document.addEventListener('DOMContentLoaded', function() {
         #quickAddBtn:hover {
             transform: rotate(45deg);
             box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
+        }
+        
+        /* Highlight search input when active */
+        #searchSiswa:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        /* Add a subtle animation for filtered items */
+        .student-item {
+            transition: all 0.3s ease;
         }
     `;
     document.head.appendChild(style);
