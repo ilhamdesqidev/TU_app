@@ -271,6 +271,9 @@
                     <a href="{{url('surat_keluar')}}" class="nested-link">
                         <i class='bx bx-envelope me-2'></i>Surat Keluar
                     </a>
+                    <a href="{{url('ijazah')}}" class="nested-link">
+                        <i class='bx bx-envelope me-2'></i>Ijazah
+                    </a>
                 </div>
             </li>
             <li class="nav-item">
