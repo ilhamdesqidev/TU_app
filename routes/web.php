@@ -7,7 +7,6 @@ use App\Http\Controllers\SpensasiController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SuratmasukController;
 use App\Http\Controllers\SuratkeluarController;
-use App\Http\Controllers\ijazahcontroller;
 
 Route::get('superadmin/welcome', function () {
     return view('welcome');
@@ -80,7 +79,3 @@ Route::middleware(['web'])->group(function () {
 //surat keluar
 Route::resource('surat_keluar', SuratkeluarController::class);
 Route::get('arsip/surat_keluar', [SuratkeluarController::class, 'surat_keluarIndex'])->name('superadmin.arsip.surat_keluar.index');
-
-//arsip ijazah
-Route::resource('ijazah', ijazahcontroller::class);
-Route::get('arsip/ijazah', [ijazahcontroller::class, 'ijazahIndex'])->name('superadmin.arsip.ijazah.index');
