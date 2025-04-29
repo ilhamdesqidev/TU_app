@@ -14,7 +14,7 @@
                 <div class="card shadow-sm mb-4 border-0 rounded-3">
                     <div class="card-body">
                     <a href="{{ route('klapper.index') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Kembali
+                            <i class="fas fa-arrow-left me-2"></i>Kembalii
                         </a>
                     </div>
                 </div>
