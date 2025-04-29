@@ -94,32 +94,42 @@
             <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
                 <h5 class="mb-0 text-dark">Aksi Massal</h5>
                 <div class="d-flex flex-wrap gap-2">
-                    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary">
-                        <i class="fas fa-user-plus me-1"></i> Tambah Data
-                    </a>
-                    
                     @php
                         // Define variables to track student status
                         $hasKelasX = false;
                         $hasKelasXI = false;
                         $hasKelasXII = false;
                         $allStudentsActive = true;
+                        $allStudentsGraduated = true;
+                        $hasActiveStudents = false;
                         
                         foreach ($klapper->siswas as $siswa) {
                             if ($siswa->status == 0) {  // Only check active students
+                                $hasActiveStudents = true;
+                                $allStudentsGraduated = false;
                                 if ($siswa->kelas == 'X') $hasKelasX = true;
                                 if ($siswa->kelas == 'XI') $hasKelasXI = true;
                                 if ($siswa->kelas == 'XII') $hasKelasXII = true;
-                            } else {
+                            } else if ($siswa->status == 1) { // Graduated
                                 $allStudentsActive = false;
+                            } else { // Dropped out
+                                $allStudentsActive = false;
+                                $allStudentsGraduated = false;
                             }
                         }
                         
                         $enableNaikXI = $hasKelasX && !$hasKelasXI && !$hasKelasXII;
                         $enableNaikXII = !$hasKelasX && $hasKelasXI && !$hasKelasXII;
                         $enableLuluskan = !$hasKelasX && !$hasKelasXI && $hasKelasXII;
+                        $showTambahSiswa = !$allStudentsGraduated || count($klapper->siswas) == 0;
                     @endphp
-
+                    
+                    @if($showTambahSiswa)
+                    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-1"></i> Tambah Data
+                    </a>
+                    @endif
+                    
                     <!-- Button for "Naik Kelas XI" - Only enabled when there are active students in class X -->
                     <button type="button" class="btn btn-info text-white {{ $enableNaikXI ? '' : 'disabled' }}" 
                             data-bs-toggle="modal" data-bs-target="{{ $enableNaikXI ? '#naikKelasXIModal' : '' }}"
