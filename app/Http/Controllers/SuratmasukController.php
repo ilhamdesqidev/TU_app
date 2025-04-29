@@ -13,8 +13,7 @@ class SuratmasukController extends Controller
      */
     public function index()
     {
-        $suratmasuk = SuratMasuk::all();
-        return view('superadmin.arsip.surat_masuk.index', compact('suratmasuk'));
+        return view('superadmin.arsip.surat_masuk.index');
     }
 
     /**
