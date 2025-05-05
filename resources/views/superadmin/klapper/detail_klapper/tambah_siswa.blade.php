@@ -47,7 +47,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="tempat_lahir" class="form-label fw-semibold">Tempat Lahir</label>
-                                <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control rounded-3" required style="text-transform: capitalize;>
+                                <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control rounded-3" required style="text-transform: capitalize;">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="tanggal_lahir" class="form-label fw-semibold">Tanggal Lahir</label>
@@ -82,28 +82,34 @@
                             <label class="form-label fw-semibold">Kelas</label>
                             <div class="d-flex">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="kelas" id="kelasX" value="X" checked>
-                                    <label class="form-check-label" for="kelasX">X</label>
+                                    <input class="form-check-input" type="radio" name="kelas" id="kelasX" value="X" {{ $minClass == 'X' ? 'checked' : '' }} {{ $minClass == 'XI' || $minClass == 'XII' ? 'disabled' : '' }}>
+                                    <label class="form-check-label {{ $minClass == 'XI' || $minClass == 'XII' ? 'text-muted' : '' }}" for="kelasX">X</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXI" value="XI">
-                                    <label class="form-check-label" for="kelasXI">XI</label>
+                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXI" value="XI" {{ $minClass == 'XI' ? 'checked' : '' }} {{ $minClass == 'XII' ? 'disabled' : '' }}>
+                                    <label class="form-check-label {{ $minClass == 'XII' ? 'text-muted' : '' }}" for="kelasXI">XI</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXII" value="XII">
+                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXII" value="XII" {{ $minClass == 'XII' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="kelasXII">XII</label>
                                 </div>
                             </div>
+                            @if($minClass != 'X')
+                                <small class="text-muted mt-2 d-block">
+                                    <i class="fas fa-info-circle"></i> 
+                                    Kelas yang tidak tersedia telah dinonaktifkan berdasarkan tingkat kelas siswa yang ada.
+                                </small>
+                            @endif
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="nama_ibu" class="form-label fw-semibold">Nama Ibu</label>
-                                <input type="text" name="nama_ibu" id="nama_ibu" class="form-control rounded-3" required style="text-transform: capitalize;>
+                                <input type="text" name="nama_ibu" id="nama_ibu" class="form-control rounded-3" required style="text-transform: capitalize;">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="nama_ayah" class="form-label fw-semibold">Nama Ayah</label>
-                                <input type="text" name="nama_ayah" id="nama_ayah" class="form-control rounded-3" required style="text-transform: capitalize;>
+                                <input type="text" name="nama_ayah" id="nama_ayah" class="form-control rounded-3" required style="text-transform: capitalize;">
                             </div>
                         </div>
                         <div class="mb-3">

@@ -88,8 +88,23 @@ class KlapperController extends Controller
     }
 
     public function createSiswa($klappersId)
-    {
-        return view('superadmin.klapper.detail_klapper.tambah_siswa', compact('klappersId'));
+    {// Get the Klapper model
+    $klapper = Klapper::findOrFail($klappersId);
+    
+    // Determine the minimum class level based on existing students
+    $minClass = 'X'; // Default is class X
+    
+    // Check if there are students in class XI or XII
+    $hasKelasXI = $klapper->siswas()->where('kelas', 'XI')->where('status', 0)->exists();
+    $hasKelasXII = $klapper->siswas()->where('kelas', 'XII')->where('status', 0)->exists();
+    
+    if ($hasKelasXII) {
+        $minClass = 'XII';
+    } elseif ($hasKelasXI) {
+        $minClass = 'XI';
+    }
+    
+        return view('superadmin.klapper.detail_klapper.tambah_siswa', compact('klappersId', 'minClass'));
     }
 
     public function storeSiswa(Request $request, $klappersId)
