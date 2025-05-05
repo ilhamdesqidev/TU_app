@@ -1,64 +1,43 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SuratKeluarExport;
 
-class SuratkeluarController extends Controller
+class SuratKeluarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('superadmin.arsip.surat_keluar.index');
+        $suratKeluars = SuratKeluar::latest()->paginate(10);
+        return view('superadmin.arsip.surat_keluar.index', compact('suratKeluars'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nomor_surat' => 'required',
+            'tanggal_surat' => 'required|date',
+            'penerima' => 'required',
+            'tanggal_pengiriman' => 'required|date',
+            'kategori' => 'required',
+            'status' => 'required',
+            'perihal' => 'required',
+            'isi_surat' => 'required',
+            'penandatangan' => 'required',
+            'metode_pengiriman' => 'required',
+        ]);
+
+        SuratKeluar::create($request->all());
+
+        return redirect()->back()->with('success', 'Surat berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function destroy($id)
     {
-        //
+        SuratKeluar::destroy($id);
+        return redirect()->back()->with('success', 'Surat berhasil dihapus!');
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-}
+}   

@@ -84,84 +84,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Example Row 1 -->
+                                @foreach ($suratKeluars as $surat)
                                 <tr>
-                                    <td>1</td>
-                                    <td>SK-2025/004</td>
-                                    <td>27 Apr 2025</td>
-                                    <td>Dinas Kesehatan</td>
-                                    <td>Laporan Pelaksanaan Program Kesehatan Sekolah</td>
-                                    <td><span class="badge bg-warning text-dark">Penting</span></td>
-                                    <td><span class="badge bg-info">Dikirim</span></td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $surat->nomor_surat }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($surat->tanggal_surat)->format('d M Y') }}</td>
+                                    <td>{{ $surat->penerima }}</td>
+                                    <td>{{ $surat->perihal }}</td>
+                                    <td><span class="badge bg-{{ $surat->kategori == 'penting' ? 'warning text-dark' : ($surat->kategori == 'segera' ? 'danger' : 'secondary') }}">{{ ucfirst($surat->kategori) }}</span></td>
+                                    <td><span class="badge bg-{{ $surat->status == 'draft' ? 'warning text-dark' : ($surat->status == 'dikirim' ? 'info' : 'success') }}">{{ ucfirst($surat->status) }}</span></td>
                                     <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal" title="Lihat">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#formModal" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Hapus">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-secondary" title="Unduh">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                        </div>
+                                        <!-- Tombol Aksi -->
                                     </td>
                                 </tr>
-                                <!-- Example Row 2 -->
-                                <tr>
-                                    <td>2</td>
-                                    <td>SK-2025/003</td>
-                                    <td>22 Apr 2025</td>
-                                    <td>Badan Keuangan Daerah</td>
-                                    <td>Pengajuan Anggaran Kegiatan Triwulan III</td>
-                                    <td><span class="badge bg-danger">Segera</span></td>
-                                    <td><span class="badge bg-success">Diterima</span></td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal" title="Lihat">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#formModal" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Hapus">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-secondary" title="Unduh">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- Example Row 3 -->
-                                <tr>
-                                    <td>3</td>
-                                    <td>SK-2025/002</td>
-                                    <td>18 Apr 2025</td>
-                                    <td>PT Mitra Sejahtera</td>
-                                    <td>Konfirmasi Kerjasama Pengadaan Peralatan</td>
-                                    <td><span class="badge bg-secondary">Biasa</span></td>
-                                    <td><span class="badge bg-warning text-dark">Draft</span></td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal" title="Lihat">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#formModal" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Hapus">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-secondary" title="Unduh">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -325,7 +261,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="{{ route('surat_keluar.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="nomor_surat" class="form-label">Nomor Surat</label>
@@ -407,11 +344,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary">Simpan</button>
             </div>
         </div>
     </div>
