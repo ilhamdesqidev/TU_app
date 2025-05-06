@@ -17,13 +17,9 @@ return new class extends Migration
             $table->date('tanggal_surat');
             $table->string('penerima');
             $table->date('tanggal_pengiriman');
-            $table->string('kategori'); // penting, segera, biasa
-            $table->string('status');   // draft, dikirim, diterima
             $table->string('perihal');
             $table->text('isi_surat');
             $table->json('lampiran')->nullable(); // disimpan sebagai array path
-            $table->string('penandatangan')->nullable();
-            $table->string('metode_pengiriman')->nullable();
             $table->timestamps();
         });
     }

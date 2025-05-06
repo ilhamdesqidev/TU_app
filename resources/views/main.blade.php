@@ -276,18 +276,6 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <div class="icon-wrapper"><i class='bx bx-folder fs-5'></i></div>
-                    <span class="nav-text">Files</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <div class="icon-wrapper"><i class='bx bx-bar-chart-alt-2 fs-5'></i></div>
-                    <span class="nav-text">Stats</span>
-                </a>
-            </li>
             <li class="nav-item mt-auto">
                 <hr class="sidebar-divider d-none d-md-block opacity-25 my-3">
                 <a href="#" class="nav-link text-danger">

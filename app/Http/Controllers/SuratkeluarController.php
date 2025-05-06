@@ -22,12 +22,8 @@ class SuratKeluarController extends Controller
             'tanggal_surat' => 'required|date',
             'penerima' => 'required',
             'tanggal_pengiriman' => 'required|date',
-            'kategori' => 'required',
-            'status' => 'required',
             'perihal' => 'required',
             'isi_surat' => 'required',
-            'penandatangan' => 'required',
-            'metode_pengiriman' => 'required',
         ]);
 
         SuratKeluar::create($request->all());
@@ -35,9 +31,35 @@ class SuratKeluarController extends Controller
         return redirect()->back()->with('success', 'Surat berhasil ditambahkan!');
     }
 
+    public function show($id)
+    {
+        $surat = SuratMasuk::findOrFail($id);
+        return response()->json($surat);
+    }
+    
+    public function edit($id)
+    {
+        $surat = SuratMasuk::findOrFail($id);
+        return response()->json($surat);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $surat = SuratMasuk::findOrFail($id);
+        $surat->update($request->all());
+        return redirect()->back()->with('success', 'Data berhasil diperbarui');
+    }
+    
     public function destroy($id)
     {
-        SuratKeluar::destroy($id);
-        return redirect()->back()->with('success', 'Surat berhasil dihapus!');
+        $surat = SuratMasuk::findOrFail($id);
+        $surat->delete();
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
-}   
+    
+    public function download($id)
+    {
+        $surat = SuratMasuk::findOrFail($id);
+        return response()->download(storage_path("app/public/{$surat->file_path}"));
+    }
+}    
