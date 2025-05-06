@@ -15,7 +15,7 @@
                             <p class="text-muted mb-0">Manajemen dokumen surat keluar</p>
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#formModal">
+                            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahSuratModal">
                                 <i class="bi bi-plus-circle me-1"></i> Tambah Surat
                             </button>
                             <button type="button" class="btn btn-success rounded-pill shadow-sm ms-2" id="exportBtn">
@@ -154,7 +154,7 @@
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
                                             <p class="mt-2">Belum ada data surat keluar</p>
-                                            <button class="btn btn-sm btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#formModal">
+                                            <button class="btn btn-sm btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#tambahSuratModal">
                                                 <i class="bi bi-plus-circle me-1"></i> Tambah Surat Baru
                                             </button>
                                         </div>
@@ -266,94 +266,158 @@
     </div>
 </div>
 
-<!-- Modal Add/Edit Document with improved styling -->
-<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+<!-- Modal Tambah Surat Keluar -->
+<div class="modal fade" id="tambahSuratModal" tabindex="-1" aria-labelledby="tambahSuratLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="formModalLabel">Tambah Surat Keluar</h5>
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="tambahSuratLabel">Tambah Surat Keluar</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="text-center mb-4 d-none" id="form-loading">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="mt-2">Memuat form...</p>
-                </div>
-                
-                <form id="suratForm" action="{{ route('surat_keluar.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="tambahSuratForm" action="{{ route('surat_keluar.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div id="method-input">
-                        <!-- For PUT method when editing -->
-                    </div>
-                    
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="nomor_surat" class="form-label fw-bold">
-                                <i class="bi bi-hash text-primary me-1"></i>Nomor Surat
+                            <label for="nomor_surat_tambah" class="form-label fw-bold">
+                                <i class="bi bi-hash text-success me-1"></i>Nomor Surat
                             </label>
-                            <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" required>
+                            <input type="text" class="form-control" id="nomor_surat_tambah" name="nomor_surat" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="tanggal_surat" class="form-label fw-bold">
-                                <i class="bi bi-calendar-date text-primary me-1"></i>Tanggal Surat
+                            <label for="tanggal_surat_tambah" class="form-label fw-bold">
+                                <i class="bi bi-calendar-date text-success me-1"></i>Tanggal Surat
                             </label>
-                            <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat" required>
+                            <input type="date" class="form-control" id="tanggal_surat_tambah" name="tanggal_surat" required>
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="penerima" class="form-label fw-bold">
-                                <i class="bi bi-person text-primary me-1"></i>Penerima
+                            <label for="penerima_tambah" class="form-label fw-bold">
+                                <i class="bi bi-person text-success me-1"></i>Penerima
                             </label>
-                            <input type="text" class="form-control" id="penerima" name="penerima" required>
+                            <input type="text" class="form-control" id="penerima_tambah" name="penerima" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="tanggal_pengiriman" class="form-label fw-bold">
-                                <i class="bi bi-send text-primary me-1"></i>Tanggal Pengiriman
+                            <label for="tanggal_pengiriman_tambah" class="form-label fw-bold">
+                                <i class="bi bi-send text-success me-1"></i>Tanggal Pengiriman
                             </label>
-                            <input type="date" class="form-control" id="tanggal_pengiriman" name="tanggal_pengiriman">
+                            <input type="date" class="form-control" id="tanggal_pengiriman_tambah" name="tanggal_pengiriman">
                         </div>
                     </div>
+
                     <div class="mb-3">
-                        <label for="perihal" class="form-label fw-bold">
-                            <i class="bi bi-chat-left-text text-primary me-1"></i>Perihal
+                        <label for="perihal_tambah" class="form-label fw-bold">
+                            <i class="bi bi-chat-left-text text-success me-1"></i>Perihal
                         </label>
-                        <input type="text" class="form-control" id="perihal" name="perihal" required>
+                        <input type="text" class="form-control" id="perihal_tambah" name="perihal" required>
                     </div>
-                    
+
                     <div class="mb-3">
-                        <label for="isi_surat" class="form-label fw-bold">
-                            <i class="bi bi-file-text text-primary me-1"></i>Isi Surat
+                        <label for="isi_surat_tambah" class="form-label fw-bold">
+                            <i class="bi bi-file-text text-success me-1"></i>Isi Surat
                         </label>
-                        <textarea class="form-control" id="isi_surat" name="isi_surat" rows="5"></textarea>
+                        <textarea class="form-control" id="isi_surat_tambah" name="isi_surat" rows="5"></textarea>
                     </div>
-                    
+
                     <div class="mb-3">
-                        <label for="lampiran" class="form-label fw-bold">
-                            <i class="bi bi-paperclip text-primary me-1"></i>Lampiran
+                        <label for="lampiran_tambah" class="form-label fw-bold">
+                            <i class="bi bi-paperclip text-success me-1"></i>Lampiran
                         </label>
-                        <input class="form-control" type="file" id="lampiran" name="lampiran[]" multiple>
+                        <input class="form-control" type="file" id="lampiran_tambah" name="lampiran[]" multiple>
                         <div class="form-text">Format yang didukung: PDF, DOC, XLS, JPG hingga 10MB</div>
                     </div>
-                    
-                    <div id="lampiran-list" class="mb-3 d-none">
-                        <label class="form-label fw-bold">Lampiran Tersedia</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" form="tambahSuratForm" class="btn btn-success">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Surat Keluar -->
+<div class="modal fade" id="editSuratModal" tabindex="-1" aria-labelledby="editSuratLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="editSuratLabel">Edit Surat Keluar</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editSuratForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nomor_surat_edit" class="form-label fw-bold">
+                                <i class="bi bi-hash text-warning me-1"></i>Nomor Surat
+                            </label>
+                            <input type="text" class="form-control" id="nomor_surat_edit" name="nomor_surat" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tanggal_surat_edit" class="form-label fw-bold">
+                                <i class="bi bi-calendar-date text-warning me-1"></i>Tanggal Surat
+                            </label>
+                            <input type="date" class="form-control" id="tanggal_surat_edit" name="tanggal_surat" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="penerima_edit" class="form-label fw-bold">
+                                <i class="bi bi-person text-warning me-1"></i>Penerima
+                            </label>
+                            <input type="text" class="form-control" id="penerima_edit" name="penerima" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tanggal_pengiriman_edit" class="form-label fw-bold">
+                                <i class="bi bi-send text-warning me-1"></i>Tanggal Pengiriman
+                            </label>
+                            <input type="date" class="form-control" id="tanggal_pengiriman_edit" name="tanggal_pengiriman">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="perihal_edit" class="form-label fw-bold">
+                            <i class="bi bi-chat-left-text text-warning me-1"></i>Perihal
+                        </label>
+                        <input type="text" class="form-control" id="perihal_edit" name="perihal" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="isi_surat_edit" class="form-label fw-bold">
+                            <i class="bi bi-file-text text-warning me-1"></i>Isi Surat
+                        </label>
+                        <textarea class="form-control" id="isi_surat_edit" name="isi_surat" rows="5"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="lampiran_edit" class="form-label fw-bold">
+                            <i class="bi bi-paperclip text-warning me-1"></i>Lampiran Baru
+                        </label>
+                        <input class="form-control" type="file" id="lampiran_edit" name="lampiran[]" multiple>
+                        <div class="form-text">Kosongkan jika tidak ingin mengganti lampiran. Format: PDF, DOC, JPG, dll.</div>
+                    </div>
+
+                    <div id="lampiran-list" class="mb-3">
+                        <label class="form-label fw-bold">Lampiran Sebelumnya</label>
                         <div class="border rounded p-3 bg-light">
-                            <!-- Existing attachments will be shown here when editing -->
+                            <!-- Isi dengan JS saat modal dibuka -->
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" form="suratForm" class="btn btn-primary">Simpan</button>
+                <button type="submit" form="editSuratForm" class="btn btn-warning text-white">Update</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Confirmation Delete Modal with improved styling -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

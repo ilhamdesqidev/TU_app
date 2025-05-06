@@ -17,19 +17,38 @@ class SuratKeluarController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'nomor_surat' => 'required',
             'tanggal_surat' => 'required|date',
             'penerima' => 'required',
-            'tanggal_pengiriman' => 'required|date',
+            'tanggal_pengiriman' => 'nullable|date',
             'perihal' => 'required',
-            'isi_surat' => 'required',
+            'isi_surat' => 'nullable',
+            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png'
         ]);
 
-        SuratKeluar::create($request->all());
+        // Simpan data
+        $surat = SuratKeluar::create($request->only([
+            'nomor_surat',
+            'tanggal_surat',
+            'penerima',
+            'tanggal_pengiriman',
+            'perihal',
+            'isi_surat',
+        ]));
 
-        return redirect()->back()->with('success', 'Surat berhasil ditambahkan!');
+        // Simpan lampiran jika ada
+        if ($request->hasFile('lampiran')) {
+            foreach ($request->file('lampiran') as $file) {
+                $filename = $file->store('lampiran_surat_keluar');
+                $surat->lampiran()->create(['path' => $filename]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Surat keluar berhasil ditambahkan.');
     }
+
 
     public function show($id)
     {

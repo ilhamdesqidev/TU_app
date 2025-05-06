@@ -79,3 +79,4 @@ Route::middleware(['web'])->group(function () {
 //surat keluar
 Route::resource('surat_keluar', SuratkeluarController::class);
 Route::get('arsip/surat_keluar', [SuratkeluarController::class, 'surat_keluarIndex'])->name('superadmin.arsip.surat_keluar.index');
+Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat_keluar.store');
