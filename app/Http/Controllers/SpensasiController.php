@@ -15,12 +15,6 @@ class SpensasiController extends Controller
 
         $query = Spensasi::query();
 
-        // Update otomatis status menja di kadaluarsa
-        $query->where(function ($q) {
-            $q->where('status', 'menunggu')
-              ->where('waktu_selesai', '<', now());
-        })->update(['status' => 'kadaluarsa']);
-
         if ($status !== 'semua') {
             $query->where('status', $status);
         }

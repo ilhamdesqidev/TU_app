@@ -82,9 +82,10 @@
                                             </button>
                                         </form>
                                     @else
-                                        <a href="{{ route('superadmin.spensasi.show', $item) }}" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i> Detail
-                                        </a>
+                                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detailModal{{ $item->id }}">
+    <i class="fas fa-eye"></i> Lihat
+</button>
+
                                     @endif
                                 </div>
                             </td>
@@ -105,6 +106,24 @@
     <!-- Pagination -->
     <div class="d-flex justify-content-center mt-3">
         {{ $surat->links() }}
+    </div>
+</div>
+
+<!-- Modal Detail -->
+<div class="modal fade" id="detailModal{{ $item->id }}" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel">Detail Spensasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start">
+                <p>{{ $item->detail_spensasi }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
     </div>
 </div>
 
