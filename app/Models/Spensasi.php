@@ -14,7 +14,8 @@ class Spensasi extends Model
         'kelas', 
         'jurusan',
         'kategori_spensasi', 
-        'jam_pelajaran', 
+        'waktu_mulai',
+        'waktu_selesai', 
         'detail_spensasi', 
         'status', 
         'tanggal_spensasi'

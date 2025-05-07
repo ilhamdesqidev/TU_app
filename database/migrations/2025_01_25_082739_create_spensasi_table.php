@@ -20,7 +20,8 @@ return new class extends Migration
                 'sakit', 
                 'pulang', 
             ]);
-            $table->string('jam_pelajaran')->nullable();
+            $table->dateTime('waktu_mulai');
+            $table->dateTime('waktu_selesai');
             $table->text('detail_spensasi');
             $table->enum('status', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
             $table->date('tanggal_spensasi');

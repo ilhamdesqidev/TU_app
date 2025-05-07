@@ -46,11 +46,28 @@
             </select>
         </div>
 
-        <!-- Mata Pelajaran -->
+        <!-- Tanggal dan Jam Mulai -->
         <div class="form-group">
-            <label for="jam_pelajaran">Mata Pelajaran (Opsional)</label>
-            <input type="text" name="jam_pelajaran" class="form-control" value="{{ old('jam_pelajaran') }}">
+            <label for="tanggal_mulai">Tanggal Mulai Spensasi</label>
+            <input type="date" name="tanggal_mulai" class="form-control" required value="{{ old('tanggal_mulai') }}">
         </div>
+
+        <div class="form-group">
+            <label for="jam_mulai_spensasi">Jam Mulai Spensasi</label>
+            <input type="time" name="jam_mulai_spensasi" class="form-control" required value="{{ old('jam_mulai_spensasi') }}">
+        </div>
+
+        <!-- Tanggal dan Jam Selesai -->
+        <div class="form-group">
+            <label for="tanggal_selesai">Tanggal Selesai Spensasi</label>
+            <input type="date" name="tanggal_selesai" class="form-control" required value="{{ old('tanggal_selesai') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="jam_selesai_spensasi">Jam Selesai Spensasi</label>
+            <input type="time" name="jam_selesai_spensasi" class="form-control" required value="{{ old('jam_selesai_spensasi') }}">
+        </div>
+
 
         <!-- Detail Spensasi -->
         <div class="form-group">

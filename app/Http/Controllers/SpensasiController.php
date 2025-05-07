@@ -5,28 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Spensasi;
 use App\Models\Siswa;
+use Carbon\Carbon;
 
 class SpensasiController extends Controller
 {
-    /**
-     * Tampilkan daftar surat spensasi dengan filter status.
-     */
     public function index(Request $request)
     {
         $status = $request->input('status', 'semua');
 
         $query = Spensasi::query();
+
+        // Update otomatis status menja di kadaluarsa
+        $query->where(function ($q) {
+            $q->where('status', 'menunggu')
+              ->where('waktu_selesai', '<', now());
+        })->update(['status' => 'kadaluarsa']);
+
         if ($status !== 'semua') {
             $query->where('status', $status);
         }
 
-        $surat = $query->paginate(10);
+        $surat = $query->orderByDesc('created_at')->paginate(10);
         return view('superadmin.spensasi.index', compact('surat', 'status'));
     }
 
-    /**
-     * Form tambah surat spensasi baru.
-     */
     public function create()
     {
         $siswa = Siswa::select('id', 'nama_siswa', 'kelas')->get();
@@ -40,52 +42,58 @@ class SpensasiController extends Controller
         return view('superadmin.spensasi.create', compact('kategoriSpensasi', 'siswa'));
     }
 
-    /**
-     * Simpan surat spensasi yang baru dibuat.
-     */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'siswa_terpilih' => 'required', // Data siswa dikirim dalam format JSON
-            'kategori_spensasi' => 'required|in:keluar,sakit,pulang',
-            'jam_pelajaran' => 'nullable|string|max:100',
-            'detail_spensasi' => 'required|string',
-            'tanggal_spensasi' => 'required|date'
-        ]);
-    
-        // Decode JSON siswa yang dipilih
-        $siswaTerpilih = json_decode($request->siswa_terpilih, true);
-    
-        foreach ($siswaTerpilih as $siswa) {
-            // Pastikan siswa ada di database dan belum lulus
-            $siswaDB = Siswa::where('nama_siswa', $siswa['nama'])->first();
-    
-            if (!$siswaDB) {
-                return redirect()->back()->withErrors(['siswa_terpilih' => 'Salah satu nama siswa tidak valid!'])->withInput();
-            }
-    
-            if ($siswaDB->status === 'lulus') {
-                return redirect()->back()->withErrors(['siswa_terpilih' => 'Siswa ' . $siswa['nama'] . ' sudah lulus dan tidak bisa dimasukkan ke Spensasi!'])->withInput();
-            }
-    
-            Spensasi::create([
-                'nama_siswa' => $siswa['nama'],
-                'kelas' => $siswa['kelas'],
-                'jurusan' => $siswa['jurusan'],
-                'kategori_spensasi' => $request->kategori_spensasi,
-                'jam_pelajaran' => $request->jam_pelajaran,
-                'detail_spensasi' => $request->detail_spensasi,
-                'tanggal_spensasi' => $request->tanggal_spensasi,
-                'status' => 'menunggu'
-            ]);
+public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'siswa_terpilih' => 'required',
+        'kategori_spensasi' => 'required|in:keluar,sakit,pulang',
+        'detail_spensasi' => 'required|string',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+        'jam_mulai_spensasi' => 'required|date_format:H:i',
+        'jam_selesai_spensasi' => 'required|date_format:H:i',
+    ]);
+
+    $siswaTerpilih = json_decode($request->siswa_terpilih, true);
+
+    // Mengonversi waktu mulai dan selesai
+    $waktuMulai = Carbon::parse($request->tanggal_mulai . ' ' . $request->jam_mulai_spensasi);
+    $waktuSelesai = Carbon::parse($request->tanggal_selesai . ' ' . $request->jam_selesai_spensasi);
+
+    foreach ($siswaTerpilih as $siswa) {
+        $siswaDB = Siswa::where('nama_siswa', $siswa['nama'])->first();
+
+        if (!$siswaDB) {
+            return redirect()->back()->withErrors(['siswa_terpilih' => 'Salah satu nama siswa tidak valid!'])->withInput();
         }
-    
-        return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil dibuat.');
+
+        if ($siswaDB->status === 'lulus') {
+            return redirect()->back()->withErrors(['siswa_terpilih' => 'Siswa ' . $siswa['nama'] . ' sudah lulus dan tidak bisa dimasukkan ke Spensasi!'])->withInput();
+        }
+
+        if (!$waktuMulai || !$waktuSelesai) {
+            return redirect()->back()->withErrors(['waktu_spensasi' => 'Waktu mulai/selesai tidak valid'])->withInput();
+        }
+        
+
+        Spensasi::create([
+            'nama_siswa' => $siswa['nama'],
+            'kelas' => $siswa['kelas'],
+            'jurusan' => $siswa['jurusan'],
+            'kategori_spensasi' => $request->kategori_spensasi,
+            'detail_spensasi' => $request->detail_spensasi,
+            'waktu_mulai' => $waktuMulai,
+            'waktu_selesai' => $waktuSelesai,
+            'status' => 'menunggu',
+            'tanggal_spensasi' => Carbon::now()->toDateString(), // Tanggal spensasi adalah hari ini
+        ]);
     }
-    
-    /**
-     * Form edit surat spensasi.
-     */
+
+    return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil dibuat.');
+}
+
+
+
     public function edit(Spensasi $spensasi)
     {
         if ($spensasi->status !== 'menunggu') {
@@ -101,9 +109,6 @@ class SpensasiController extends Controller
         return view('superadmin.spensasi.edit', compact('spensasi', 'kategoriSpensasi'));
     }
 
-    /**
-     * Perbarui surat spensasi.
-     */
     public function update(Request $request, Spensasi $spensasi)
     {
         if ($spensasi->status !== 'menunggu') {
@@ -114,12 +119,11 @@ class SpensasiController extends Controller
             'nama_siswa' => 'required|string|max:255',
             'kelas' => 'required|string|max:50',
             'kategori_spensasi' => 'required|in:keluar,sakit,pulang',
-            'jam_pelajaran' => 'nullable|string|max:100',
             'detail_spensasi' => 'required|string',
-            'tanggal_spensasi' => 'required|date'
+            'waktu_mulai' => 'required|date',
+            'waktu_selesai' => 'required|date|after_or_equal:waktu_mulai',
         ]);
 
-        // Pastikan nama siswa ada di database
         $siswa = Siswa::where('nama_siswa', $request->nama_siswa)->first();
         if (!$siswa) {
             return redirect()->back()->withErrors(['nama_siswa' => 'Nama siswa tidak valid! Pilih dari daftar.'])->withInput();
@@ -130,9 +134,6 @@ class SpensasiController extends Controller
         return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil diperbarui.');
     }
 
-    /**
-     * Hapus surat spensasi.
-     */
     public function destroy(Spensasi $spensasi)
     {
         if ($spensasi->status !== 'menunggu') {
@@ -144,18 +145,15 @@ class SpensasiController extends Controller
         return redirect()->route('superadmin.spensasi.index')->with('sukses', 'Surat spensasi berhasil dihapus.');
     }
 
-    /**
-     * Live search untuk mencari siswa berdasarkan nama.
-     */
     public function searchSiswa(Request $request)
-{
-    $query = $request->input('query');
+    {
+        $query = $request->input('query');
 
-    $siswa = Siswa::where('nama_siswa', 'LIKE', "%$query%")
-        ->where('status', '!=', 'lulus') // Hanya tampilkan siswa yang belum lulus
-        ->select('nama_siswa', 'kelas', 'jurusan')
-        ->get();
+        $siswa = Siswa::where('nama_siswa', 'LIKE', "%$query%")
+            ->where('status', '!=', 'lulus')
+            ->select('nama_siswa', 'kelas', 'jurusan')
+            ->get();
 
-    return response()->json($siswa);
-}
+        return response()->json($siswa);
+    }
 }
