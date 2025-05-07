@@ -83,13 +83,30 @@
                                         </form>
                                     @else
                                     <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detailModal{{ $item->id }}">
-    <i class="fas fa-eye"></i> Lihat
-</button>
-
+                                        <i class="fas fa-eye"></i> Lihat
+                                    </button>
                                     @endif
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- Modal Detail -->
+                        <div class="modal fade" id="detailModal{{ $item->id }}" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="detailModalLabel">Detail Spensasi</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-start">
+                                        <p>{{ $item->detail_spensasi }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @endforeach
                         
                         @if(count($surat) == 0)
@@ -106,24 +123,6 @@
     <!-- Pagination -->
     <div class="d-flex justify-content-center mt-3">
         {{ $surat->links() }}
-    </div>
-</div>
-
-<!-- Modal Detail -->
-<div class="modal fade" id="detailModal{{ $item->id }}" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailModalLabel">Detail Spensasi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-start">
-                <p>{{ $item->detail_spensasi }}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
-        </div>
     </div>
 </div>
 
