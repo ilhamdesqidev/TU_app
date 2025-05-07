@@ -16,38 +16,52 @@ class SuratKeluarController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'nomor_surat' => 'required',
-            'tanggal_surat' => 'required|date',
-            'penerima' => 'required',
-            'tanggal_pengiriman' => 'nullable|date',
-            'perihal' => 'required',
-            'isi_surat' => 'nullable',
-            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png'
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'nomor_surat' => 'required',
+        'tanggal_surat' => 'required|date',
+        'penerima' => 'required',
+        'tanggal_pengiriman' => 'nullable|date',
+        'perihal' => 'required',
+        'isi_surat' => 'nullable',
+        'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png'
+    ]);
 
-        // Simpan data
-        $surat = SuratKeluar::create($request->only([
-            'nomor_surat',
-            'tanggal_surat',
-            'penerima',
-            'tanggal_pengiriman',
-            'perihal',
-            'isi_surat',
-        ]));
+    // Inisialisasi array data dengan field dari request
+    $data = $request->only([
+        'nomor_surat',
+        'tanggal_surat',
+        'penerima',
+        'tanggal_pengiriman',
+        'perihal',
+        'isi_surat',
+        'kategori',
+        'status',
+    ]);
 
-        // Simpan lampiran jika ada
-        if ($request->hasFile('lampiran')) {
-            foreach ($request->file('lampiran') as $file) {
-                $filename = $file->store('lampiran_surat_keluar');
-                $surat->lampiran()->create(['path' => $filename]);
-            }
+    // Menangani lampiran
+    $lampiran = [];
+    if ($request->hasFile('lampiran')) {
+        foreach ($request->file('lampiran') as $file) {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('lampiran_surat_keluar', $filename, 'public');
+            
+            $lampiran[] = [
+                'nama' => $file->getClientOriginalName(),
+                'path' => $path,
+                'tipe' => $file->getClientOriginalExtension(),
+                'ukuran' => $file->getSize()
+            ];
         }
-
-        return redirect()->back()->with('success', 'Surat keluar berhasil ditambahkan.');
+        $data['lampiran'] = $lampiran;
     }
+
+    // Simpan data
+    $surat = SuratKeluar::create($data);
+
+    return redirect()->route('surat_keluar.index')->with('success', 'Surat keluar berhasil ditambahkan.');
+}
 
 
     public function show($id)
