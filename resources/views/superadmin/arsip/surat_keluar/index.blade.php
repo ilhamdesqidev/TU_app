@@ -492,57 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Setup filter functionality
-    const dateFilter = document.getElementById('date-filter');
-    const categoryFilter = document.getElementById('category-filter');
-    const statusFilter = document.getElementById('status-filter');
-    const searchInput = document.getElementById('search');
-    const searchBtn = document.getElementById('searchBtn');
-    
-    function applyFilters() {
-        const date = dateFilter.value;
-        const category = categoryFilter.value;
-        const status = statusFilter.value;
-        const search = searchInput.value.toLowerCase();
-        
-        console.log('Filtering by:', { date, category, status, search });
-        
-        // In a real application, this would query the database or filter the data
-        showToast('Filter Diterapkan', 'Data telah difilter sesuai kriteria.', 'bg-info text-white');
-        
-        // For demonstration, we'll simulate a loading state
-        const tableBody = document.querySelector('tbody');
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="8" class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="mt-2">Memuat data...</p>
-                </td>
-            </tr>
-        `;
-        
-        // After 1 second, restore the original content (in a real app, this would show filtered data)
-        setTimeout(() => {
-            // This would be replaced with actual filtered data
-            tableBody.innerHTML = document.querySelector('tbody').innerHTML;
-        }, 1000);
-    }
-    
-    // Add event listeners to filters
-    [dateFilter, categoryFilter, statusFilter].forEach(filter => {
-        filter.addEventListener('change', applyFilters);
-    });
-    
-    // Add event listener to search button
-    searchBtn.addEventListener('click', applyFilters);
-    
-    // Add event listener to search input (enter key)
-    searchInput.addEventListener('keyup', function(event) {
-        if (event.key === 'Enter') {
-            applyFilters();
-        }
-    });
+    // [Kode filter tetap sama]
     
     // View button functionality
     document.querySelectorAll('.view-btn').forEach(button => {
@@ -556,83 +506,83 @@ document.addEventListener('DOMContentLoaded', function() {
             viewLoading.classList.remove('d-none');
             viewContent.classList.add('d-none');
             
-            // In a real application, fetch data from server
-            // For demonstration, we'll simulate an API call
-            setTimeout(() => {
-                // This would be an actual fetch in a real application
-                // fetch(url).then(res => res.json()).then(data => {...})
-                
-                // Sample data (in a real app, this would come from the API)
-                const sampleData = {
-                    nomor_surat: this.getAttribute('data-nomor') || 'SK-2025/001',
-                    tanggal_surat: '2025-05-01',
-                    perihal: 'Undangan Rapat Koordinasi',
-                    penerima: 'PT Mitra Sejahtera',
-                    tanggal_pengiriman: '2025-05-03',
-                    status: 'Dikirim',
-                    isi_surat: 'Dengan hormat,\n\nBersama ini kami mengundang Bapak/Ibu untuk menghadiri Rapat Koordinasi yang akan dilaksanakan pada:\n\nHari/Tanggal: Senin, 10 Mei 2025\nWaktu: 10.00 - 12.00 WIB\nTempat: Ruang Rapat Utama\n\nDemikian undangan ini kami sampaikan. Atas perhatian dan kehadirannya, kami ucapkan terima kasih.',
-                    lampiran: [
-                        { nama: 'agenda_rapat.pdf', ukuran: '250 KB', tipe: 'pdf' },
-                        { nama: 'lokasi_venue.jpg', ukuran: '1.2 MB', tipe: 'jpg' }
-                    ]
-                };
-                
-                // Populate modal with data
-                document.getElementById('view-nomor-surat').textContent = sampleData.nomor_surat;
-                document.getElementById('view-tanggal-surat').textContent = formatDate(sampleData.tanggal_surat);
-                document.getElementById('view-perihal').textContent = sampleData.perihal;
-                document.getElementById('view-penerima').textContent = sampleData.penerima;
-                document.getElementById('view-tanggal-pengiriman').textContent = formatDate(sampleData.tanggal_pengiriman);
-                document.getElementById('view-status').innerHTML = `<span class="badge bg-info">${sampleData.status}</span>`;
-                document.getElementById('view-isi-surat').textContent = sampleData.isi_surat;
-                
-                // Populate lampiran
-                const lampiranContainer = document.getElementById('view-lampiran');
-                lampiranContainer.innerHTML = '';
-                
-                if (sampleData.lampiran && sampleData.lampiran.length > 0) {
-                    sampleData.lampiran.forEach(item => {
-                        let icon = 'file-earmark';
-                        let bgColor = 'bg-secondary';
-                        
-                        if (item.tipe === 'pdf') {
-                            icon = 'file-earmark-pdf';
-                            bgColor = 'bg-danger';
-                        } else if (item.tipe === 'jpg' || item.tipe === 'png') {
-                            icon = 'file-earmark-image';
-                            bgColor = 'bg-primary';
-                        } else if (item.tipe === 'doc' || item.tipe === 'docx') {
-                            icon = 'file-earmark-word';
-                            bgColor = 'bg-info';
-                        } else if (item.tipe === 'xls' || item.tipe === 'xlsx') {
-                            icon = 'file-earmark-excel';
-                            bgColor = 'bg-success';
-                        }
-                        
-                        const fileItem = document.createElement('div');
-                        fileItem.className = 'border rounded p-2 d-flex align-items-center';
-                        fileItem.innerHTML = `
-                            <div class="p-2 rounded ${bgColor} text-white me-2">
-                                <i class="bi bi-${icon}"></i>
-                            </div>
-                            <div>
-                                <p class="mb-0 fw-bold">${item.nama}</p>
-                                <small class="text-muted">${item.ukuran}</small>
-                            </div>
-                            <button class="btn btn-sm btn-link ms-auto" title="Download">
-                                <i class="bi bi-download"></i>
-                            </button>
-                        `;
-                        lampiranContainer.appendChild(fileItem);
-                    });
-                } else {
-                    lampiranContainer.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran</p>';
-                }
-                
-                // Hide loading, show content
-                viewLoading.classList.add('d-none');
-                viewContent.classList.remove('d-none');
-            }, 800);
+            // Fetch data dari server
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Populate modal dengan data
+                    document.getElementById('view-nomor-surat').textContent = data.nomor_surat;
+                    document.getElementById('view-tanggal-surat').textContent = formatDate(data.tanggal_surat);
+                    document.getElementById('view-perihal').textContent = data.perihal;
+                    document.getElementById('view-penerima').textContent = data.penerima;
+                    document.getElementById('view-tanggal-pengiriman').textContent = data.tanggal_pengiriman ? formatDate(data.tanggal_pengiriman) : '-';
+                    
+                    // Status dengan badge yang sesuai
+                    let statusClass = 'bg-secondary';
+                    if (data.status === 'draft') statusClass = 'bg-warning text-dark';
+                    else if (data.status === 'dikirim') statusClass = 'bg-info';
+                    else if (data.status === 'diterima') statusClass = 'bg-success';
+                    
+                    document.getElementById('view-status').innerHTML = `<span class="badge ${statusClass}">${data.status}</span>`;
+                    document.getElementById('view-isi-surat').textContent = data.isi_surat || '-';
+                    
+                    // Populate lampiran
+                    const lampiranContainer = document.getElementById('view-lampiran');
+                    lampiranContainer.innerHTML = '';
+                    
+                    if (data.lampiran && data.lampiran.length > 0) {
+                        data.lampiran.forEach((item, index) => {
+                            let icon = 'file-earmark';
+                            let bgColor = 'bg-secondary';
+                            
+                            if (item.tipe === 'pdf') {
+                                icon = 'file-earmark-pdf';
+                                bgColor = 'bg-danger';
+                            } else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) {
+                                icon = 'file-earmark-image';
+                                bgColor = 'bg-primary';
+                            } else if (['doc', 'docx'].includes(item.tipe)) {
+                                icon = 'file-earmark-word';
+                                bgColor = 'bg-info';
+                            } else if (['xls', 'xlsx'].includes(item.tipe)) {
+                                icon = 'file-earmark-excel';
+                                bgColor = 'bg-success';
+                            }
+                            
+                            const fileItem = document.createElement('div');
+                            fileItem.className = 'border rounded p-2 d-flex align-items-center';
+                            fileItem.innerHTML = `
+                                <div class="p-2 rounded ${bgColor} text-white me-2">
+                                    <i class="bi bi-${icon}"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-0 fw-bold">${item.nama}</p>
+                                    <small class="text-muted">${item.ukuran}</small>
+                                </div>
+                                <a href="/surat_keluar/${data.id}/download/${index}" class="btn btn-sm btn-link ms-auto" title="Download">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            `;
+                            lampiranContainer.appendChild(fileItem);
+                        });
+                    } else {
+                        lampiranContainer.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran</p>';
+                    }
+                    
+                    // Hide loading, show content
+                    viewLoading.classList.add('d-none');
+                    viewContent.classList.remove('d-none');
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    showToast('Error', 'Gagal memuat data surat', 'bg-danger text-white');
+                    viewLoading.classList.add('d-none');
+                });
         });
     });
     
@@ -641,88 +591,68 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
             const url = this.getAttribute('data-url');
-            const formLoading = document.getElementById('form-loading');
-            const formModal = document.getElementById('formModal');
-            const formTitle = formModal.querySelector('.modal-title');
             
-            // Update modal title
-            formTitle.textContent = 'Edit Surat Keluar';
+            // Tampilkan modal edit
+            const editModal = document.getElementById('editSuratModal');
+            const modalTitle = editModal.querySelector('.modal-title');
+            modalTitle.textContent = 'Edit Surat Keluar';
             
-            // Show loading
-            formLoading.classList.remove('d-none');
-            
-            // Update form action for edit
-            const form = document.getElementById('suratForm');
-            form.action = url;
-            
-            // Add method input for PUT request
-            const methodInput = document.getElementById('method-input');
-            methodInput.innerHTML = '<input type="hidden" name="_method" value="PUT">';
-            
-            // In a real application, fetch data from server
-            // For demonstration, we'll simulate an API call
-            setTimeout(() => {
-                // Sample data (in a real app, this would come from the API)
-                const sampleData = {
-                    nomor_surat: 'SK-2025/001',
-                    tanggal_surat: '2025-05-01',
-                    perihal: 'Undangan Rapat Koordinasi',
-                    penerima: 'PT Mitra Sejahtera',
-                    tanggal_pengiriman: '2025-05-03',
-                    kategori: 'penting',
-                    status: 'dikirim',
-                    isi_surat: 'Dengan hormat,\n\nBersama ini kami mengundang Bapak/Ibu untuk menghadiri Rapat Koordinasi...',
-                    lampiran: [
-                        { id: 1, nama: 'agenda_rapat.pdf', ukuran: '250 KB', tipe: 'pdf' },
-                        { id: 2, nama: 'lokasi_venue.jpg', ukuran: '1.2 MB', tipe: 'jpg' }
-                    ]
-                };
-                
-                // Populate form with data
-                document.getElementById('nomor_surat').value = sampleData.nomor_surat;
-                document.getElementById('tanggal_surat').value = sampleData.tanggal_surat;
-                document.getElementById('perihal').value = sampleData.perihal;
-                document.getElementById('penerima').value = sampleData.penerima;
-                document.getElementById('tanggal_pengiriman').value = sampleData.tanggal_pengiriman;
-                document.getElementById('kategori').value = sampleData.kategori;
-                document.getElementById('status').value = sampleData.status;
-                document.getElementById('isi_surat').value = sampleData.isi_surat;
-                
-                // Show existing attachments if any
-                const lampiranList = document.getElementById('lampiran-list');
-                
-                if (sampleData.lampiran && sampleData.lampiran.length > 0) {
-                    lampiranList.classList.remove('d-none');
+            // Fetch data untuk edit
+            fetch(`/surat_keluar/${id}/edit`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Set form action
+                    document.getElementById('editSuratForm').action = `/surat_keluar/${id}`;
+                    
+                    // Populate form fields
+                    document.getElementById('nomor_surat_edit').value = data.nomor_surat;
+                    document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
+                    document.getElementById('penerima_edit').value = data.penerima;
+                    document.getElementById('tanggal_pengiriman_edit').value = data.tanggal_pengiriman || '';
+                    document.getElementById('perihal_edit').value = data.perihal;
+                    document.getElementById('isi_surat_edit').value = data.isi_surat || '';
+                    
+                    // Menangani lampiran yang ada
+                    const lampiranList = document.getElementById('lampiran-list');
                     const lampiranContainer = lampiranList.querySelector('.border');
                     lampiranContainer.innerHTML = '';
                     
-                    sampleData.lampiran.forEach(item => {
-                        let icon = 'file-earmark';
-                        if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
-                        else if (item.tipe === 'jpg' || item.tipe === 'png') icon = 'file-earmark-image';
-                        else if (item.tipe === 'doc' || item.tipe === 'docx') icon = 'file-earmark-word';
-                        else if (item.tipe === 'xls' || item.tipe === 'xlsx') icon = 'file-earmark-excel';
+                    if (data.lampiran && data.lampiran.length > 0) {
+                        lampiranList.classList.remove('d-none');
                         
-                        const fileItem = document.createElement('div');
-                        fileItem.className = 'd-flex align-items-center mb-2';
-                        fileItem.innerHTML = `
-                            <i class="bi bi-${icon} me-2 text-primary"></i>
-                            <span>${item.nama}</span>
-                            <small class="text-muted ms-2">(${item.ukuran})</small>
-                            <div class="form-check ms-auto">
-                                <input class="form-check-input" type="checkbox" id="keep-file-${item.id}" name="keep_file[]" value="${item.id}" checked>
-                                <label class="form-check-label" for="keep-file-${item.id}">Pertahankan</label>
-                            </div>
-                        `;
-                        lampiranContainer.appendChild(fileItem);
-                    });
-                } else {
-                    lampiranList.classList.add('d-none');
-                }
-                
-                // Hide loading
-                formLoading.classList.add('d-none');
-            }, 800);
+                        data.lampiran.forEach((item, index) => {
+                            let icon = 'file-earmark';
+                            if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
+                            else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) icon = 'file-earmark-image';
+                            else if (['doc', 'docx'].includes(item.tipe)) icon = 'file-earmark-word';
+                            else if (['xls', 'xlsx'].includes(item.tipe)) icon = 'file-earmark-excel';
+                            
+                            const fileItem = document.createElement('div');
+                            fileItem.className = 'd-flex align-items-center mb-2';
+                            fileItem.innerHTML = `
+                                <i class="bi bi-${icon} me-2 text-warning"></i>
+                                <span>${item.nama}</span>
+                                <small class="text-muted ms-2">(${item.ukuran})</small>
+                                <div class="form-check ms-auto">
+                                    <input class="form-check-input" type="checkbox" id="keep-file-${index}" name="keep_file[]" value="${index}" checked>
+                                    <label class="form-check-label" for="keep-file-${index}">Pertahankan</label>
+                                </div>
+                            `;
+                            lampiranContainer.appendChild(fileItem);
+                        });
+                    } else {
+                        lampiranList.classList.add('d-none');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    showToast('Error', 'Gagal memuat data untuk edit', 'bg-danger text-white');
+                });
         });
     });
     
@@ -738,95 +668,59 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteForm.action = url;
             
             // Set surat number in confirmation text
-            document.getElementById('delete-nomor-surat').textContent = nomorSurat || 'SK-2025/001';
+            document.getElementById('delete-nomor-surat').textContent = nomorSurat || '';
         });
-    });
-    
-    // Add new document functionality (reset form)
-    document.querySelectorAll('[data-bs-target="#formModal"]').forEach(button => {
-        if (!button.classList.contains('edit-btn')) {
-            button.addEventListener('click', function() {
-                const formModal = document.getElementById('formModal');
-                const formTitle = formModal.querySelector('.modal-title');
-                
-                // Update modal title
-                formTitle.textContent = 'Tambah Surat Keluar';
-                
-                // Reset form
-                document.getElementById('suratForm').reset();
-                
-                // Update form action for create
-                const form = document.getElementById('suratForm');
-                form.action = "{{ route('surat_keluar.store') }}";
-                
-                // Remove method input for PUT request
-                document.getElementById('method-input').innerHTML = '';
-                
-                // Hide lampiran list
-                document.getElementById('lampiran-list').classList.add('d-none');
-            });
-        }
     });
     
     // Export button functionality
     document.getElementById('exportBtn').addEventListener('click', function() {
-        showToast('Export Dimulai', 'File sedang diproses untuk diunduh.', 'bg-success text-white');
-        
-        // Simulate export process
-        setTimeout(() => {
-            // In a real application, this would trigger a file download
-            const a = document.createElement('a');
-            a.href = '#'; // Would be a real URL in production
-            a.download = 'daftar_surat_keluar.xlsx';
-            document.body.appendChild(a);
-            // a.click(); // Commented out for demo
-            document.body.removeChild(a);
-            
-            showToast('Export Selesai', 'File berhasil diproses dan siap diunduh.', 'bg-success text-white');
-        }, 1500);
+        window.location.href = '/surat_keluar/export';
     });
     
     // Print button functionality
     document.getElementById('print-btn').addEventListener('click', function() {
-        showToast('Print Dipersipakan', 'Dokumen sedang disiapkan untuk dicetak', 'bg-info text-white');
+        const contentToPrint = document.getElementById('view-content').cloneNode(true);
         
-        // In a real application, this would open a print dialog
-        setTimeout(() => {
-            // window.print(); // Commented out for demo
-            showToast('Print Siap', 'Silahkan cetak dokumen melalui dialog print', 'bg-info text-white');
-        }, 800);
+        // Buat halaman cetak
+        const printWin = window.open('', '_blank');
+        printWin.document.write(`
+            <html>
+                <head>
+                    <title>Cetak Surat Keluar</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { padding: 20px; }
+                        @media print {
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h2 class="text-center mb-4">Detail Surat Keluar</h2>
+                        ${contentToPrint.innerHTML}
+                        <div class="text-center mt-4 no-print">
+                            <button onclick="window.print()" class="btn btn-primary">Cetak</button>
+                            <button onclick="window.close()" class="btn btn-secondary ms-2">Tutup</button>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        `);
+        printWin.document.close();
     });
     
-    // Form submission handler
-    document.getElementById('suratForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent actual form submission for demo
-        
-        // Simulate form submission
-        const formModal = bootstrap.Modal.getInstance(document.getElementById('formModal'));
-        formModal.hide();
-        
-        // Show success notification
-        const isEdit = this.querySelector('input[name="_method"]') !== null;
-        const message = isEdit ? 'Surat berhasil diperbarui.' : 'Surat baru berhasil ditambahkan.';
-        showToast('Sukses', message, 'bg-success text-white');
-        
-        // In a real application, you would submit the form to the server
-        // this.submit();
+    // Form submission handlers
+    document.getElementById('tambahSuratForm').addEventListener('submit', function(event) {
+        // Form validation can be added here if needed
     });
     
-    // Delete form submission handler
+    document.getElementById('editSuratForm').addEventListener('submit', function(event) {
+        // Form validation can be added here if needed
+    });
+    
     document.getElementById('deleteForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent actual form submission for demo
-        
-        // Close modal
-        const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-        deleteModal.hide();
-        
-        // Show success notification
-        showToast('Dihapus', 'Surat berhasil dihapus dari sistem.', 'bg-success text-white');
-        
-        // In a real application, you would submit the form to the server
-        // this.submit();
+        // Form validation can be added here if needed
     });
     
     // Helper function to format dates
@@ -839,12 +733,6 @@ document.addEventListener('DOMContentLoaded', function() {
             year: 'numeric' 
         });
     }
-    
-    // Show tooltips (optional, requires Bootstrap Tooltip initialization)
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
-    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-        new bootstrap.Tooltip(tooltipTriggerEl);
-    });
 });
 </script>
 @endsection

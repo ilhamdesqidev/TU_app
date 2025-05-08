@@ -16,83 +16,190 @@ class SuratKeluarController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'nomor_surat' => 'required',
-        'tanggal_surat' => 'required|date',
-        'penerima' => 'required',
-        'tanggal_pengiriman' => 'nullable|date',
-        'perihal' => 'required',
-        'isi_surat' => 'nullable',
-        'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png'
-    ]);
+    {
+        // Validasi input
+        $request->validate([
+            'nomor_surat' => 'required',
+            'tanggal_surat' => 'required|date',
+            'penerima' => 'required',
+            'tanggal_pengiriman' => 'nullable|date',
+            'perihal' => 'required',
+            'isi_surat' => 'nullable',
+            'kategori' => 'required|in:penting,segera,biasa',
+            'status' => 'required|in:draft,dikirim,diterima',
+            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png'
+        ]);
 
-    // Inisialisasi array data dengan field dari request
-    $data = $request->only([
-        'nomor_surat',
-        'tanggal_surat',
-        'penerima',
-        'tanggal_pengiriman',
-        'perihal',
-        'isi_surat',
-        'kategori',
-        'status',
-    ]);
+        // Inisialisasi array data dengan field dari request
+        $data = $request->only([
+            'nomor_surat',
+            'tanggal_surat',
+            'penerima',
+            'tanggal_pengiriman',
+            'perihal',
+            'isi_surat',
+            'kategori',
+            'status',
+        ]);
 
-    // Menangani lampiran
-    $lampiran = [];
-    if ($request->hasFile('lampiran')) {
-        foreach ($request->file('lampiran') as $file) {
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('lampiran_surat_keluar', $filename, 'public');
-            
-            $lampiran[] = [
-                'nama' => $file->getClientOriginalName(),
-                'path' => $path,
-                'tipe' => $file->getClientOriginalExtension(),
-                'ukuran' => $file->getSize()
-            ];
+        // Menangani lampiran
+        $lampiran = [];
+        if ($request->hasFile('lampiran')) {
+            foreach ($request->file('lampiran') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('lampiran_surat_keluar', $filename, 'public');
+                
+                $lampiran[] = [
+                    'nama' => $file->getClientOriginalName(),
+                    'path' => $path,
+                    'tipe' => $file->getClientOriginalExtension(),
+                    'ukuran' => round($file->getSize() / 1024, 2) . ' KB'
+                ];
+            }
+            $data['lampiran'] = $lampiran;
         }
-        $data['lampiran'] = $lampiran;
+
+        // Simpan data
+        $surat = SuratKeluar::create($data);
+
+        return redirect()->route('surat_keluar.index')
+            ->with('success', 'Surat keluar berhasil ditambahkan.');
     }
-
-    // Simpan data
-    $surat = SuratKeluar::create($data);
-
-    return redirect()->route('surat_keluar.index')->with('success', 'Surat keluar berhasil ditambahkan.');
-}
-
 
     public function show($id)
     {
-        $surat = SuratMasuk::findOrFail($id);
-        return response()->json($surat);
+        $surat = SuratKeluar::findOrFail($id);
+
+        return response()->json([
+            'id' => $surat->id,
+            'nomor_surat' => $surat->nomor_surat,
+            'tanggal_surat' => $surat->tanggal_surat->format('Y-m-d'),
+            'penerima' => $surat->penerima,
+            'tanggal_pengiriman' => $surat->tanggal_pengiriman ? $surat->tanggal_pengiriman->format('Y-m-d') : null,
+            'perihal' => $surat->perihal,
+            'isi_surat' => $surat->isi_surat,
+            'kategori' => $surat->kategori,
+            'status' => $surat->status,
+            'lampiran' => $surat->lampiran,
+        ]);
     }
     
     public function edit($id)
     {
-        $surat = SuratMasuk::findOrFail($id);
+        $surat = SuratKeluar::findOrFail($id);
         return response()->json($surat);
     }
     
     public function update(Request $request, $id)
     {
-        $surat = SuratMasuk::findOrFail($id);
-        $surat->update($request->all());
-        return redirect()->back()->with('success', 'Data berhasil diperbarui');
+        // Validasi input
+        $request->validate([
+            'nomor_surat' => 'required',
+            'tanggal_surat' => 'required|date',
+            'penerima' => 'required',
+            'tanggal_pengiriman' => 'nullable|date',
+            'perihal' => 'required',
+            'isi_surat' => 'nullable',
+            'kategori' => 'required|in:penting,segera,biasa',
+            'status' => 'required|in:draft,dikirim,diterima',
+            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png'
+        ]);
+
+        $surat = SuratKeluar::findOrFail($id);
+        
+        // Inisialisasi array data dengan field dari request
+        $data = $request->only([
+            'nomor_surat',
+            'tanggal_surat',
+            'penerima',
+            'tanggal_pengiriman',
+            'perihal',
+            'isi_surat',
+            'kategori',
+            'status',
+        ]);
+
+        // Menangani lampiran
+        if ($request->hasFile('lampiran')) {
+            $existingAttachments = $surat->lampiran ?? [];
+            $keepAttachments = $request->input('keep_file', []);
+            $lampiran = [];
+            
+            // Pertahankan lampiran yang dipilih
+            if (!empty($existingAttachments)) {
+                foreach ($existingAttachments as $index => $attachment) {
+                    if (in_array($index, $keepAttachments)) {
+                        $lampiran[] = $attachment;
+                    } else {
+                        // Hapus file yang tidak dipertahankan
+                        if (isset($attachment['path'])) {
+                            Storage::disk('public')->delete($attachment['path']);
+                        }
+                    }
+                }
+            }
+            
+            // Tambahkan lampiran baru
+            foreach ($request->file('lampiran') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('lampiran_surat_keluar', $filename, 'public');
+                
+                $lampiran[] = [
+                    'nama' => $file->getClientOriginalName(),
+                    'path' => $path,
+                    'tipe' => $file->getClientOriginalExtension(),
+                    'ukuran' => round($file->getSize() / 1024, 2) . ' KB'
+                ];
+            }
+            
+            $data['lampiran'] = $lampiran;
+        }
+
+        // Update data
+        $surat->update($data);
+
+        return redirect()->route('surat_keluar.index')
+            ->with('success', 'Surat keluar berhasil diperbarui.');
     }
     
     public function destroy($id)
     {
-        $surat = SuratMasuk::findOrFail($id);
+        $surat = SuratKeluar::findOrFail($id);
+        
+        // Hapus semua file lampiran
+        if (!empty($surat->lampiran)) {
+            foreach ($surat->lampiran as $attachment) {
+                if (isset($attachment['path'])) {
+                    Storage::disk('public')->delete($attachment['path']);
+                }
+            }
+        }
+        
         $surat->delete();
-        return redirect()->back()->with('success', 'Data berhasil dihapus');
+        
+        return redirect()->route('surat_keluar.index')
+            ->with('success', 'Surat keluar berhasil dihapus.');
     }
     
-    public function download($id)
+    public function downloadAttachment($id, $index)
     {
-        $surat = SuratMasuk::findOrFail($id);
-        return response()->download(storage_path("app/public/{$surat->file_path}"));
+        $surat = SuratKeluar::findOrFail($id);
+        
+        if (empty($surat->lampiran) || !isset($surat->lampiran[$index])) {
+            return redirect()->back()->with('error', 'Lampiran tidak ditemukan.');
+        }
+        
+        $attachment = $surat->lampiran[$index];
+        
+        if (!isset($attachment['path']) || !Storage::disk('public')->exists($attachment['path'])) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
+        
+        return Storage::disk('public')->download($attachment['path'], $attachment['nama']);
     }
-}    
+    
+    public function export()
+    {
+        return Excel::download(new SuratKeluarExport, 'daftar_surat_keluar.xlsx');
+    }
+}
