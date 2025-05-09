@@ -79,7 +79,7 @@ Route::middleware(['web'])->group(function () {
 //surat keluar
 Route::resource('surat_keluar', SuratkeluarController::class);
 Route::get('arsip/surat_keluar', [SuratkeluarController::class, 'surat_keluarIndex'])->name('superadmin.arsip.surat_keluar.index');
-Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat_keluar.store');
-Route::get('/surat-keluar/{id}', [SuratKeluarController::class, 'show'])->name('surat_keluar.show');
+// Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat_keluar.store');
+// Route::get('/surat-keluar/{id}', [SuratKeluarController::class, 'show'])->name('surat_keluar.show');
 Route::get('surat_keluar/export', [SuratKeluarController::class, 'export'])->name('surat_keluar.export');
 Route::get('surat_keluar/{id}/download/{index}', [SuratKeluarController::class, 'downloadAttachment'])->name('surat_keluar.download_attachment');

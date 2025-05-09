@@ -115,12 +115,12 @@
                                     <td><span class="badge bg-{{ $surat->kategori == 'penting' ? 'warning text-dark' : ($surat->kategori == 'segera' ? 'danger' : 'secondary') }} rounded-pill">{{ ucfirst($surat->kategori) }}</span></td>
                                     <td><span class="badge bg-{{ $surat->status == 'draft' ? 'warning text-dark' : ($surat->status == 'dikirim' ? 'info' : 'success') }} rounded-pill">{{ ucfirst($surat->status) }}</span></td>
                                     <td>
-                                        <div class="btn-group">
+                                        <div class="btn-group">     
                                             <button type="button" class="btn btn-sm btn-primary view-btn" 
                                                     data-bs-toggle="modal" 
-                                                    data-bs-target="#viewModal" 
-                                                    data-id="{{ $surat->id }}"
+                                                    data-bs-target="#viewModal"
                                                     data-url="{{ route('surat_keluar.show', $surat->id) }}"
+                                                    data-id="{{ $surat->id }}"
                                                     data-nomor="{{ $surat->nomor_surat }}"
                                                     title="Lihat Detail">
                                                 <i class="bi bi-eye"></i>
@@ -266,7 +266,7 @@
     </div>
 </div>
 
-<!-- Modal Tambah Surat Keluar -->
+<!-- Perbaikan Modal Tambah Surat Keluar -->
 <div class="modal fade" id="tambahSuratModal" tabindex="-1" aria-labelledby="tambahSuratLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -314,6 +314,32 @@
                         <input type="text" class="form-control" id="perihal_tambah" name="perihal" required>
                     </div>
 
+                    <!-- Tambahkan field kategori -->
+                    <div class="mb-3">
+                        <label for="kategori_tambah" class="form-label fw-bold">
+                            <i class="bi bi-tag text-success me-1"></i>Kategori
+                        </label>
+                        <select class="form-select" id="kategori_tambah" name="kategori" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="penting">Penting</option>
+                            <option value="segera">Segera</option>
+                            <option value="biasa">Biasa</option>
+                        </select>
+                    </div>
+
+                    <!-- Tambahkan field status -->
+                    <div class="mb-3">
+                        <label for="status_tambah" class="form-label fw-bold">
+                            <i class="bi bi-check-circle text-success me-1"></i>Status
+                        </label>
+                        <select class="form-select" id="status_tambah" name="status" required>
+                            <option value="">Pilih Status</option>
+                            <option value="draft">Draft</option>
+                            <option value="dikirim">Dikirim</option>
+                            <option value="diterima">Diterima</option>
+                        </select>
+                    </div>
+
                     <div class="mb-3">
                         <label for="isi_surat_tambah" class="form-label fw-bold">
                             <i class="bi bi-file-text text-success me-1"></i>Isi Surat
@@ -347,7 +373,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editSuratForm" method="POST" enctype="multipart/form-data">
+                <form id="editSuratForm" method="POST" enctype="multipart/form-data" action="">
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
@@ -385,6 +411,32 @@
                             <i class="bi bi-chat-left-text text-warning me-1"></i>Perihal
                         </label>
                         <input type="text" class="form-control" id="perihal_edit" name="perihal" required>
+                    </div>
+
+                    <!-- Tambahkan field kategori -->
+                    <div class="mb-3">
+                        <label for="kategori_edit" class="form-label fw-bold">
+                            <i class="bi bi-tag text-warning me-1"></i>Kategori
+                        </label>
+                        <select class="form-select" id="kategori_edit" name="kategori" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="penting">Penting</option>
+                            <option value="segera">Segera</option>
+                            <option value="biasa">Biasa</option>
+                        </select>
+                    </div>
+
+                    <!-- Tambahkan field status -->
+                    <div class="mb-3">
+                        <label for="status_edit" class="form-label fw-bold">
+                            <i class="bi bi-check-circle text-warning me-1"></i>Status
+                        </label>
+                        <select class="form-select" id="status_edit" name="status" required>
+                            <option value="">Pilih Status</option>
+                            <option value="draft">Draft</option>
+                            <option value="dikirim">Dikirim</option>
+                            <option value="diterima">Diterima</option>
+                        </select>
                     </div>
 
                     <div class="mb-3">
@@ -586,75 +638,82 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Edit button functionality
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const url = this.getAttribute('data-url');
-            
-            // Tampilkan modal edit
-            const editModal = document.getElementById('editSuratModal');
-            const modalTitle = editModal.querySelector('.modal-title');
-            modalTitle.textContent = 'Edit Surat Keluar';
-            
-            // Fetch data untuk edit
-            fetch(`/surat_keluar/${id}/edit`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Set form action
-                    document.getElementById('editSuratForm').action = `/surat_keluar/${id}`;
+    // Edit button functionality// Script untuk menangani edit surat
+document.querySelectorAll('.edit-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const url = this.getAttribute('data-url');
+        
+        // Tampilkan modal edit
+        const editModal = new bootstrap.Modal(document.getElementById('editSuratModal'));
+        editModal.show();
+        
+        // Fetch data untuk edit
+        fetch(`/surat_keluar/${id}/edit`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Set form action
+                document.getElementById('editSuratForm').action = `/surat_keluar/${id}`;
+                
+                // Populate form fields
+                document.getElementById('nomor_surat_edit').value = data.nomor_surat;
+                document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
+                document.getElementById('penerima_edit').value = data.penerima;
+                document.getElementById('tanggal_pengiriman_edit').value = data.tanggal_pengiriman || '';
+                document.getElementById('perihal_edit').value = data.perihal;
+                document.getElementById('isi_surat_edit').value = data.isi_surat || '';
+                
+                // Populate kategori dan status dropdown
+                if (data.kategori) {
+                    document.getElementById('kategori_edit').value = data.kategori;
+                }
+                if (data.status) {
+                    document.getElementById('status_edit').value = data.status;
+                }
+                
+                // Menangani lampiran yang ada
+                const lampiranList = document.getElementById('lampiran-list');
+                const lampiranContainer = lampiranList.querySelector('.border');
+                lampiranContainer.innerHTML = '';
+                
+                if (data.lampiran && data.lampiran.length > 0) {
+                    lampiranList.classList.remove('d-none');
                     
-                    // Populate form fields
-                    document.getElementById('nomor_surat_edit').value = data.nomor_surat;
-                    document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
-                    document.getElementById('penerima_edit').value = data.penerima;
-                    document.getElementById('tanggal_pengiriman_edit').value = data.tanggal_pengiriman || '';
-                    document.getElementById('perihal_edit').value = data.perihal;
-                    document.getElementById('isi_surat_edit').value = data.isi_surat || '';
-                    
-                    // Menangani lampiran yang ada
-                    const lampiranList = document.getElementById('lampiran-list');
-                    const lampiranContainer = lampiranList.querySelector('.border');
-                    lampiranContainer.innerHTML = '';
-                    
-                    if (data.lampiran && data.lampiran.length > 0) {
-                        lampiranList.classList.remove('d-none');
+                    data.lampiran.forEach((item, index) => {
+                        let icon = 'file-earmark';
+                        if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
+                        else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) icon = 'file-earmark-image';
+                        else if (['doc', 'docx'].includes(item.tipe)) icon = 'file-earmark-word';
+                        else if (['xls', 'xlsx'].includes(item.tipe)) icon = 'file-earmark-excel';
                         
-                        data.lampiran.forEach((item, index) => {
-                            let icon = 'file-earmark';
-                            if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
-                            else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) icon = 'file-earmark-image';
-                            else if (['doc', 'docx'].includes(item.tipe)) icon = 'file-earmark-word';
-                            else if (['xls', 'xlsx'].includes(item.tipe)) icon = 'file-earmark-excel';
-                            
-                            const fileItem = document.createElement('div');
-                            fileItem.className = 'd-flex align-items-center mb-2';
-                            fileItem.innerHTML = `
-                                <i class="bi bi-${icon} me-2 text-warning"></i>
-                                <span>${item.nama}</span>
-                                <small class="text-muted ms-2">(${item.ukuran})</small>
-                                <div class="form-check ms-auto">
-                                    <input class="form-check-input" type="checkbox" id="keep-file-${index}" name="keep_file[]" value="${index}" checked>
-                                    <label class="form-check-label" for="keep-file-${index}">Pertahankan</label>
-                                </div>
-                            `;
-                            lampiranContainer.appendChild(fileItem);
-                        });
-                    } else {
-                        lampiranList.classList.add('d-none');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    showToast('Error', 'Gagal memuat data untuk edit', 'bg-danger text-white');
-                });
-        });
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'd-flex align-items-center mb-2';
+                        fileItem.innerHTML = `
+                            <i class="bi bi-${icon} me-2 text-warning"></i>
+                            <span>${item.nama}</span>
+                            <small class="text-muted ms-2">(${item.ukuran})</small>
+                            <div class="form-check ms-auto">
+                                <input class="form-check-input" type="checkbox" id="keep-file-${index}" name="keep_file[]" value="${index}" checked>
+                                <label class="form-check-label" for="keep-file-${index}">Pertahankan</label>
+                            </div>
+                        `;
+                        lampiranContainer.appendChild(fileItem);
+                    });
+                } else {
+                    lampiranList.classList.add('d-none');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                showToast('Error', 'Gagal memuat data untuk edit', 'bg-danger text-white');
+            });
     });
+});
     
     // Delete button functionality
     document.querySelectorAll('.delete-btn').forEach(button => {

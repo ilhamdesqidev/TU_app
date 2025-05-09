@@ -16,6 +16,8 @@ class SuratKeluar extends Model
         'tanggal_pengiriman',
         'perihal',
         'isi_surat',
+        'kategori',
+        'status',
         'lampiran',
     ];
 
