@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <!-- Header Section with improved styling -->
+    <!-- Header Section dengan styling yang ditingkatkan -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow border-0 rounded-3">
@@ -10,7 +10,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="h3 mb-0 text-primary fw-bold">
-                                <i class="bi bi-envelope-open me-2"></i>Arsip Surat Masuk
+                                <i class="bi bi-envelope me-2"></i>Arsip Surat Masuk
                             </h1>
                             <p class="text-muted mb-0">Manajemen dokumen surat masuk</p>
                         </div>
@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <!-- Filter and Search Section with improved styling -->
+    <!-- Filter dan Pencarian dengan styling yang ditingkatkan -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow border-0 rounded-3">
@@ -61,7 +61,7 @@
                             <select class="form-select shadow-sm" id="status-filter">
                                 <option value="">Semua Status</option>
                                 <option value="belum_diproses">Belum Diproses</option>
-                                <option value="dalam_proses">Dalam Proses</option>
+                                <option value="sedang_diproses">Sedang Diproses</option>
                                 <option value="selesai">Selesai</option>
                             </select>
                         </div>
@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <!-- Table Section with improved styling -->
+    <!-- Bagian Tabel dengan styling yang ditingkatkan -->
     <div class="row">
         <div class="col-12">
             <div class="card shadow border-0 rounded-3">
@@ -115,7 +115,7 @@
                                     <td>{{ $surat->pengirim }}</td>
                                     <td>{{ $surat->perihal }}</td>
                                     <td><span class="badge bg-{{ $surat->kategori == 'penting' ? 'warning text-dark' : ($surat->kategori == 'segera' ? 'danger' : 'secondary') }} rounded-pill">{{ ucfirst($surat->kategori) }}</span></td>
-                                    <td><span class="badge bg-{{ $surat->status == 'belum_diproses' ? 'warning text-dark' : ($surat->status == 'dalam_proses' ? 'info' : 'success') }} rounded-pill">{{ ucfirst(str_replace('_', ' ', $surat->status)) }}</span></td>
+                                    <td><span class="badge bg-{{ $surat->status == 'belum_diproses' ? 'warning text-dark' : ($surat->status == 'sedang_diproses' ? 'info' : 'success') }} rounded-pill">{{ str_replace('_', ' ', ucfirst($surat->status)) }}</span></td>
                                     <td>
                                         <div class="btn-group">     
                                             <button type="button" class="btn btn-sm btn-primary view-btn" 
@@ -146,6 +146,15 @@
                                                     title="Hapus">
                                                 <i class="bi bi-trash"></i>
                                             </button>
+
+                                            <button type="button" class="btn btn-sm btn-info disposisi-btn ms-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#disposisiModal"
+                                                    data-id="{{ $surat->id }}"
+                                                    data-nomor="{{ $surat->nomor_surat }}"
+                                                    title="Disposisi">
+                                                <i class="bi bi-arrow-right-circle"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -166,7 +175,7 @@
                         </table>
                     </div>
                 </div>
-                <!-- Pagination with improved styling -->
+                <!-- Pagination dengan styling yang ditingkatkan -->
                 <div class="card-footer bg-white">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-end mb-0">
@@ -187,7 +196,7 @@
     </div>
 </div>
 
-<!-- View Document Modal -->
+<!-- Modal Lihat Detail Surat -->
 <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -253,7 +262,7 @@
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted">Disposisi</h6>
                             <div id="view-disposisi" class="border rounded p-3 bg-light">
-                                <!-- Disposisi akan ditampilkan di sini -->
+                                <!-- Informasi disposisi akan ditampilkan di sini -->
                             </div>
                         </div>
                     </div>
@@ -261,7 +270,7 @@
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted">Lampiran</h6>
                             <div id="view-lampiran" class="d-flex flex-wrap gap-2">
-                                <!-- Lampiran items will be populated here -->
+                                <!-- Lampiran akan ditampilkan di sini -->
                             </div>
                         </div>
                     </div>
@@ -269,7 +278,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-info" id="disposisi-btn" data-bs-toggle="modal" data-bs-target="#disposisiModal"><i class="bi bi-arrow-right-circle me-1"></i> Disposisi</button>
+                <button type="button" class="btn btn-info" id="disposisi-modal-btn"><i class="bi bi-arrow-right-circle me-1"></i> Disposisi</button>
                 <button type="button" class="btn btn-success" id="print-btn"><i class="bi bi-printer me-1"></i> Cetak</button>
             </div>
         </div>
@@ -289,46 +298,47 @@
                     @csrf
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="nomor_surat" class="form-label fw-bold">
+                            <label for="nomor_surat_tambah" class="form-label fw-bold">
                                 <i class="bi bi-hash text-success me-1"></i>Nomor Surat
                             </label>
-                            <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" required>
+                            <input type="text" class="form-control" id="nomor_surat_tambah" name="nomor_surat" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="tanggal_surat" class="form-label fw-bold">
+                            <label for="tanggal_surat_tambah" class="form-label fw-bold">
                                 <i class="bi bi-calendar-date text-success me-1"></i>Tanggal Surat
                             </label>
-                            <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat" required>
+                            <input type="date" class="form-control" id="tanggal_surat_tambah" name="tanggal_surat" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="pengirim" class="form-label fw-bold">
+                            <label for="pengirim_tambah" class="form-label fw-bold">
                                 <i class="bi bi-person text-success me-1"></i>Pengirim
                             </label>
-                            <input type="text" class="form-control" id="pengirim" name="pengirim" required>
+                            <input type="text" class="form-control" id="pengirim_tambah" name="pengirim" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="tanggal_diterima" class="form-label fw-bold">
+                            <label for="tanggal_diterima_tambah" class="form-label fw-bold">
                                 <i class="bi bi-calendar-check text-success me-1"></i>Tanggal Diterima
                             </label>
-                            <input type="date" class="form-control" id="tanggal_diterima" name="tanggal_diterima" required>
+                            <input type="date" class="form-control" id="tanggal_diterima_tambah" name="tanggal_diterima" value="{{ date('Y-m-d') }}" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="perihal" class="form-label fw-bold">
+                        <label for="perihal_tambah" class="form-label fw-bold">
                             <i class="bi bi-chat-left-text text-success me-1"></i>Perihal
                         </label>
-                        <input type="text" class="form-control" id="perihal" name="perihal" required>
+                        <input type="text" class="form-control" id="perihal_tambah" name="perihal" required>
                     </div>
 
+                    <!-- Field kategori -->
                     <div class="mb-3">
-                        <label for="kategori" class="form-label fw-bold">
+                        <label for="kategori_tambah" class="form-label fw-bold">
                             <i class="bi bi-tag text-success me-1"></i>Kategori
                         </label>
-                        <select class="form-select" id="kategori" name="kategori" required>
+                        <select class="form-select" id="kategori_tambah" name="kategori" required>
                             <option value="">Pilih Kategori</option>
                             <option value="penting">Penting</option>
                             <option value="segera">Segera</option>
@@ -336,30 +346,31 @@
                         </select>
                     </div>
 
+                    <!-- Field status -->
                     <div class="mb-3">
-                        <label for="status" class="form-label fw-bold">
+                        <label for="status_tambah" class="form-label fw-bold">
                             <i class="bi bi-check-circle text-success me-1"></i>Status
                         </label>
-                        <select class="form-select" id="status" name="status" required>
+                        <select class="form-select" id="status_tambah" name="status" required>
                             <option value="">Pilih Status</option>
-                            <option value="belum_diproses">Belum Diproses</option>
-                            <option value="dalam_proses">Dalam Proses</option>
+                            <option value="belum_diproses" selected>Belum Diproses</option>
+                            <option value="sedang_diproses">Sedang Diproses</option>
                             <option value="selesai">Selesai</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="isi_surat" class="form-label fw-bold">
+                        <label for="isi_surat_tambah" class="form-label fw-bold">
                             <i class="bi bi-file-text text-success me-1"></i>Isi Surat
                         </label>
-                        <textarea class="form-control" id="isi_surat" name="isi_surat" rows="5"></textarea>
+                        <textarea class="form-control" id="isi_surat_tambah" name="isi_surat" rows="5"></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label for="lampiran" class="form-label fw-bold">
+                        <label for="lampiran_tambah" class="form-label fw-bold">
                             <i class="bi bi-paperclip text-success me-1"></i>Lampiran
                         </label>
-                        <input class="form-control" type="file" id="lampiran" name="lampiran[]" multiple>
+                        <input class="form-control" type="file" id="lampiran_tambah" name="lampiran[]" multiple>
                         <div class="form-text">Format yang didukung: PDF, DOC, XLS, JPG hingga 10MB</div>
                     </div>
                 </form>
@@ -381,7 +392,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editSuratForm" method="POST" enctype="multipart/form-data">
+                <form id="editSuratForm" method="POST" enctype="multipart/form-data" action="">
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
@@ -421,6 +432,7 @@
                         <input type="text" class="form-control" id="perihal_edit" name="perihal" required>
                     </div>
 
+                    <!-- Field kategori -->
                     <div class="mb-3">
                         <label for="kategori_edit" class="form-label fw-bold">
                             <i class="bi bi-tag text-warning me-1"></i>Kategori
@@ -433,6 +445,7 @@
                         </select>
                     </div>
 
+                    <!-- Field status -->
                     <div class="mb-3">
                         <label for="status_edit" class="form-label fw-bold">
                             <i class="bi bi-check-circle text-warning me-1"></i>Status
@@ -440,7 +453,7 @@
                         <select class="form-select" id="status_edit" name="status" required>
                             <option value="">Pilih Status</option>
                             <option value="belum_diproses">Belum Diproses</option>
-                            <option value="dalam_proses">Dalam Proses</option>
+                            <option value="sedang_diproses">Sedang Diproses</option>
                             <option value="selesai">Selesai</option>
                         </select>
                     </div>
@@ -450,13 +463,6 @@
                             <i class="bi bi-file-text text-warning me-1"></i>Isi Surat
                         </label>
                         <textarea class="form-control" id="isi_surat_edit" name="isi_surat" rows="5"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="disposisi_edit" class="form-label fw-bold">
-                            <i class="bi bi-arrow-right-circle text-warning me-1"></i>Disposisi
-                        </label>
-                        <textarea class="form-control" id="disposisi_edit" name="disposisi" rows="3"></textarea>
                     </div>
 
                     <div class="mb-3">
@@ -483,18 +489,22 @@
     </div>
 </div>
 
-<!-- Modal Disposisi -->
+<!-- Modal Disposisi Surat -->
 <div class="modal fade" id="disposisiModal" tabindex="-1" aria-labelledby="disposisiModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title" id="disposisiModalLabel">Tambah Disposisi</h5>
+                <h5 class="modal-title" id="disposisiModalLabel">Disposisi Surat</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="disposisiForm" method="POST">
+                <form id="disposisiForm" method="POST" action="">
                     @csrf
-                    <input type="hidden" id="surat_id" name="surat_id">
+                    <input type="hidden" name="surat_id" id="disposisi-surat-id">
+                    
+                    <div class="mb-3">
+                        <p>Disposisi untuk surat nomor: <strong id="disposisi-nomor-surat"></strong></p>
+                    </div>
                     
                     <div class="mb-3">
                         <label for="tujuan_disposisi" class="form-label fw-bold">
@@ -505,21 +515,28 @@
                             <option value="kepala_bagian">Kepala Bagian</option>
                             <option value="sekretaris">Sekretaris</option>
                             <option value="staff_admin">Staff Admin</option>
-                            <option value="staff_keuangan">Staff Keuangan</option>
-                            <option value="staff_teknis">Staff Teknis</option>
+                            <option value="wadir">Wakil Direktur</option>
+                            <option value="direktur">Direktur</option>
                         </select>
                     </div>
                     
                     <div class="mb-3">
                         <label for="catatan_disposisi" class="form-label fw-bold">
-                            <i class="bi bi-pencil-square text-info me-1"></i>Catatan Disposisi
+                            <i class="bi bi-pencil text-info me-1"></i>Catatan
                         </label>
                         <textarea class="form-control" id="catatan_disposisi" name="catatan_disposisi" rows="4" required></textarea>
                     </div>
                     
                     <div class="mb-3">
+                        <label for="tenggat_waktu" class="form-label fw-bold">
+                            <i class="bi bi-clock text-info me-1"></i>Tenggat Waktu
+                        </label>
+                        <input type="date" class="form-control" id="tenggat_waktu" name="tenggat_waktu" required>
+                    </div>
+                    
+                    <div class="mb-3">
                         <label for="prioritas_disposisi" class="form-label fw-bold">
-                            <i class="bi bi-flag text-info me-1"></i>Prioritas
+                            <i class="bi bi-exclamation-circle text-info me-1"></i>Prioritas
                         </label>
                         <select class="form-select" id="prioritas_disposisi" name="prioritas_disposisi" required>
                             <option value="">Pilih Prioritas</option>
@@ -527,13 +544,6 @@
                             <option value="sedang">Sedang</option>
                             <option value="rendah">Rendah</option>
                         </select>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="tenggat_waktu" class="form-label fw-bold">
-                            <i class="bi bi-calendar-event text-info me-1"></i>Tenggat Waktu
-                        </label>
-                        <input type="date" class="form-control" id="tenggat_waktu" name="tenggat_waktu" required>
                     </div>
                 </form>
             </div>
@@ -545,7 +555,7 @@
     </div>
 </div>
 
-<!-- Modal Hapus -->
+<!-- Modal Hapus Surat -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -554,304 +564,417 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="text-center mb-3">
-                    <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>
-                </div>
-                <p class="text-center">Apakah Anda yakin ingin menghapus surat dengan nomor:</p>
-                <h5 class="text-center fw-bold" id="delete-nomor-surat"></h5>
-                <p class="text-center text-muted small">Tindakan ini tidak dapat dibatalkan dan akan menghapus seluruh data terkait surat ini.</p>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <form id="deleteForm" method="POST">
+                <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Hapus Permanen</button>
+                    <div class="text-center mb-3">
+                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                    </div>
+                    <p>Anda yakin ingin menghapus surat masuk dengan nomor:</p>
+                    <p class="fw-bold text-center" id="delete-nomor-surat"></p>
+                    <p>Tindakan ini tidak dapat dibatalkan dan akan menghapus semua data terkait surat tersebut.</p>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" form="deleteForm" class="btn btn-danger">Hapus</button>
             </div>
         </div>
     </div>
 </div>
 
-@endsection
-
-@section('scripts')
+<!-- JavaScript untuk menangani fungsi-fungsi -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Inisialisasi date picker dengan format Indonesia
-        const dateInputs = document.querySelectorAll('input[type="date"]');
-        const today = new Date().toISOString().split('T')[0];
-        
-        dateInputs.forEach(input => {
-            // Default tanggal ke hari ini untuk input tanggal diterima
-            if(input.id === 'tanggal_diterima') {
-                input.value = today;
-            }
-        });
-
-        // Tampilkan detail surat
-        document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const url = this.getAttribute('data-url');
-                
-                // Tampilkan loading
-                document.getElementById('view-loading').classList.remove('d-none');
-                document.getElementById('view-content').classList.add('d-none');
-                
-                // Fetch data dari server
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Sembunyikan loading
-                        document.getElementById('view-loading').classList.add('d-none');
-                        document.getElementById('view-content').classList.remove('d-none');
-                        
-                        // Isi detail surat
-                        document.getElementById('view-nomor-surat').textContent = data.nomor_surat;
-                        document.getElementById('view-tanggal-surat').textContent = formatDate(data.tanggal_surat);
-                        document.getElementById('view-perihal').textContent = data.perihal;
-                        document.getElementById('view-pengirim').textContent = data.pengirim;
-                        document.getElementById('view-tanggal-diterima').textContent = formatDate(data.tanggal_diterima);
-                        
-                        // Status dengan badge
-                        const statusText = data.status.replace('_', ' ');
-                        let statusClass = 'bg-secondary';
-                        
-                        if(data.status === 'belum_diproses') {
-                            statusClass = 'bg-warning text-dark';
-                        } else if(data.status === 'dalam_proses') {
-                            statusClass = 'bg-info';
-                        } else if(data.status === 'selesai') {
-                            statusClass = 'bg-success';
-                        }
-                        
-                        document.getElementById('view-status').innerHTML = `<span class="badge ${statusClass} rounded-pill">${statusText}</span>`;
-                        document.getElementById('view-isi-surat').textContent = data.isi_surat || 'Tidak ada isi surat.';
-                        
-                        // Disposisi
-                        if(data.disposisi) {
-                            document.getElementById('view-disposisi').innerHTML = `
-                                <div class="alert alert-info mb-0">
-                                    <h6 class="fw-bold mb-2">Disposisi ke: ${data.disposisi.tujuan_disposisi.replace('_', ' ')}</h6>
-                                    <p class="mb-2">${data.disposisi.catatan_disposisi}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="badge bg-primary rounded-pill">${data.disposisi.prioritas_disposisi}</span>
-                                        <small class="text-muted">Tenggat: ${formatDate(data.disposisi.tenggat_waktu)}</small>
-                                    </div>
+    // Fungsi untuk inisialisasi datatable
+    const table = document.querySelector('table');
+    if (table) {
+        // Kode inisialisasi DataTable bisa diletakkan di sini
+    }
+    
+    // Handler untuk tombol View
+    document.querySelectorAll('.view-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const url = this.dataset.url;
+            const loadingEl = document.getElementById('view-loading');
+            const contentEl = document.getElementById('view-content');
+            
+            loadingEl.classList.remove('d-none');
+            contentEl.classList.add('d-none');
+            
+            // Tambahkan token CSRF untuk request
+            const headers = {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            };
+            
+            // Fetch data dari server berdasarkan ID
+            fetch(url, {
+                method: 'GET',
+                headers: headers
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.status === 'error') {
+                        throw new Error(data.message || 'Terjadi kesalahan saat memuat data');
+                    }
+                    
+                    loadingEl.classList.add('d-none');
+                    contentEl.classList.remove('d-none');
+                    
+                    // Mengisi data ke dalam modal
+                    document.getElementById('view-nomor-surat').textContent = data.nomor_surat || '-';
+                    document.getElementById('view-tanggal-surat').textContent = formatDate(data.tanggal_surat);
+                    document.getElementById('view-perihal').textContent = data.perihal || '-';
+                    document.getElementById('view-pengirim').textContent = data.pengirim || '-';
+                    document.getElementById('view-tanggal-diterima').textContent = formatDate(data.tanggal_diterima);
+                    
+                    // Format status untuk ditampilkan
+                    let statusText = data.status ? data.status.replace(/_/g, ' ') : '-';
+                    statusText = statusText.charAt(0).toUpperCase() + statusText.slice(1);
+                    document.getElementById('view-status').textContent = statusText;
+                    
+                    // Isi surat
+                    document.getElementById('view-isi-surat').textContent = data.isi_surat || 'Tidak ada isi surat';
+                    
+                    // Disposisi
+                    const disposisiEl = document.getElementById('view-disposisi');
+                    if (data.disposisi && data.disposisi.length > 0) {
+                        let disposisiHTML = '';
+                        data.disposisi.forEach(disp => {
+                            disposisiHTML += `
+                                <div class="mb-2 p-2 border-bottom">
+                                    <div><strong>Tujuan:</strong> ${formatTujuan(disp.tujuan_disposisi)}</div>
+                                    <div><strong>Catatan:</strong> ${disp.catatan_disposisi || '-'}</div>
+                                    <div><strong>Tenggat:</strong> ${formatDate(disp.tenggat_waktu)}</div>
+                                    <div><strong>Prioritas:</strong> ${formatPrioritas(disp.prioritas_disposisi)}</div>
                                 </div>
                             `;
-                        } else {
-                            document.getElementById('view-disposisi').innerHTML = '<p class="text-muted mb-0">Belum ada disposisi untuk surat ini.</p>';
-                        }
-                        
-                        // Lampiran
-                        const lampiranContainer = document.getElementById('view-lampiran');
-                        lampiranContainer.innerHTML = '';
-                        
-                        if(data.lampiran && data.lampiran.length > 0) {
-                            data.lampiran.forEach(lampiran => {
-                                const fileExtension = getFileExtension(lampiran.nama_file);
-                                let iconClass = 'bi-file-earmark';
-                                
-                                if(['pdf'].includes(fileExtension)) {
-                                    iconClass = 'bi-file-earmark-pdf';
-                                } else if(['doc', 'docx'].includes(fileExtension)) {
-                                    iconClass = 'bi-file-earmark-word';
-                                } else if(['xls', 'xlsx'].includes(fileExtension)) {
-                                    iconClass = 'bi-file-earmark-excel';
-                                } else if(['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-                                    iconClass = 'bi-file-earmark-image';
-                                }
-                                
-                                const lampiranItem = `
-                                    <div class="card border-0 shadow-sm" style="width: 120px;">
-                                        <div class="card-body text-center p-2">
-                                            <i class="bi ${iconClass} text-primary" style="font-size: 2rem;"></i>
-                                            <p class="small mb-0 text-truncate">${lampiran.nama_file}</p>
-                                            <a href="${lampiran.path}" class="btn btn-sm btn-outline-primary mt-2" target="_blank">
-                                                <i class="bi bi-download"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                `;
-                                
-                                lampiranContainer.innerHTML += lampiranItem;
-                            });
-                        } else {
-                            lampiranContainer.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran.</p>';
-                        }
-                        
-                        // Update tombol disposisi
-                        document.getElementById('disposisi-btn').setAttribute('data-id', id);
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        document.getElementById('view-loading').classList.add('d-none');
-                        document.getElementById('view-content').classList.remove('d-none');
-                        document.getElementById('view-content').innerHTML = `
-                            <div class="alert alert-danger">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                Terjadi kesalahan saat memuat data. Silakan coba lagi.
-                            </div>
-                        `;
-                    });
-            });
-        });
-
-        // Edit surat
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const url = this.getAttribute('data-url');
-                
-                // Set form action
-                document.getElementById('editSuratForm').action = `/surat_masuk/${id}`;
-                
-                // Fetch data dari server
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Isi form dengan data yang ada
-                        document.getElementById('nomor_surat_edit').value = data.nomor_surat;
-                        document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
-                        document.getElementById('pengirim_edit').value = data.pengirim;
-                        document.getElementById('tanggal_diterima_edit').value = data.tanggal_diterima;
-                        document.getElementById('perihal_edit').value = data.perihal;
-                        document.getElementById('kategori_edit').value = data.kategori;
-                        document.getElementById('status_edit').value = data.status;
-                        document.getElementById('isi_surat_edit').value = data.isi_surat;
-                        
-                        if(data.disposisi) {
-                            document.getElementById('disposisi_edit').value = data.disposisi.catatan_disposisi;
-                        }
-                        
-                        // Lampiran
-                        const lampiranList = document.querySelector('#lampiran-list .border');
-                        lampiranList.innerHTML = '';
-                        
-                        if(data.lampiran && data.lampiran.length > 0) {
-                            data.lampiran.forEach(lampiran => {
-                                const lampiranItem = `
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-paperclip me-2"></i>
-                                        <span>${lampiran.nama_file}</span>
-                                        <div class="form-check ms-auto">
-                                            <input class="form-check-input" type="checkbox" name="hapus_lampiran[]" value="${lampiran.id}" id="lampiran-${lampiran.id}">
-                                            <label class="form-check-label text-danger" for="lampiran-${lampiran.id}">
-                                                Hapus
-                                            </label>
-                                        </div>
-                                    </div>
-                                `;
-                                
-                                lampiranList.innerHTML += lampiranItem;
-                            });
-                        } else {
-                            lampiranList.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran sebelumnya.</p>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            });
-        });
-
-        // Delete confirmation
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const url = this.getAttribute('data-url');
-                const nomor = this.getAttribute('data-nomor');
-                
-                document.getElementById('delete-nomor-surat').textContent = nomor;
-                document.getElementById('deleteForm').action = url;
-            });
-        });
-
-        // Disposisi
-        document.getElementById('disposisi-btn').addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            document.getElementById('surat_id').value = id;
-            
-            // Set form action
-            document.getElementById('disposisiForm').action = `/surat_masuk/${id}/disposisi`;
-            
-            // Close view modal
-            bootstrap.Modal.getInstance(document.getElementById('viewModal')).hide();
-        });
-
-        // Export functionality
-        document.getElementById('exportBtn').addEventListener('click', function() {
-            // Filter parameters
-            const dateFilter = document.getElementById('date-filter').value;
-            const categoryFilter = document.getElementById('category-filter').value;
-            const statusFilter = document.getElementById('status-filter').value;
-            const searchFilter = document.getElementById('search').value;
-            
-            // Construct query parameters
-            let queryParams = new URLSearchParams();
-            if(dateFilter) queryParams.append('date', dateFilter);
-            if(categoryFilter) queryParams.append('category', categoryFilter);
-            if(statusFilter) queryParams.append('status', statusFilter);
-            if(searchFilter) queryParams.append('search', searchFilter);
-            
-            // Redirect to export URL
-            window.location.href = `/surat_masuk/export?${queryParams.toString()}`;
-        });
-
-        // Search functionality
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            // Get filter values
-            const dateFilter = document.getElementById('date-filter').value;
-            const categoryFilter = document.getElementById('category-filter').value;
-            const statusFilter = document.getElementById('status-filter').value;
-            const searchFilter = document.getElementById('search').value;
-            
-            // Construct query parameters
-            let queryParams = new URLSearchParams();
-            if(dateFilter) queryParams.append('date', dateFilter);
-            if(categoryFilter) queryParams.append('category', categoryFilter);
-            if(statusFilter) queryParams.append('status', statusFilter);
-            if(searchFilter) queryParams.append('search', searchFilter);
-            
-            // Redirect with filters
-            window.location.href = `/surat_masuk?${queryParams.toString()}`;
-        });
-
-        // Print functionality
-        document.getElementById('print-btn').addEventListener('click', function() {
-            const printWindow = window.open('', '_blank');
-            const suratId = document.getElementById('disposisi-btn').getAttribute('data-id');
-            
-            // Fetch print view
-            fetch(`/surat_masuk/${suratId}/print`)
-                .then(response => response.text())
-                .then(html => {
-                    printWindow.document.write(html);
-                    printWindow.document.close();
-                    // Wait for resources to load
-                    setTimeout(() => {
-                        printWindow.print();
-                    }, 500);
+                        });
+                        disposisiEl.innerHTML = disposisiHTML;
+                    } else {
+                        disposisiEl.innerHTML = '<p class="text-muted fst-italic text-center">Belum ada disposisi</p>';
+                    }
+                    
+                    // Lampiran
+                    const lampiranEl = document.getElementById('view-lampiran');
+                    if (data.lampiran && data.lampiran.length > 0) {
+                        let lampiranHTML = '';
+                        data.lampiran.forEach(lamp => {
+                            const fileIcon = getFileIcon(lamp.nama_file);
+                            lampiranHTML += `
+                                <div class="border rounded p-2 bg-white">
+                                    <i class="${fileIcon} me-1"></i>
+                                    <span>${lamp.nama_file}</span>
+                                    <a href="${lamp.file_path}" class="ms-2 text-primary" target="_blank">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                </div>
+                            `;
+                        });
+                        lampiranEl.innerHTML = lampiranHTML;
+                    } else {
+                        lampiranEl.innerHTML = '<p class="text-muted fst-italic text-center">Tidak ada lampiran</p>';
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    printWindow.close();
-                    alert('Terjadi kesalahan saat mencetak dokumen.');
+                    loadingEl.classList.add('d-none');
+                    contentEl.classList.remove('d-none');
+                    contentEl.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Terjadi kesalahan saat memuat data. Silakan coba lagi. (${error.message})
+                        </div>
+                    `;
+                });
+            
+            // Setup tombol disposisi dalam modal view
+            document.getElementById('disposisi-modal-btn').addEventListener('click', function() {
+                const disposisiModal = new bootstrap.Modal(document.getElementById('disposisiModal'));
+                document.getElementById('disposisi-surat-id').value = id;
+                document.getElementById('disposisi-nomor-surat').textContent = button.dataset.nomor;
+                
+                // Tutup modal view dan buka modal disposisi
+                bootstrap.Modal.getInstance(document.getElementById('viewModal')).hide();
+                disposisiModal.show();
+            });
+        });
+    });
+    
+    // Handler untuk tombol Edit
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const url = this.dataset.url;
+            
+            // Set action URL untuk form
+            const formAction = url.replace('/edit', ''); // Mengubah endpoint dari edit ke update
+            document.getElementById('editSuratForm').action = formAction;
+            
+            // Tambahkan loading spinner
+            const modalBody = document.querySelector('#editSuratModal .modal-body');
+            const loadingHTML = `
+                <div id="edit-loading" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Memuat data...</p>
+                </div>
+            `;
+            
+            // Tampilkan loading spinner
+            const formContent = document.getElementById('editSuratForm').innerHTML;
+            document.getElementById('editSuratForm').innerHTML = loadingHTML + formContent;
+            
+            // Tambahkan token CSRF untuk request
+            const headers = {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            };
+            
+            // Fetch data untuk mengisi form
+            fetch(url, {
+                method: 'GET',
+                headers: headers
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hapus loading spinner
+                    const loadingEl = document.getElementById('edit-loading');
+                    if (loadingEl) {
+                        loadingEl.remove();
+                    }
+                    
+                    // Isi form dengan data dari server
+                    document.getElementById('nomor_surat_edit').value = data.nomor_surat || '';
+                    document.getElementById('tanggal_surat_edit').value = formatDateForInput(data.tanggal_surat);
+                    document.getElementById('pengirim_edit').value = data.pengirim || '';
+                    document.getElementById('tanggal_diterima_edit').value = formatDateForInput(data.tanggal_diterima);
+                    document.getElementById('perihal_edit').value = data.perihal || '';
+                    document.getElementById('kategori_edit').value = data.kategori || '';
+                    document.getElementById('status_edit').value = data.status || '';
+                    document.getElementById('isi_surat_edit').value = data.isi_surat || '';
+                    
+                    // Lampiran list
+                    const lampiranListEl = document.querySelector('#lampiran-list .border');
+                    if (data.lampiran && data.lampiran.length > 0) {
+                        let lampiranHTML = '';
+                        data.lampiran.forEach(lamp => {
+                            const fileIcon = getFileIcon(lamp.nama_file);
+                            lampiranHTML += `
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <i class="${fileIcon} me-1"></i>
+                                        <span>${lamp.nama_file}</span>
+                                    </div>
+                                    <div>
+                                        <a href="${lamp.file_path}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger delete-lampiran" 
+                                            data-id="${lamp.id}" data-surat-id="${id}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        lampiranListEl.innerHTML = lampiranHTML;
+                        
+                        // Event handler untuk hapus lampiran
+                        document.querySelectorAll('.delete-lampiran').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const lampId = this.dataset.id;
+                                const suratId = this.dataset.suratId;
+                                
+                                if (confirm('Apakah Anda yakin ingin menghapus lampiran ini?')) {
+                                    // Ajax request untuk menghapus lampiran
+                                    fetch(`/lampiran/${lampId}/delete`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            // Hapus element dari DOM
+                                            this.closest('.d-flex').remove();
+                                        } else {
+                                            alert('Gagal menghapus lampiran. Silakan coba lagi.');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert('Terjadi kesalahan saat menghapus lampiran.');
+                                    });
+                                }
+                            });
+                        });
+                    } else {
+                        lampiranListEl.innerHTML = '<p class="text-muted text-center mb-0">Tidak ada lampiran</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                    // Hapus loading spinner
+                    const loadingEl = document.getElementById('edit-loading');
+                    if (loadingEl) {
+                        loadingEl.remove();
+                    }
+                    
+                    // Tampilkan pesan error
+                    const errorHTML = `
+                        <div class="alert alert-danger mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Terjadi kesalahan saat memuat data. Silakan coba lagi. (${error.message})
+                        </div>
+                    `;
+                    document.getElementById('editSuratForm').insertAdjacentHTML('afterbegin', errorHTML);
                 });
         });
-
-        // Utility Functions
-        function formatDate(dateString) {
-            if(!dateString) return '-';
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            return new Date(dateString).toLocaleDateString('id-ID', options);
-        }
-        
-        function getFileExtension(filename) {
-            return filename.split('.').pop().toLowerCase();
-        }
     });
+    
+    // Handler untuk tombol Delete
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const url = this.dataset.url;
+            const nomor = this.dataset.nomor;
+            
+            document.getElementById('deleteForm').action = url;
+            document.getElementById('delete-nomor-surat').textContent = nomor;
+        });
+    });
+    
+    // Handler untuk tombol Disposisi
+    document.querySelectorAll('.disposisi-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const nomor = this.dataset.nomor;
+            
+            // Set URL untuk form disposisi
+            document.getElementById('disposisiForm').action = `/surat_masuk/${id}/disposisi`;
+            document.getElementById('disposisi-surat-id').value = id;
+            document.getElementById('disposisi-nomor-surat').textContent = nomor;
+        });
+    });
+    
+    // Filter dan pencarian
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        const search = document.getElementById('search').value;
+        const dateFilter = document.getElementById('date-filter').value;
+        const categoryFilter = document.getElementById('category-filter').value;
+        const statusFilter = document.getElementById('status-filter').value;
+        
+        // Membuat URL dengan query params untuk filter
+        let url = new URL(window.location.href);
+        url.searchParams.set('search', search);
+        if (dateFilter) url.searchParams.set('date', dateFilter);
+        if (categoryFilter) url.searchParams.set('category', categoryFilter);
+        if (statusFilter) url.searchParams.set('status', statusFilter);
+        
+        // Redirect ke URL dengan filter
+        window.location.href = url.toString();
+    });
+    
+    // Export button
+    document.getElementById('exportBtn').addEventListener('click', function() {
+        // Mengambil nilai filter untuk dikirim ke endpoint export
+        const search = document.getElementById('search').value;
+        const dateFilter = document.getElementById('date-filter').value;
+        const categoryFilter = document.getElementById('category-filter').value;
+        const statusFilter = document.getElementById('status-filter').value;
+        
+        let url = '/surat_masuk/export?';
+        if (search) url += `search=${encodeURIComponent(search)}&`;
+        if (dateFilter) url += `date=${encodeURIComponent(dateFilter)}&`;
+        if (categoryFilter) url += `category=${encodeURIComponent(categoryFilter)}&`;
+        if (statusFilter) url += `status=${encodeURIComponent(statusFilter)}&`;
+        
+        // Redirect ke endpoint export
+        window.location.href = url;
+    });
+    
+    // Print button
+    document.getElementById('print-btn').addEventListener('click', function() {
+        window.print();
+    });
+    
+    // Fungsi pembantu untuk format tanggal
+    function formatDate(dateString) {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return '-'; // Cek apakah tanggal valid
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        return date.toLocaleDateString('id-ID', options);
+    }
+    
+    // Format tanggal untuk input date (YYYY-MM-DD)
+    function formatDateForInput(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return ''; // Cek apakah tanggal valid
+        return date.toISOString().split('T')[0];
+    }
+    
+    // Mendapatkan icon berdasarkan ekstensi file
+    function getFileIcon(filename) {
+        if (!filename) return 'bi bi-file-earmark';
+        const ext = filename.split('.').pop().toLowerCase();
+        switch (ext) {
+            case 'pdf':
+                return 'bi bi-file-pdf text-danger';
+            case 'doc':
+            case 'docx':
+                return 'bi bi-file-word text-primary';
+            case 'xls':
+            case 'xlsx':
+                return 'bi bi-file-excel text-success';
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+                return 'bi bi-file-image text-info';
+            default:
+                return 'bi bi-file-earmark';
+        }
+    }
+    
+    // Format tujuan disposisi
+    function formatTujuan(tujuan) {
+        if (!tujuan) return '-';
+        return tujuan.replace(/_/g, ' ')
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+    }
+    
+    // Format prioritas disposisi
+    function formatPrioritas(prioritas) {
+        if (!prioritas) return '-';
+        const prioritasClass = {
+            'tinggi': 'text-danger',
+            'sedang': 'text-warning',
+            'rendah': 'text-success'
+        };
+        
+        return `<span class="${prioritasClass[prioritas] || ''}">${prioritas.charAt(0).toUpperCase() + prioritas.slice(1)}</span>`;
+    }
+});
 </script>
 @endsection

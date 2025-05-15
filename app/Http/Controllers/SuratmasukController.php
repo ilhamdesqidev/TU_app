@@ -21,8 +21,8 @@ class SuratMasukController extends Controller
         $request->validate([
             'nomor_surat' => 'required',
             'tanggal_surat' => 'required|date',
-            'tanggal_diterima' => 'required|date',
             'pengirim' => 'required',
+            'tanggal_diterima' => 'required|date',
             'perihal' => 'required',
             'isi_surat' => 'nullable',
             'kategori' => 'required|in:penting,segera,biasa',
@@ -34,8 +34,8 @@ class SuratMasukController extends Controller
         $data = $request->only([
             'nomor_surat',
             'tanggal_surat',
-            'tanggal_diterima',
             'pengirim',
+            'tanggal_diterima',
             'perihal',
             'isi_surat',
             'kategori',
@@ -74,13 +74,14 @@ class SuratMasukController extends Controller
             'id' => $surat->id,
             'nomor_surat' => $surat->nomor_surat,
             'tanggal_surat' => $surat->tanggal_surat->format('Y-m-d'),
-            'tanggal_diterima' => $surat->tanggal_diterima->format('Y-m-d'),
             'pengirim' => $surat->pengirim,
+            'tanggal_diterima' => $surat->tanggal_diterima->format('Y-m-d'),
             'perihal' => $surat->perihal,
             'isi_surat' => $surat->isi_surat,
             'kategori' => $surat->kategori,
             'status' => $surat->status,
             'lampiran' => $surat->lampiran,
+            'disposisi' => $surat->disposisi,
         ]);
     }
     
@@ -96,8 +97,8 @@ class SuratMasukController extends Controller
         $request->validate([
             'nomor_surat' => 'required',
             'tanggal_surat' => 'required|date',
-            'tanggal_diterima' => 'required|date',
             'pengirim' => 'required',
+            'tanggal_diterima' => 'required|date',
             'perihal' => 'required',
             'isi_surat' => 'nullable',
             'kategori' => 'required|in:penting,segera,biasa',
@@ -111,8 +112,8 @@ class SuratMasukController extends Controller
         $data = $request->only([
             'nomor_surat',
             'tanggal_surat',
-            'tanggal_diterima',
             'pengirim',
+            'tanggal_diterima',
             'perihal',
             'isi_surat',
             'kategori',
@@ -201,5 +202,88 @@ class SuratMasukController extends Controller
     public function export()
     {
         return Excel::download(new SuratMasukExport, 'daftar_surat_masuk.xlsx');
+    }
+    
+    // Metode untuk menangani disposisi surat
+    public function saveDisposisi(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'surat_id' => 'required|exists:surat_masuks,id',
+            'tujuan_disposisi' => 'required',
+            'catatan_disposisi' => 'required',
+            'tenggat_waktu' => 'required|date',
+            'prioritas_disposisi' => 'required|in:tinggi,sedang,rendah',
+        ]);
+        
+        $surat = SuratMasuk::findOrFail($request->surat_id);
+        
+        // Dapatkan data disposisi yang sudah ada atau inisialisasi array kosong
+        $disposisi = $surat->disposisi ?? [];
+        
+        // Tambahkan disposisi baru
+        $disposisi[] = [
+            'tujuan' => $request->tujuan_disposisi,
+            'catatan' => $request->catatan_disposisi,
+            'tenggat_waktu' => $request->tenggat_waktu,
+            'prioritas' => $request->prioritas_disposisi,
+            'tanggal_disposisi' => now()->format('Y-m-d'),
+            'pemberi_disposisi' => auth()->id(),
+            'status' => 'belum_ditindaklanjuti'
+        ];
+        
+        // Update data disposisi surat
+        $surat->update([
+            'disposisi' => $disposisi,
+            'status' => 'sedang_diproses'
+        ]);
+        
+        return redirect()->route('surat_masuk.index')
+            ->with('success', 'Disposisi surat berhasil disimpan.');
+    }
+    
+    public function updateDisposisiStatus(Request $request, $id, $index)
+    {
+        // Validasi input
+        $request->validate([
+            'status_disposisi' => 'required|in:belum_ditindaklanjuti,sedang_ditindaklanjuti,selesai_ditindaklanjuti',
+            'catatan_tindaklanjut' => 'nullable|string',
+        ]);
+        
+        $surat = SuratMasuk::findOrFail($id);
+        
+        if (empty($surat->disposisi) || !isset($surat->disposisi[$index])) {
+            return redirect()->back()->with('error', 'Disposisi tidak ditemukan.');
+        }
+        
+        // Update status disposisi
+        $disposisi = $surat->disposisi;
+        $disposisi[$index]['status'] = $request->status_disposisi;
+        
+        if ($request->has('catatan_tindaklanjut')) {
+            $disposisi[$index]['catatan_tindaklanjut'] = $request->catatan_tindaklanjut;
+        }
+        
+        $disposisi[$index]['tanggal_tindaklanjut'] = now()->format('Y-m-d');
+        $disposisi[$index]['petugas_tindaklanjut'] = auth()->id();
+        
+        // Update data disposisi surat
+        $surat->update(['disposisi' => $disposisi]);
+        
+        // Jika semua disposisi selesai ditindaklanjuti, update status surat menjadi selesai
+        $allCompleted = true;
+        foreach ($disposisi as $disp) {
+            if ($disp['status'] !== 'selesai_ditindaklanjuti') {
+                $allCompleted = false;
+                break;
+            }
+        }
+        
+        if ($allCompleted) {
+            $surat->update(['status' => 'selesai']);
+        }
+        
+        return redirect()->route('surat_masuk.index')
+            ->with('success', 'Status disposisi berhasil diperbarui.');
     }
 }
