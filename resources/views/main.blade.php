@@ -17,6 +17,8 @@
             --secondary-color: #f8f9fc;
             --text-color: #5a5c69;
             --sidebar-width: 250px;
+            --sidebar-collapsed-width: 70px;
+            --topbar-height: 70px;
         }
         
         body {
@@ -25,6 +27,7 @@
             overflow-x: hidden;
         }
         
+        /* Improved Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
@@ -33,40 +36,52 @@
             left: 0;
             box-shadow: 0 0.15rem 1.75rem rgba(0, 0, 0, 0.15);
             background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             z-index: 1000;
             overflow-y: auto;
+            padding-bottom: 20px;
         }
         
         .sidebar.collapsed {
-            width: 70px;
-        }
-        
-        .main-content {
-            margin-left: var(--sidebar-width);
-            transition: all 0.3s;
-            padding: 20px;
-        }
-        
-        .main-content.expanded {
-            margin-left: 70px;
+            width: var(--sidebar-collapsed-width);
         }
         
         .sidebar-brand {
-            height: 80px;
-            padding: 1.5rem 1rem;
+            height: var(--topbar-height);
+            padding: 0 1.5rem;
             display: flex;
             align-items: center;
             color: white;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        
+        .brand-text {
+            margin-left: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        /* Nav Items Styling */
+        .nav-item {
+            margin: 5px 0;
+        }
+        
         .nav-link {
             color: rgba(255, 255, 255, 0.8) !important;
             border-radius: 0.35rem;
-            margin: 0.5rem 0.8rem;
+            margin: 0.25rem 1rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
             transition: all 0.2s;
-            position: relative;
+            white-space: nowrap;
         }
         
         .nav-link:hover, .nav-link.active {
@@ -74,24 +89,137 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
         
+        .icon-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 24px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .nav-text {
+            flex-grow: 1;
+        }
+        
+        .dropdown-icon {
+            transition: transform 0.3s;
+        }
+        
+        /* Nested Menu Styling */
+        .nested-menu {
+            padding-left: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin: 0 1rem;
+        }
+        
+        .nested-menu.show {
+            max-height: 200px;
+        }
+        
+        .nested-link {
+            color: rgba(255, 255, 255, 0.7) !important;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+            border-radius: 0.35rem;
+            text-decoration: none;
+            margin: 0.25rem 0;
+        }
+        
+        .nested-link:hover, .nested-link.active {
+            color: white !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+        
+        .nested-link i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Logout Section */
+        .sidebar-divider {
+            margin: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Collapsed State Styles */
+        .sidebar.collapsed .nav-text, 
+        .sidebar.collapsed .brand-text,
+        .sidebar.collapsed .dropdown-icon {
+            display: none;
+        }
+        
+        .sidebar.collapsed .sidebar-brand {
+            justify-content: center;
+            padding: 0;
+        }
+        
+        .sidebar.collapsed .nav-link {
+            justify-content: center;
+            padding: 0.75rem 0;
+            margin: 0.25rem 0.5rem;
+        }
+        
+        .sidebar.collapsed .icon-wrapper {
+            margin-right: 0;
+        }
+        
+        .sidebar.collapsed .nested-menu {
+            display: none;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+        
+        .main-content.expanded {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+        
+        /* Top Navbar */
         .navbar-top {
             background-color: white;
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
             position: fixed;
             width: calc(100% - var(--sidebar-width));
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             z-index: 100;
-            height: 70px;
+            height: var(--topbar-height);
             left: var(--sidebar-width);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
         }
         
         .navbar-top.expanded {
-            width: calc(100% - 70px);
-            left: 70px;
+            width: calc(100% - var(--sidebar-collapsed-width));
+            left: var(--sidebar-collapsed-width);
         }
         
+        /* User Profile */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e3e6f0;
+        }
+        
+        /* Content Wrapper */
+        .content-wrapper {
+            padding-top: calc(var(--topbar-height) + 20px);
+        }
+        
+        /* Dropdown Styling */
         .dropdown-menu {
-            margin-top: 0;
             background-color: #f8f9fc;
             border: none;
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
@@ -108,131 +236,45 @@
             color: var(--primary-color);
         }
         
-        .icon-wrapper {
-            width: 40px;
-            display: inline-block;
-            text-align: center;
-        }
-        
-        .content-wrapper {
-            padding-top: 90px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #e3e6f0;
-        }
-        
-        /* Hide text when sidebar is collapsed */
-        .sidebar.collapsed .nav-text, 
-        .sidebar.collapsed .brand-text,
-        .sidebar.collapsed .dropdown-icon,
-        .sidebar.collapsed .logout-text {
-            display: none;
-        }
-        
-        /* Center icons when sidebar is collapsed */
-        .sidebar.collapsed .nav-link {
-            display: flex;
-            justify-content: center;
-            padding: 0.8rem 0;
-        }
-        
-        .sidebar.collapsed .sidebar-brand {
-            justify-content: center;
-        }
-        
-        /* Dropdown menu for archives */
-        .nested-menu {
-            padding-left: 3rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            margin-left: 0.8rem;
-            margin-right: 0.8rem;
-        }
-        
-        .nested-menu.show {
-            max-height: 200px;
-        }
-        
-        .nested-link {
-            color: rgba(255, 255, 255, 0.7) !important;
-            padding: 0.5rem 1rem;
-            display: block;
+        /* Toggle Button */
+        #sidebarToggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            padding: 0.5rem;
             transition: all 0.2s;
             border-radius: 0.35rem;
         }
         
-        .nested-link:hover {
-            color: white !important;
-            background-color: rgba(255, 255, 255, 0.1);
+        #sidebarToggle:hover {
+            background-color: rgba(78, 115, 223, 0.1);
+            color: var(--primary-color);
         }
         
-        /* Sidebar Logo */
-        .logo-img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            transition: all 0.3s;
+        /* Scrollbars */
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
         }
         
-        .sidebar.collapsed .logo-img {
-            margin: 0;
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
         }
-
-        /* Untuk menyelaraskan icon sidebar saat collapsed */
-        .sidebar.collapsed .nav-link .icon-wrapper {
-            width: 100%;
-            justify-content: center;
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
         }
-
-        /* Pastikan padding tidak hilang di navbar saat sidebar collapsed */
-        .navbar-top {
-            padding: 0 1rem;
-            display: flex;
-            align-items: center;
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
-
-        /* Atur transisi agar mulus saat sidebar berubah */
-        .navbar-top, .main-content {
-            transition: all 0.3s ease-in-out;
-        }
-
-        /* Rapiin toggle sidebar button */
-        #sidebarToggle {
-            border: none;
-            background: none;
-            outline: none;
-        }
-
-        /* Sidebar yang collapsed agar ikon center */
-        .sidebar.collapsed .icon-wrapper {
-            margin: 0 auto;
-            display: block;
-            text-align: center;
-        }
-
-        .sidebar.collapsed .nav-link {
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        /* Navbar kanan tetap tampil rapi saat collapse */
-        .navbar-top .d-flex.align-items-center {
-            gap: 1rem;
-        }
-
     </style>
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <img src="/asset/img/logo-12 (1).png" alt="Logo" class="logo-img me-2">
+            <img src="/asset/img/logo-12 (1).png" alt="Logo" class="logo-img">
             <div class="brand-text">
                 <span class="fs-5 fw-bold">Tata Usaha</span>
                 <div class="small text-light opacity-75">SMK AMALIAH 1&2</div>
@@ -262,90 +304,93 @@
                 <a href="#" class="nav-link" id="archiveToggle">
                     <div class="icon-wrapper"><i class='bx bx-folder fs-5'></i></div>
                     <span class="nav-text">Arsip</span>
-                    <i class='bx bx-chevron-down ms-auto dropdown-icon'></i>
+                    <i class='bx bx-chevron-down ms-2 dropdown-icon'></i>
                 </a>
                 <div class="nested-menu" id="archiveMenu">
-                    <a href="{{url('surat_masuk')}}" class="nested-link">
-                        <i class='bx bx-envelope-open me-2'></i>Surat Masuk
+                    <a href="{{url('surat_masuk')}}" class="nested-link {{ Request::is('surat_masuk') ? 'active' : '' }}">
+                        <i class='bx bx-envelope-open'></i>Surat Masuk
                     </a>
-                    <a href="{{url('surat_keluar')}}" class="nested-link">
-                        <i class='bx bx-envelope me-2'></i>Surat Keluar
+                    <a href="{{url('surat_keluar')}}" class="nested-link {{ Request::is('surat_keluar') ? 'active' : '' }}">
+                        <i class='bx bx-envelope'></i>Surat Keluar
                     </a>
-                    <a href="{{url('ijazah')}}" class="nested-link">
-                        <i class='bx bx-envelope me-2'></i>Ijazah
+                    <a href="{{url('ijazah')}}" class="nested-link {{ Request::is('ijazah') ? 'active' : '' }}">
+                        <i class='bx bx-file'></i>Ijazah
                     </a>
                 </div>
             </li>
-            <li class="nav-item mt-auto">
-                <hr class="sidebar-divider d-none d-md-block opacity-25 my-3">
-                <a href="#" class="nav-link text-danger">
-                    <div class="icon-wrapper"><i class='bx bx-log-out fs-5'></i></div>
-                    <span class="nav-text logout-text">Keluar</span>
-                </a>
-            </li>
         </ul>
+        
+        <!-- Logout Section -->
+        <div class="mt-auto" style="position: absolute; bottom: 20px; width: 100%;">
+            <hr class="sidebar-divider">
+            <a href="#" class="nav-link text-danger">
+                <div class="icon-wrapper"><i class='bx bx-log-out fs-5'></i></div>
+                <span class="nav-text">Keluar</span>
+            </a>
+        </div>
     </div>
 
     <!-- Top Navbar -->
-<nav class="navbar-top" id="navbar-top">
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center h-100">
-            <!-- Spacer to keep layout -->
-            <div style="width: 40px;"></div> <!-- Ini menggantikan tombol toggle agar spacing tetap -->
+    <nav class="navbar-top" id="navbar-top">
+        <div class="container-fluid p-0">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <!-- Sidebar Toggle Button -->
+                <button id="sidebarToggle" class="btn">
+                    <i class='bx bx-menu fs-4'></i>
+                </button>
 
-            <!-- Right Navbar Items -->
-            <div class="d-flex align-items-center">
-                <!-- Notifications -->
-                <div class="dropdown mx-2">
-                    <a class="btn btn-light position-relative rounded-circle p-2" href="#" role="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bx bx-bell fs-5"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px;">
-                        <li><h6 class="dropdown-header">Notifikasi</h6></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2" href="#">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="p-2 bg-primary bg-opacity-10 rounded-circle text-primary">
-                                        <i class="bx bx-envelope"></i>
+                <!-- Right Navbar Items -->
+                <div class="d-flex align-items-center">
+                    <!-- Notifications -->
+                    <div class="dropdown mx-3">
+                        <a class="btn btn-light position-relative rounded-circle p-2" href="#" role="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bx bx-bell fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px;">
+                            <li><h6 class="dropdown-header">Notifikasi</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2" href="#">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="p-2 bg-primary bg-opacity-10 rounded-circle text-primary">
+                                            <i class="bx bx-envelope"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <p class="mb-0 small">Surat masuk baru</p>
+                                        <span class="text-muted x-small">15 menit yang lalu</span>
                                     </div>
                                 </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <p class="mb-0 small">Surat masuk baru</p>
-                                    <span class="text-muted x-small">15 menit yang lalu</span>
-                                </div>
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center small text-primary" href="#">Lihat Semua Notifikasi</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- User Profile -->
+                    <div class="dropdown">
+                        <a class="d-flex align-items-center dropdown-toggle text-dark text-decoration-none" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/asset/img/logo-12 (1).png" alt="Profile" class="user-avatar">
+                            <div class="ms-2 d-none d-lg-block">
+                                <div class="fw-bold">Admin</div>
+                                <div class="small text-muted">Tata Usaha</div>
                             </div>
-                        </a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-center small text-primary" href="#">Lihat Semua Notifikasi</a></li>
-                    </ul>
-                </div>
-                
-                <!-- User Profile -->
-                <div class="dropdown">
-                    <a class="d-flex align-items-center dropdown-toggle text-dark text-decoration-none" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/asset/img/logo-12 (1).png" alt="Profile" class="user-avatar">
-                        <div class="ms-2 d-none d-lg-block">
-                            <div class="fw-bold">Admin</div>
-                            <div class="small text-muted">Tata Usaha</div>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i>Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i>Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#"><i class="bx bx-log-out me-2"></i>Logout</a></li>
-                    </ul>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="bx bx-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i>Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="bx bx-log-out me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-    
     <!-- Main Content -->
     <div class="main-content" id="main-content">
         <div class="content-wrapper">
@@ -370,12 +415,6 @@
                 sidebar.classList.toggle('collapsed');
                 mainContent.classList.toggle('expanded');
                 navbarTop.classList.toggle('expanded');
-
-                // Untuk menyesuaikan ukuran dropdown jika ada
-                const dropdowns = document.querySelectorAll('.dropdown-menu');
-                dropdowns.forEach(dropdown => {
-                    dropdown.style.right = sidebar.classList.contains('collapsed') ? '10px' : '';
-                });
             });
         }
 
@@ -407,8 +446,24 @@
                 }
             }
         });
+        
+        // Fix for logout button when sidebar is collapsed
+        window.addEventListener('resize', adjustLogoutPosition);
+        
+        function adjustLogoutPosition() {
+            const logoutSection = document.querySelector('.sidebar .mt-auto');
+            if (sidebar.classList.contains('collapsed')) {
+                logoutSection.style.position = 'static';
+                logoutSection.style.bottom = 'auto';
+            } else {
+                logoutSection.style.position = 'absolute';
+                logoutSection.style.bottom = '20px';
+            }
+        }
+        
+        // Run once on load
+        adjustLogoutPosition();
     });
-</script>
-
+    </script>
 </body>
 </html>
