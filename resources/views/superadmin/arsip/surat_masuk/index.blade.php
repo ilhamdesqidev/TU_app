@@ -29,6 +29,7 @@
     </div>
 
     <!-- Filter dan Pencarian dengan styling yang ditingkatkan -->
+    <form id="filterForm" method="GET" action="{{ route('surat_masuk.index') }}">
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow border-0 rounded-3">
@@ -41,13 +42,13 @@
                             <label for="date-filter" class="form-label fw-bold">
                                 <i class="bi bi-calendar me-1 text-primary"></i>Tanggal
                             </label>
-                            <input type="date" class="form-control shadow-sm" id="date-filter">
+                            <input type="date" class="form-control shadow-sm" name="tanggal" id="date-filter">
                         </div>
                         <div class="col-md-3">
                             <label for="category-filter" class="form-label fw-bold">
                                 <i class="bi bi-tag me-1 text-primary"></i>Kategori
                             </label>
-                            <select class="form-select shadow-sm" id="category-filter">
+                            <select class="form-select shadow-sm" name="kategori" id="category-filter">
                                 <option value="">Semua Kategori</option>
                                 <option value="penting">Penting</option>
                                 <option value="segera">Segera</option>
@@ -58,7 +59,7 @@
                             <label for="status-filter" class="form-label fw-bold">
                                 <i class="bi bi-check-circle me-1 text-primary"></i>Status
                             </label>
-                            <select class="form-select shadow-sm" id="status-filter">
+                            <select class="form-select shadow-sm" name="status" id="status-filter">
                                 <option value="">Semua Status</option>
                                 <option value="belum_diproses">Belum Diproses</option>
                                 <option value="sedang_diproses">Sedang Diproses</option>
@@ -71,15 +72,19 @@
                             </label>
                             <div class="input-group shadow-sm">
                                 <span class="input-group-text bg-primary text-white"><i class="bi bi-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Cari surat..." id="search">
-                                <button class="btn btn-primary" type="button" id="searchBtn">Cari</button>
+                                <input type="text" class="form-control" placeholder="Cari surat..." name="search" id="search">
+                                <button class="btn btn-primary" type="submit" id="searchBtn">Cari</button>
                             </div>
                         </div>
+                    </div>
+                    <div class="mt-3 text-end">
+                        <button type="reset" class="btn btn-outline-secondary" id="resetFilter">Reset</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</form>
 
     <!-- Bagian Tabel dengan styling yang ditingkatkan -->
     <div class="row">
@@ -665,10 +670,7 @@
                     
                     document.getElementById('view-status').innerHTML = `<span class="badge ${statusClass}">${data.status}</span>`;
                     document.getElementById('view-isi-surat').textContent = data.isi_surat || '-';
-                    
-                    // Kategori
-                    document.getElementById('view-kategori').textContent = data.kategori || '-';
-                    
+                   
                     // Populate lampiran
                     const lampiranContainer = document.getElementById('view-lampiran');
                     lampiranContainer.innerHTML = '';

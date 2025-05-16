@@ -9,11 +9,35 @@ use App\Exports\SuratMasukExport;
 
 class SuratMasukController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $suratMasuks = SuratMasuk::latest()->paginate(10);
+        $query = SuratMasuk::query();
+    
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal_surat', $request->tanggal);
+        }
+    
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+    
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+    
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nomor_surat', 'like', '%' . $request->search . '%')
+                  ->orWhere('pengirim', 'like', '%' . $request->search . '%')
+                  ->orWhere('perihal', 'like', '%' . $request->search . '%');
+            });
+        }
+    
+        $suratMasuks = $query->latest()->paginate(10)->appends($request->query());
+    
         return view('superadmin.arsip.surat_masuk.index', compact('suratMasuks'));
     }
+    
 
     public function store(Request $request)
     {
@@ -286,4 +310,5 @@ class SuratMasukController extends Controller
         return redirect()->route('surat_masuk.index')
             ->with('success', 'Status disposisi berhasil diperbarui.');
     }
+
 }
