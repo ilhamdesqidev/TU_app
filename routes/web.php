@@ -67,7 +67,7 @@ Route::get('/superadmin/spensasi/searchSiswa', [SpensasiController::class, 'sear
 Route::resource('surat_masuk', SuratmasukController::class);
 Route::get('/surat_masuk/{id}/disposisi', [SuratMasukController::class, 'disposisi'])->name('surat_masuk.disposisi');
 Route::get('surat_masuk/export', [SuratKeluarController::class, 'export'])->name('surat_masuk.export');
-Route::get('surat_masuk/{id}/download/{index}', [SuratKeluarController::class, 'downloadAttachment'])->name('surat_masuk.download_attachment');
+Route::get('surat_masuk/{id}/download/{index}', [SuratMasukController::class, 'downloadAttachment'])->name('surat_masuk.download_attachment');
 
 //surat keluar
 Route::resource('surat_keluar', SuratkeluarController::class);

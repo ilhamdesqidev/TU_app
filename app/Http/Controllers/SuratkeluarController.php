@@ -9,11 +9,40 @@ use App\Exports\SuratKeluarExport;
 
 class SuratKeluarController extends Controller
 {
-    public function index()
-    {
-        $suratKeluars = SuratKeluar::latest()->paginate(10);
-        return view('superadmin.arsip.surat_keluar.index', compact('suratKeluars'));
+    public function index(Request $request)
+{
+    $query = SuratKeluar::query();
+    
+    // Filter data
+    if ($request->has('date')) {
+        $query->whereDate('tanggal_surat', $request->date);
     }
+    if ($request->has('category')) {
+        $query->where('kategori', $request->category);
+    }
+    if ($request->has('status')) {
+        $query->where('status', $request->status);
+    }
+    if ($request->has('search')) {
+        $query->where(function($q) use ($request) {
+            $q->where('nomor_surat', 'like', '%'.$request->search.'%')
+              ->orWhere('perihal', 'like', '%'.$request->search.'%')
+              ->orWhere('penerima', 'like', '%'.$request->search.'%');
+        });
+    }
+    
+    $suratKeluars = $query->paginate(1); // Sesuaikan jumlah item per halaman
+    
+    if ($request->ajax()) {
+        return response()->json([
+            'html' => view('partials.surat_keluar_table', compact('suratKeluars'))->render(),
+            'pagination' => $suratKeluars->links()->toHtml(),
+            'total' => $suratKeluars->total()
+        ]);
+    }
+    
+    return view('superadmin.arsip.surat_keluar.index', compact('suratKeluars'));
+}
 
     public function store(Request $request)
     {
