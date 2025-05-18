@@ -98,9 +98,6 @@
                             <i class="bi bi-x-circle me-1"></i> Reset Filter
                         </a>
                         @endif
-                        <button type="submit" name="export" value="1" class="btn btn-success">
-                            <i class="bi bi-download me-1"></i> Export Filter
-                        </button>
                     </div>
                 </div>
             </div>
