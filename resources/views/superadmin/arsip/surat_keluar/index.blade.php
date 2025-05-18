@@ -28,7 +28,8 @@
         </div>
     </div>
 
-    <!-- Filter and Search Section with improved styling -->
+    <!-- Filter dan Pencarian dengan styling yang ditingkatkan -->
+<form id="filterForm" method="GET" action="{{ route('surat_keluar.index') }}">
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow border-0 rounded-3">
@@ -38,48 +39,74 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-3">
-                            <label for="date-filter" class="form-label fw-bold">
-                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal
+                            <label for="start-date-filter" class="form-label fw-bold">
+                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal Mulai
                             </label>
-                            <input type="date" class="form-control shadow-sm" id="date-filter">
+                            <input type="date" class="form-control shadow-sm" name="start_date" id="start-date-filter" value="{{ request('start_date') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="end-date-filter" class="form-label fw-bold">
+                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal Akhir
+                            </label>
+                            <input type="date" class="form-control shadow-sm" name="end_date" id="end-date-filter" value="{{ request('end_date') }}">
                         </div>
                         <div class="col-md-3">
                             <label for="category-filter" class="form-label fw-bold">
                                 <i class="bi bi-tag me-1 text-primary"></i>Kategori
                             </label>
-                            <select class="form-select shadow-sm" id="category-filter">
+                            <select class="form-select shadow-sm" name="kategori" id="category-filter">
                                 <option value="">Semua Kategori</option>
-                                <option value="penting">Penting</option>
-                                <option value="segera">Segera</option>
-                                <option value="biasa">Biasa</option>
+                                <option value="penting" {{ request('kategori') == 'penting' ? 'selected' : '' }}>Penting</option>
+                                <option value="segera" {{ request('kategori') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                <option value="biasa" {{ request('kategori') == 'biasa' ? 'selected' : '' }}>Biasa</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="status-filter" class="form-label fw-bold">
                                 <i class="bi bi-check-circle me-1 text-primary"></i>Status
                             </label>
-                            <select class="form-select shadow-sm" id="status-filter">
+                            <select class="form-select shadow-sm" name="status" id="status-filter">
                                 <option value="">Semua Status</option>
-                                <option value="draft">Draft</option>
-                                <option value="dikirim">Dikirim</option>
-                                <option value="diterima">Diterima</option>
+                                <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="dikirim" {{ request('status') == 'dikirim' ? 'selected' : '' }}>Dikirim</option>
+                                <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-9">
                             <label for="search" class="form-label fw-bold">
                                 <i class="bi bi-search me-1 text-primary"></i>Cari
                             </label>
                             <div class="input-group shadow-sm">
                                 <span class="input-group-text bg-primary text-white"><i class="bi bi-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Cari surat..." id="search">
-                                <button class="btn btn-primary" type="button" id="searchBtn">Cari</button>
+                                <input type="text" class="form-control" placeholder="Cari berdasarkan nomor surat, penerima, atau perihal..." 
+                                       name="search" id="search" value="{{ request('search') }}">
                             </div>
                         </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <div class="w-100">
+                                <button class="btn btn-primary w-100" type="submit" id="searchBtn">
+                                    <i class="bi bi-search me-1"></i> Terapkan Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-end">
+                        @if(request()->has('search') || request()->has('kategori') || request()->has('status') || request()->has('start_date') || request()->has('end_date'))
+                        <a href="{{ route('surat_keluar.index') }}" class="btn btn-outline-danger me-2" id="resetFilter">
+                            <i class="bi bi-x-circle me-1"></i> Reset Filter
+                        </a>
+                        @endif
+                        <button type="submit" name="export" value="1" class="btn btn-success">
+                            <i class="bi bi-download me-1"></i> Export Filter
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</form>
 
     <!-- Table Section with improved styling -->
     <div class="row">
@@ -591,18 +618,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Function untuk load halaman dengan filter
-    function loadPageWithFilters(baseUrl) {
+function loadPageWithFilters(baseUrl) {
     // Pastikan baseUrl adalah URL yang valid
     const url = new URL(baseUrl, window.location.origin);
     
     // Tambahkan parameter filter yang aktif ke URL
-    const dateFilter = document.getElementById('date-filter').value;
+    const startDate = document.getElementById('start-date-filter').value;
+    const endDate = document.getElementById('end-date-filter').value;
     const categoryFilter = document.getElementById('category-filter').value;
     const statusFilter = document.getElementById('status-filter').value;
     const searchQuery = document.getElementById('search').value;
     
-    if (dateFilter) url.searchParams.set('date', dateFilter);
-    if (categoryFilter) url.searchParams.set('category', categoryFilter);
+    if (startDate) url.searchParams.set('start_date', startDate);
+    if (endDate) url.searchParams.set('end_date', endDate);
+    if (categoryFilter) url.searchParams.set('kategori', categoryFilter);
     if (statusFilter) url.searchParams.set('status', statusFilter);
     if (searchQuery) url.searchParams.set('search', searchQuery);
     
@@ -689,12 +718,77 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-    // Function untuk apply filter
-    function applyFilters() {
-        // Buat URL dasar dengan pathname saat ini
-        const baseUrl = window.location.pathname;
-        loadPageWithFilters(baseUrl);
+// Function untuk apply filter
+function applyFilters() {
+    // Buat URL dasar dengan pathname saat ini
+    const baseUrl = window.location.pathname;
+    loadPageWithFilters(baseUrl);
+}
+
+// Handler untuk tombol filter
+document.getElementById('searchBtn').addEventListener('click', function() {
+    applyFilters();
+});
+
+// Handler untuk input filter
+['start-date-filter', 'end-date-filter', 'category-filter', 'status-filter'].forEach(id => {
+    document.getElementById(id).addEventListener('change', function() {
+        applyFilters();
+    });
+});
+
+// Handler untuk input pencarian dengan tombol Enter
+document.getElementById('search').addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') {
+        applyFilters();
     }
+});
+
+// Export button functionality
+document.getElementById('exportBtn').addEventListener('click', function() {
+    // Dapatkan filter saat ini
+    const startDate = document.getElementById('start-date-filter').value;
+    const endDate = document.getElementById('end-date-filter').value;
+    const categoryFilter = document.getElementById('category-filter').value;
+    const statusFilter = document.getElementById('status-filter').value;
+    const searchQuery = document.getElementById('search').value;
+    
+    // Buat URL ekspor dengan parameter filter
+    let exportUrl = '/surat_keluar/export';
+    const params = [];
+    
+    if (startDate) params.push(`start_date=${encodeURIComponent(startDate)}`);
+    if (endDate) params.push(`end_date=${encodeURIComponent(endDate)}`);
+    if (categoryFilter) params.push(`kategori=${encodeURIComponent(categoryFilter)}`);
+    if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
+    if (searchQuery) params.push(`search=${encodeURIComponent(searchQuery)}`);
+    
+    if (params.length > 0) {
+        exportUrl += '?' + params.join('&');
+    }
+    
+    window.location.href = exportUrl;
+});
+
+// Validasi range tanggal secara real-time
+const startDateInput = document.getElementById('start-date-filter');
+const endDateInput = document.getElementById('end-date-filter');
+
+if (startDateInput && endDateInput) {
+    startDateInput.addEventListener('change', function() {
+        if (endDateInput.value && new Date(this.value) > new Date(endDateInput.value)) {
+            showToast('Peringatan', 'Tanggal mulai diset setelah tanggal akhir', 'bg-warning text-dark');
+            endDateInput.value = '';
+        }
+    });
+    
+    endDateInput.addEventListener('change', function() {
+        if (startDateInput.value && new Date(this.value) < new Date(startDateInput.value)) {
+            showToast('Peringatan', 'Tanggal akhir diset sebelum tanggal mulai', 'bg-warning text-dark');
+            this.value = '';
+        }
+    });
+}
     
     // Function untuk re-attach event listeners setelah load data baru
     function attachEventListeners() {

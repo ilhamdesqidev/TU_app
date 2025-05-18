@@ -29,7 +29,7 @@
     </div>
 
     <!-- Filter dan Pencarian dengan styling yang ditingkatkan -->
-    <form id="filterForm" method="GET" action="{{ route('surat_masuk.index') }}">
+<form id="filterForm" method="GET" action="{{ route('surat_masuk.index') }}">
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow border-0 rounded-3">
@@ -40,9 +40,15 @@
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label for="date-filter" class="form-label fw-bold">
-                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal
+                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal Mulai
                             </label>
-                            <input type="date" class="form-control shadow-sm" name="tanggal" id="date-filter">
+                            <input type="date" class="form-control shadow-sm" name="start_date" id="start-date-filter" value="{{ request('start_date') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="date-filter" class="form-label fw-bold">
+                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal Akhir
+                            </label>
+                            <input type="date" class="form-control shadow-sm" name="end_date" id="end-date-filter" value="{{ request('end_date') }}">
                         </div>
                         <div class="col-md-3">
                             <label for="category-filter" class="form-label fw-bold">
@@ -50,9 +56,9 @@
                             </label>
                             <select class="form-select shadow-sm" name="kategori" id="category-filter">
                                 <option value="">Semua Kategori</option>
-                                <option value="penting">Penting</option>
-                                <option value="segera">Segera</option>
-                                <option value="biasa">Biasa</option>
+                                <option value="penting" {{ request('kategori') == 'penting' ? 'selected' : '' }}>Penting</option>
+                                <option value="segera" {{ request('kategori') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                <option value="biasa" {{ request('kategori') == 'biasa' ? 'selected' : '' }}>Biasa</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -61,24 +67,37 @@
                             </label>
                             <select class="form-select shadow-sm" name="status" id="status-filter">
                                 <option value="">Semua Status</option>
-                                <option value="belum_diproses">Belum Diproses</option>
-                                <option value="sedang_diproses">Sedang Diproses</option>
-                                <option value="selesai">Selesai</option>
+                                <option value="belum_diproses" {{ request('status') == 'belum_diproses' ? 'selected' : '' }}>Belum Diproses</option>
+                                <option value="sedang_diproses" {{ request('status') == 'sedang_diproses' ? 'selected' : '' }}>Sedang Diproses</option>
+                                <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-9">
                             <label for="search" class="form-label fw-bold">
                                 <i class="bi bi-search me-1 text-primary"></i>Cari
                             </label>
                             <div class="input-group shadow-sm">
                                 <span class="input-group-text bg-primary text-white"><i class="bi bi-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Cari surat..." name="search" id="search">
-                                <button class="btn btn-primary" type="submit" id="searchBtn">Cari</button>
+                                <input type="text" class="form-control" placeholder="Cari berdasarkan nomor surat, pengirim, atau perihal..." 
+                                       name="search" id="search" value="{{ request('search') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <div class="w-100">
+                                <button class="btn btn-primary w-100" type="submit" id="searchBtn">
+                                    <i class="bi bi-search me-1"></i> Terapkan Filter
+                                </button>
                             </div>
                         </div>
                     </div>
                     <div class="mt-3 text-end">
-                        <button type="reset" class="btn btn-outline-secondary" id="resetFilter">Reset</button>
+                        @if(request()->has('search') || request()->has('kategori') || request()->has('status') || request()->has('start_date') || request()->has('end_date'))
+                        <a href="{{ route('surat_masuk.index') }}" class="btn btn-outline-danger me-2" id="resetFilter">
+                            <i class="bi bi-x-circle me-1"></i> Reset Filter
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -618,27 +637,79 @@
     }
     
     // Setup filter functionality
-    const filterForm = document.getElementById('filterForm');
+   // Setup filter functionality
+   const filterForm = document.getElementById('filterForm');
+    
     if (filterForm) {
+        // Validasi tanggal sebelum submit
         filterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            const startDate = document.getElementById('start-date-filter').value;
+            const endDate = document.getElementById('end-date-filter').value;
             
-            const formData = new FormData(this);
-            const queryParams = new URLSearchParams();
-            
-            for (let pair of formData.entries()) {
-                if (pair[1]) {
-                    queryParams.append(pair[0], pair[1]);
-                }
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                e.preventDefault();
+                showToast('Error', 'Tanggal mulai tidak boleh lebih besar dari tanggal akhir', 'bg-danger text-white');
+                return false;
             }
             
-            window.location.href = '/surat_masuk?' + queryParams.toString();
+            return true;
         });
         
-        document.getElementById('resetFilter').addEventListener('click', function() {
-            window.location.href = '/surat_masuk';
+        // Reset filter
+        document.getElementById('resetFilter')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '{{ route("surat_masuk.index") }}';
         });
     }
+    
+    // Validasi range tanggal secara real-time
+    const startDateInput = document.getElementById('start-date-filter');
+    const endDateInput = document.getElementById('end-date-filter');
+    
+    if (startDateInput && endDateInput) {
+        startDateInput.addEventListener('change', function() {
+            if (endDateInput.value && new Date(this.value) > new Date(endDateInput.value)) {
+                showToast('Peringatan', 'Tanggal mulai diset setelah tanggal akhir', 'bg-warning text-dark');
+                endDateInput.value = '';
+            }
+        });
+        
+        endDateInput.addEventListener('change', function() {
+            if (startDateInput.value && new Date(this.value) < new Date(startDateInput.value)) {
+                showToast('Peringatan', 'Tanggal akhir diset sebelum tanggal mulai', 'bg-warning text-dark');
+                this.value = '';
+            }
+        });
+    }
+    
+    // Fungsi untuk menampilkan toast
+    function showToast(title, message, bgClass = 'bg-success text-white') {
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white ${bgClass} border-0 position-fixed bottom-0 end-0 m-3`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        toast.style.zIndex = '1100';
+        
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    <strong>${title}</strong><br>${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        const bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+        
+        // Hapus toast setelah beberapa detik
+        setTimeout(() => {
+            toast.remove();
+        }, 5000);
+    }
+
     
     // View button functionality
     document.querySelectorAll('.view-btn').forEach(button => {

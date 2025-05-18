@@ -13,27 +13,41 @@ class SuratMasukController extends Controller
     {
         $query = SuratMasuk::query();
     
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal_surat', $request->tanggal);
-        }
+    // Filter berdasarkan pencarian
+    if ($request->has('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('nomor_surat', 'like', "%{$search}%")
+              ->orWhere('pengirim', 'like', "%{$search}%")
+              ->orWhere('perihal', 'like', "%{$search}%");
+        });
+    }
     
-        if ($request->filled('kategori')) {
-            $query->where('kategori', $request->kategori);
-        }
+    // Filter berdasarkan kategori
+    if ($request->has('kategori') && $request->kategori != '') {
+        $query->where('kategori', $request->kategori);
+    }
     
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+    // Filter berdasarkan status
+    if ($request->has('status') && $request->status != '') {
+        $query->where('status', $request->status);
+    }
     
-        if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('nomor_surat', 'like', '%' . $request->search . '%')
-                  ->orWhere('pengirim', 'like', '%' . $request->search . '%')
-                  ->orWhere('perihal', 'like', '%' . $request->search . '%');
-            });
-        }
+    // Filter berdasarkan tanggal
+    if ($request->has('start_date') && $request->start_date != '') {
+        $query->whereDate('tanggal_diterima', '>=', $request->start_date);
+    }
     
-        $suratMasuks = $query->latest()->paginate(10)->appends($request->query());
+    if ($request->has('end_date') && $request->end_date != '') {
+        $query->whereDate('tanggal_diterima', '<=', $request->end_date);
+    }
+    
+    // Export ke Excel jika parameter export ada
+    if ($request->has('export')) {
+        return Excel::download(new SuratMasukExport($query), 'surat-masuk-'.date('YmdHis').'.xlsx');
+    }
+    
+    $suratMasuks = $query->orderBy('tanggal_diterima', 'desc')->paginate(10);
     
         return view('superadmin.arsip.surat_masuk.index', compact('suratMasuks'));
     }
