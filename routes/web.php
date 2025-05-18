@@ -7,6 +7,7 @@ use App\Http\Controllers\SpensasiController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SuratmasukController;
 use App\Http\Controllers\SuratkeluarController;
+use App\Http\Controllers\IjazahController;
 
 Route::get('superadmin/welcome', function () {
     return view('welcome');
@@ -14,6 +15,7 @@ Route::get('superadmin/welcome', function () {
 Route::get('main', function () {
     return view('main');
 });
+
 
 Route::get('/klapper', [KlapperController::class, 'indexKlapper'])->name('klapper.index');
 Route::get('/klapper/tambahdataklapper', [KlapperController::class, 'createKlapper'])->name('klapper.create');
@@ -83,3 +85,15 @@ Route::get('arsip/surat_keluar', [SuratkeluarController::class, 'surat_keluarInd
 // Route::get('/surat-keluar/{id}', [SuratKeluarController::class, 'show'])->name('surat_keluar.show');
 Route::get('surat_keluar/export', [SuratKeluarController::class, 'export'])->name('surat_keluar.export');
 Route::get('surat_keluar/{id}/download/{index}', [SuratKeluarController::class, 'downloadAttachment'])->name('surat_keluar.download_attachment');
+
+
+Route::get('/ijazah', [IjazahController::class, 'index']);
+Route::get('/ijazah/create/{angkatan}', [IjazahController::class, 'create'])->name('ijazah.create');
+// index global dengan search
+Route::get('ijazah', [IjazahController::class,'index'])->name('ijazah.index');
+// lihat per angkatan (klapper)
+Route::get('ijazah/angkatan/{klapper}', [IjazahController::class,'perAngkatan'])->name('ijazah.perAngkatan');
+// CRUD
+Route::resource('ijazah', IjazahController::class)->except(['index','show']);
+Route::get('/ijazah/{ijazah}', [IjazahController::class, 'show'])->name('ijazah.show');
+

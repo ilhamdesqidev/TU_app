@@ -35,4 +35,10 @@ class Siswa extends Model
     {
         return strtoupper($value);
     }
+
+    public function ijazah()
+{
+    return $this->hasOne(Ijazah::class);
+}
+
 }
