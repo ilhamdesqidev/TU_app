@@ -130,7 +130,7 @@
                                     <option value="smk_amaliah_1">SMK Amaliah 1</option>
                                     <option value="smk_amaliah_2">SMK Amaliah 2</option>
                                 </select>
-                                <small class="text-muted mt-1 d-block">Pilih asal sekolah siswa</small>
+                                <small class="text-muted mt-1 d-block">Pilih sekolah siswa</small>
                             </div>
                         </div>
                         
@@ -270,7 +270,8 @@
             const jurusanSMK1 = [
                 { value: 'an', label: 'AN - Animasi' },
                 { value: 'pplg', label: 'PPLG - Pengembangan Perangkat Lunak dan Gim' },
-                { value: 'tjkt', label: 'TJKT - Teknik Jaringan Komputer dan Telekomunikasi' }
+                { value: 'tjkt', label: 'TJKT - Teknik Jaringan Komputer dan Telekomunikasi' },
+                { value: 'dkv', label: 'DKV - Desain Komunikasi Visual' }
             ];
             
             jurusanSMK1.forEach(item => {

@@ -13,12 +13,13 @@
     
     <style>
         :root {
-            --primary-color: #4e73df;
+            --primary-color: #4361ee;
             --secondary-color: #f8f9fc;
             --text-color: #5a5c69;
             --sidebar-width: 250px;
             --sidebar-collapsed-width: 70px;
             --topbar-height: 70px;
+            --transition-speed: 0.3s;
         }
         
         body {
@@ -29,17 +30,21 @@
         
         /* Improved Sidebar */
         .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
             width: var(--sidebar-width);
             height: 100vh;
             position: fixed;
             top: 0;
             left: 0;
             box-shadow: 0 0.15rem 1.75rem rgba(0, 0, 0, 0.15);
-            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            transition: all var(--transition-speed) ease;
             z-index: 1000;
             overflow-y: auto;
             padding-bottom: 20px;
+            border-radius: 0 15px 15px 0;
         }
         
         .sidebar.collapsed {
@@ -53,6 +58,7 @@
             align-items: center;
             color: white;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
         }
         
         .logo-img {
@@ -60,63 +66,100 @@
             height: 40px;
             object-fit: contain;
             flex-shrink: 0;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
+            transition: transform var(--transition-speed);
+        }
+        
+        .sidebar.collapsed .logo-img {
+            transform: scale(1.2);
         }
         
         .brand-text {
             margin-left: 10px;
             white-space: nowrap;
             overflow: hidden;
+            transition: opacity var(--transition-speed);
         }
         
         /* Nav Items Styling */
         .nav-item {
-            margin: 5px 0;
+            margin: 8px 0;
+            position: relative;
         }
         
         .nav-link {
             color: rgba(255, 255, 255, 0.8) !important;
-            border-radius: 0.35rem;
+            border-radius: 10px;
             margin: 0.25rem 1rem;
             padding: 0.75rem 1rem;
             display: flex;
             align-items: center;
             transition: all 0.2s;
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
         }
         
         .nav-link:hover, .nav-link.active {
             color: white !important;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: #fff;
+            border-radius: 0 4px 4px 0;
         }
         
         .icon-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 24px;
-            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+            margin-right: 12px;
             flex-shrink: 0;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all var(--transition-speed);
+        }
+        
+        .nav-link:hover .icon-wrapper, 
+        .nav-link.active .icon-wrapper {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: rotate(-5deg);
         }
         
         .nav-text {
             flex-grow: 1;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all var(--transition-speed);
         }
         
         .dropdown-icon {
             transition: transform 0.3s;
         }
         
-        /* Nested Menu Styling */
+        /* Nested Menu Styling - IMPROVED */
         .nested-menu {
             padding-left: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
             margin: 0 1rem;
+            transition: max-height 0.3s ease;
+            list-style: none;
+            overflow: hidden;
+            max-height: 0;
         }
         
         .nested-menu.show {
-            max-height: 200px;
+            max-height: 500px; /* Increased to ensure full visibility */
         }
         
         .nested-link {
@@ -125,26 +168,57 @@
             display: flex;
             align-items: center;
             transition: all 0.2s;
-            border-radius: 0.35rem;
+            border-radius: 8px;
             text-decoration: none;
             margin: 0.25rem 0;
+            position: relative;
         }
         
         .nested-link:hover, .nested-link.active {
             color: white !important;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
             text-decoration: none;
+        }
+        
+        .nested-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: #fff;
+            border-radius: 0 4px 4px 0;
         }
         
         .nested-link i {
             margin-right: 8px;
             font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+        
+        .nested-link:hover i {
+            transform: scale(1.2);
         }
 
         /* Logout Section */
         .sidebar-divider {
             margin: 1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .logout-link {
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.7) 0%, rgba(255, 59, 48, 0.9) 100%);
+            margin: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        
+        .logout-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 59, 48, 0.4);
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.9) 0%, rgba(255, 59, 48, 1) 100%);
         }
         
         /* Collapsed State Styles */
@@ -162,15 +236,47 @@
         .sidebar.collapsed .nav-link {
             justify-content: center;
             padding: 0.75rem 0;
-            margin: 0.25rem 0.5rem;
+            margin: 0.5rem;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
         }
         
         .sidebar.collapsed .icon-wrapper {
             margin-right: 0;
+            transform: scale(1.2);
         }
         
         .sidebar.collapsed .nested-menu {
             display: none;
+        }
+        
+        .sidebar.collapsed .logout-link {
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0.5rem auto;
+        }
+        
+        /* Hover effects */
+        .sidebar:not(.collapsed) .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.7);
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar:not(.collapsed) .nav-link:hover::after,
+        .sidebar:not(.collapsed) .nav-link.active::after {
+            width: 50%;
         }
         
         /* Main Content Layout */
@@ -197,6 +303,7 @@
             display: flex;
             align-items: center;
             padding: 0 1.5rem;
+            border-radius: 0 0 15px 15px;
         }
         
         .navbar-top.expanded {
@@ -211,6 +318,13 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #e3e6f0;
+            transition: all 0.3s;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(78, 115, 223, 0.4);
+            border-color: var(--primary-color);
         }
         
         /* Content Wrapper */
@@ -223,6 +337,20 @@
             background-color: #f8f9fc;
             border: none;
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            animation: fadeInDown 0.3s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .dropdown-item {
@@ -234,6 +362,7 @@
         .dropdown-item:hover {
             background-color: rgba(78, 115, 223, 0.1);
             color: var(--primary-color);
+            transform: translateX(5px);
         }
         
         /* Toggle Button */
@@ -243,12 +372,18 @@
             color: var(--text-color);
             padding: 0.5rem;
             transition: all 0.2s;
-            border-radius: 0.35rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         #sidebarToggle:hover {
             background-color: rgba(78, 115, 223, 0.1);
             color: var(--primary-color);
+            transform: rotate(90deg);
         }
         
         /* Scrollbars */
@@ -267,6 +402,93 @@
         
         .sidebar::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Notification Pulse Animation */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+        
+        .badge-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* CONSISTENT DETAIL PAGE STYLING */
+        .detail-page-header {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-page-header .breadcrumb {
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-page-header h1 {
+            color: var(--text-color);
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-page-header .meta-info {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        .detail-page-content {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            padding: 1.5rem;
+        }
+        
+        .detail-page-section {
+            margin-bottom: 2rem;
+        }
+        
+        .detail-page-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-page-section h2 {
+            color: var(--text-color);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e3e6f0;
+        }
+        
+        .detail-page-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: #e3e6f0;
+            color: var(--text-color);
+            border-radius: 0.25rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .back-button:hover {
+            background-color: #d1d3e2;
+            transform: translateX(-5px);
         }
     </style>
 </head>
@@ -289,41 +511,47 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{url('klapper')}}" class="nav-link {{ Request::is('klapper') ? 'active' : '' }}">
+                <a href="{{url('klapper')}}" class="nav-link {{ Request::is('klapper*') ? 'active' : '' }}">
                     <div class="icon-wrapper"><i class='bx bx-book fs-5'></i></div>
                     <span class="nav-text">Klapper</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{url('spensasi')}}" class="nav-link {{ Request::is('spensasi') ? 'active' : '' }}">
+                <a href="{{url('spensasi')}}" class="nav-link {{ Request::is('spensasi*') ? 'active' : '' }}">
                     <div class="icon-wrapper"><i class='bx bx-message-square-detail fs-5'></i></div>
                     <span class="nav-text">Spensasi</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" id="archiveToggle">
+                <a href="#" class="nav-link {{ Request::is('surat_masuk*') || Request::is('surat_keluar*') || Request::is('ijazah*') ? 'active' : '' }}" id="archiveToggle">
                     <div class="icon-wrapper"><i class='bx bx-folder fs-5'></i></div>
                     <span class="nav-text">Arsip</span>
                     <i class='bx bx-chevron-down ms-2 dropdown-icon'></i>
                 </a>
-                <div class="nested-menu" id="archiveMenu">
-                    <a href="{{url('surat_masuk')}}" class="nested-link {{ Request::is('surat_masuk') ? 'active' : '' }}">
-                        <i class='bx bx-envelope-open'></i>Surat Masuk
-                    </a>
-                    <a href="{{url('surat_keluar')}}" class="nested-link {{ Request::is('surat_keluar') ? 'active' : '' }}">
-                        <i class='bx bx-envelope'></i>Surat Keluar
-                    </a>
-                    <a href="{{url('ijazah')}}" class="nested-link {{ Request::is('ijazah') ? 'active' : '' }}">
-                        <i class='bx bx-file'></i>Ijazah
-                    </a>
-                </div>
+                <ul class="nested-menu" id="archiveMenu">
+                    <li>
+                        <a href="{{url('surat_masuk')}}" class="nested-link {{ Request::is('surat_masuk*') ? 'active' : '' }}">
+                            <i class='bx bx-envelope-open'></i>Surat Masuk
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('surat_keluar')}}" class="nested-link {{ Request::is('surat_keluar*') ? 'active' : '' }}">
+                            <i class='bx bx-envelope'></i>Surat Keluar
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('ijazah')}}" class="nested-link {{ Request::is('ijazah*') ? 'active' : '' }}">
+                            <i class='bx bx-file'></i>Ijazah
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
         
         <!-- Logout Section -->
         <div class="mt-auto" style="position: absolute; bottom: 20px; width: 100%;">
             <hr class="sidebar-divider">
-            <a href="#" class="nav-link text-danger">
+            <a href="#" class="nav-link text-danger logout-link">
                 <div class="icon-wrapper"><i class='bx bx-log-out fs-5'></i></div>
                 <span class="nav-text">Keluar</span>
             </a>
@@ -345,7 +573,7 @@
                     <div class="dropdown mx-3">
                         <a class="btn btn-light position-relative rounded-circle p-2" href="#" role="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bx bx-bell fs-5"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-pulse">
                                 3
                             </span>
                         </a>
@@ -395,6 +623,53 @@
     <div class="main-content" id="main-content">
         <div class="content-wrapper">
             @yield('content')
+            
+            <!-- Example of a detail page structure (to be placed in content section) -->
+            <!--
+            <div class="detail-page-header">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Module</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                    </ol>
+                </nav>
+                <h1>Detail Title</h1>
+                <div class="meta-info">
+                    <span>Created: 15 May 2025</span> | 
+                    <span>Status: Active</span>
+                </div>
+            </div>
+            
+            <div class="detail-page-content">
+                <div class="detail-page-section">
+                    <h2>Section Title</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-2"><strong>Field 1:</strong> Value 1</p>
+                            <p class="mb-2"><strong>Field 2:</strong> Value 2</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-2"><strong>Field 3:</strong> Value 3</p>
+                            <p class="mb-2"><strong>Field 4:</strong> Value 4</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-page-section">
+                    <h2>Another Section</h2>
+                    <p>Content goes here...</p>
+                </div>
+                
+                <div class="detail-page-actions">
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <button class="btn btn-danger">Delete</button>
+                    <a href="#" class="back-button ms-auto">
+                        <i class='bx bx-arrow-back'></i> Back
+                    </a>
+                </div>
+            </div>
+            -->
         </div>
     </div>
     
@@ -429,35 +704,47 @@
             });
         }
 
-        // Set active class based on current page
+        // Improved active state handling
         const currentLocation = window.location.pathname;
-        const navLinks = document.querySelectorAll('.nav-link');
-        const nestedLinks = document.querySelectorAll('.nested-link');
-
-        [...navLinks, ...nestedLinks].forEach(link => {
-            const linkPath = link.getAttribute('href');
-            if (linkPath && currentLocation.includes(linkPath)) {
-                link.classList.add('active');
-                if (link.classList.contains('nested-link')) {
-                    archiveMenu.classList.add('show');
-                    const dropdownIcon = archiveToggle.querySelector('.dropdown-icon');
-                    dropdownIcon.classList.remove('bx-chevron-down');
-                    dropdownIcon.classList.add('bx-chevron-up');
-                }
+        
+        // Auto-expand the archive menu if any of its child links are active
+        const isArchiveActive = 
+            currentLocation.includes('surat_masuk') || 
+            currentLocation.includes('surat_keluar') || 
+            currentLocation.includes('ijazah');
+            
+        if (isArchiveActive && archiveMenu) {
+            archiveMenu.classList.add('show');
+            const dropdownIcon = archiveToggle.querySelector('.dropdown-icon');
+            if (dropdownIcon) {
+                dropdownIcon.classList.remove('bx-chevron-down');
+                dropdownIcon.classList.add('bx-chevron-up');
             }
-        });
+        }
+        
+        // Keep the dropdown open by default on page load
+        if (archiveMenu && !isArchiveActive) {
+            archiveMenu.classList.add('show');
+            const dropdownIcon = archiveToggle.querySelector('.dropdown-icon');
+            if (dropdownIcon) {
+                dropdownIcon.classList.remove('bx-chevron-down');
+                dropdownIcon.classList.add('bx-chevron-up');
+            }
+        }
         
         // Fix for logout button when sidebar is collapsed
         window.addEventListener('resize', adjustLogoutPosition);
         
         function adjustLogoutPosition() {
             const logoutSection = document.querySelector('.sidebar .mt-auto');
-            if (sidebar.classList.contains('collapsed')) {
-                logoutSection.style.position = 'static';
-                logoutSection.style.bottom = 'auto';
-            } else {
-                logoutSection.style.position = 'absolute';
-                logoutSection.style.bottom = '20px';
+            if (logoutSection) {
+                if (sidebar.classList.contains('collapsed')) {
+                    logoutSection.style.position = 'static';
+                    logoutSection.style.bottom = 'auto';
+                } else {
+                    logoutSection.style.position = 'absolute';
+                    logoutSection.style.bottom = '20px';
+                }
             }
         }
         

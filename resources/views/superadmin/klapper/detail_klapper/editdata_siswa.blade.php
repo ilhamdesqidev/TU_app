@@ -131,7 +131,7 @@
                                     <option value="smk_amaliah_1" {{ strpos($siswa->jurusan, 'an') !== false || strpos($siswa->jurusan, 'pplg') !== false || strpos($siswa->jurusan, 'tjkt') !== false || strpos($siswa->jurusan, 'dkv') !== false ? 'selected' : '' }}>SMK Amaliah 1</option>
                                     <option value="smk_amaliah_2" {{ strpos($siswa->jurusan, 'mp') !== false || strpos($siswa->jurusan, 'akl') !== false || strpos($siswa->jurusan, 'br') !== false || strpos($siswa->jurusan, 'lps') !== false || strpos($siswa->jurusan, 'dpb') !== false ? 'selected' : '' }}>SMK Amaliah 2</option>
                                 </select>
-                                <small class="text-muted mt-1 d-block">Pilih asal sekolah siswa</small>
+                                <small class="text-muted mt-1 d-block">Pilih sekolah siswa</small>
                             </div>
                         </div>
                         
