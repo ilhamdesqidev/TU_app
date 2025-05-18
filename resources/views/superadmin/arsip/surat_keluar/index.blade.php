@@ -28,7 +28,8 @@
         </div>
     </div>
 
-    <!-- Filter and Search Section with improved styling -->
+    <!-- Filter dan Pencarian dengan styling yang ditingkatkan -->
+<form id="filterForm" method="GET" action="{{ route('surat_keluar.index') }}">
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow border-0 rounded-3">
@@ -38,48 +39,71 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-3">
-                            <label for="date-filter" class="form-label fw-bold">
-                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal
+                            <label for="start-date-filter" class="form-label fw-bold">
+                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal Mulai
                             </label>
-                            <input type="date" class="form-control shadow-sm" id="date-filter">
+                            <input type="date" class="form-control shadow-sm" name="start_date" id="start-date-filter" value="{{ request('start_date') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="end-date-filter" class="form-label fw-bold">
+                                <i class="bi bi-calendar me-1 text-primary"></i>Tanggal Akhir
+                            </label>
+                            <input type="date" class="form-control shadow-sm" name="end_date" id="end-date-filter" value="{{ request('end_date') }}">
                         </div>
                         <div class="col-md-3">
                             <label for="category-filter" class="form-label fw-bold">
                                 <i class="bi bi-tag me-1 text-primary"></i>Kategori
                             </label>
-                            <select class="form-select shadow-sm" id="category-filter">
+                            <select class="form-select shadow-sm" name="kategori" id="category-filter">
                                 <option value="">Semua Kategori</option>
-                                <option value="penting">Penting</option>
-                                <option value="segera">Segera</option>
-                                <option value="biasa">Biasa</option>
+                                <option value="penting" {{ request('kategori') == 'penting' ? 'selected' : '' }}>Penting</option>
+                                <option value="segera" {{ request('kategori') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                <option value="biasa" {{ request('kategori') == 'biasa' ? 'selected' : '' }}>Biasa</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="status-filter" class="form-label fw-bold">
                                 <i class="bi bi-check-circle me-1 text-primary"></i>Status
                             </label>
-                            <select class="form-select shadow-sm" id="status-filter">
+                            <select class="form-select shadow-sm" name="status" id="status-filter">
                                 <option value="">Semua Status</option>
-                                <option value="draft">Draft</option>
-                                <option value="dikirim">Dikirim</option>
-                                <option value="diterima">Diterima</option>
+                                <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="dikirim" {{ request('status') == 'dikirim' ? 'selected' : '' }}>Dikirim</option>
+                                <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-9">
                             <label for="search" class="form-label fw-bold">
                                 <i class="bi bi-search me-1 text-primary"></i>Cari
                             </label>
                             <div class="input-group shadow-sm">
                                 <span class="input-group-text bg-primary text-white"><i class="bi bi-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Cari surat..." id="search">
-                                <button class="btn btn-primary" type="button" id="searchBtn">Cari</button>
+                                <input type="text" class="form-control" placeholder="Cari berdasarkan nomor surat, penerima, atau perihal..." 
+                                       name="search" id="search" value="{{ request('search') }}">
                             </div>
                         </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <div class="w-100">
+                                <button class="btn btn-primary w-100" type="submit" id="searchBtn">
+                                    <i class="bi bi-search me-1"></i> Terapkan Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-end">
+                        @if(request()->has('search') || request()->has('kategori') || request()->has('status') || request()->has('start_date') || request()->has('end_date'))
+                        <a href="{{ route('surat_keluar.index') }}" class="btn btn-outline-danger me-2" id="resetFilter">
+                            <i class="bi bi-x-circle me-1"></i> Reset Filter
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</form>
 
     <!-- Table Section with improved styling -->
     <div class="row">
@@ -165,19 +189,44 @@
                         </table>
                     </div>
                 </div>
-                <!-- Pagination with improved styling -->
+                <!-- Pagination Section -->
                 <div class="card-footer bg-white">
                     <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link rounded-start" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link rounded-end" href="#">Next</a>
-                            </li>
+                        <ul class="pagination justify-content-center mb-0">
+                            {{-- Previous Page Link --}}
+                            @if ($suratKeluars->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">&laquo;</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $suratKeluars->previousPageUrl() }}" rel="prev">&laquo;</a>
+                                </li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @foreach ($suratKeluars->getUrlRange(1, $suratKeluars->lastPage()) as $page => $url)
+                                @if ($page == $suratKeluars->currentPage())
+                                    <li class="page-item active" aria-current="page">
+                                        <span class="page-link">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Page Link --}}
+                            @if ($suratKeluars->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $suratKeluars->nextPageUrl() }}" rel="next">&raquo;</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">&raquo;</span>
+                                </li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
@@ -522,7 +571,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Custom JavaScript for functionality -->
-<script>
+ <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Toast notification function
     function showToast(title, message, bgClass = 'bg-success text-white') {
@@ -542,105 +591,312 @@ document.addEventListener('DOMContentLoaded', function() {
         const bsToast = new bootstrap.Toast(toast);
         bsToast.show();
     }
-    
-    // Setup filter functionality
-    // [Kode filter tetap sama]
-    
-    // View button functionality
-    document.querySelectorAll('.view-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const url = this.getAttribute('data-url');
-            const viewLoading = document.getElementById('view-loading');
-            const viewContent = document.getElementById('view-content');
+
+    // --- PERBAIKAN PAGINATION ---
+    // Tangkap semua klik pagination dengan event delegation
+    document.addEventListener('click', function(e) {
+        const paginationLink = e.target.closest('.page-link');
+        
+        if (paginationLink && !paginationLink.parentElement.classList.contains('disabled')) {
+            e.preventDefault();
             
-            // Show loading, hide content
-            viewLoading.classList.remove('d-none');
-            viewContent.classList.add('d-none');
+            let pageUrl;
+            if (paginationLink.hasAttribute('href') && paginationLink.getAttribute('href') !== '#') {
+                pageUrl = paginationLink.getAttribute('href');
+            } else {
+                // Jika tidak ada href atau href="#", ambil dari data-page jika ada
+                const page = paginationLink.getAttribute('data-page') || '1';
+                pageUrl = window.location.pathname + '?page=' + page;
+            }
             
-            // Fetch data dari server
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Populate modal dengan data
-                    document.getElementById('view-nomor-surat').textContent = data.nomor_surat;
-                    document.getElementById('view-tanggal-surat').textContent = formatDate(data.tanggal_surat);
-                    document.getElementById('view-perihal').textContent = data.perihal;
-                    document.getElementById('view-penerima').textContent = data.penerima;
-                    document.getElementById('view-tanggal-pengiriman').textContent = data.tanggal_pengiriman ? formatDate(data.tanggal_pengiriman) : '-';
-                    
-                    // Status dengan badge yang sesuai
-                    let statusClass = 'bg-secondary';
-                    if (data.status === 'draft') statusClass = 'bg-warning text-dark';
-                    else if (data.status === 'dikirim') statusClass = 'bg-info';
-                    else if (data.status === 'diterima') statusClass = 'bg-success';
-                    
-                    document.getElementById('view-status').innerHTML = `<span class="badge ${statusClass}">${data.status}</span>`;
-                    document.getElementById('view-isi-surat').textContent = data.isi_surat || '-';
-                    
-                    // Populate lampiran
-                    const lampiranContainer = document.getElementById('view-lampiran');
-                    lampiranContainer.innerHTML = '';
-                    
-                    if (data.lampiran && data.lampiran.length > 0) {
-                        data.lampiran.forEach((item, index) => {
-                            let icon = 'file-earmark';
-                            let bgColor = 'bg-secondary';
-                            
-                            if (item.tipe === 'pdf') {
-                                icon = 'file-earmark-pdf';
-                                bgColor = 'bg-danger';
-                            } else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) {
-                                icon = 'file-earmark-image';
-                                bgColor = 'bg-primary';
-                            } else if (['doc', 'docx'].includes(item.tipe)) {
-                                icon = 'file-earmark-word';
-                                bgColor = 'bg-info';
-                            } else if (['xls', 'xlsx'].includes(item.tipe)) {
-                                icon = 'file-earmark-excel';
-                                bgColor = 'bg-success';
-                            }
-                            
-                            const fileItem = document.createElement('div');
-                            fileItem.className = 'border rounded p-2 d-flex align-items-center';
-                            fileItem.innerHTML = `
-                                <div class="p-2 rounded ${bgColor} text-white me-2">
-                                    <i class="bi bi-${icon}"></i>
-                                </div>
-                                <div>
-                                    <p class="mb-0 fw-bold">${item.nama}</p>
-                                    <small class="text-muted">${item.ukuran}</small>
-                                </div>
-                                <a href="/surat_keluar/${data.id}/download/${index}" class="btn btn-sm btn-link ms-auto" title="Download">
-                                    <i class="bi bi-download"></i>
-                                </a>
-                            `;
-                            lampiranContainer.appendChild(fileItem);
-                        });
-                    } else {
-                        lampiranContainer.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran</p>';
-                    }
-                    
-                    // Hide loading, show content
-                    viewLoading.classList.add('d-none');
-                    viewContent.classList.remove('d-none');
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    showToast('Error', 'Gagal memuat data surat', 'bg-danger text-white');
-                    viewLoading.classList.add('d-none');
-                });
-        });
+            // Arahkan ke halaman dengan filter yang ada
+            loadPageWithFilters(pageUrl);
+        }
     });
     
-    // Edit button functionality// Script untuk menangani edit surat
-document.querySelectorAll('.edit-btn').forEach(button => {
-    button.addEventListener('click', function() {
+    // Function untuk load halaman dengan filter
+function loadPageWithFilters(baseUrl) {
+    // Pastikan baseUrl adalah URL yang valid
+    const url = new URL(baseUrl, window.location.origin);
+    
+    // Tambahkan parameter filter yang aktif ke URL
+    const startDate = document.getElementById('start-date-filter').value;
+    const endDate = document.getElementById('end-date-filter').value;
+    const categoryFilter = document.getElementById('category-filter').value;
+    const statusFilter = document.getElementById('status-filter').value;
+    const searchQuery = document.getElementById('search').value;
+    
+    if (startDate) url.searchParams.set('start_date', startDate);
+    if (endDate) url.searchParams.set('end_date', endDate);
+    if (categoryFilter) url.searchParams.set('kategori', categoryFilter);
+    if (statusFilter) url.searchParams.set('status', statusFilter);
+    if (searchQuery) url.searchParams.set('search', searchQuery);
+    
+    // Tampilkan indikator loading
+    const tableBody = document.querySelector('tbody');
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="8" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Sedang memuat data...</p>
+            </td>
+        </tr>
+    `;
+    
+    // Load data dengan AJAX
+    fetch(url.toString(), {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Periksa apakah data.html ada
+        if (!data.html) {
+            throw new Error('Invalid response format: missing html');
+        }
+        
+        // Update tabel dengan data baru
+        tableBody.innerHTML = data.html;
+        
+        // Update pagination jika ada
+        const paginationContainer = document.querySelector('.pagination');
+        if (paginationContainer && data.pagination) {
+            paginationContainer.innerHTML = data.pagination;
+        }
+        
+        // Update jumlah total records
+        const totalRecordsElement = document.getElementById('totalRecords');
+        if (totalRecordsElement && data.total !== undefined) {
+            totalRecordsElement.textContent = data.total + ' Surat';
+        }
+        
+        // Update URL browser tanpa reload halaman
+        window.history.pushState({}, '', url.toString());
+        
+        // Reattach event listeners untuk tombol-tombol aksi
+        attachEventListeners();
+        
+        // Scroll ke atas tabel
+        const tableElement = document.querySelector('.table-responsive');
+        if (tableElement) {
+            window.scrollTo({
+                top: tableElement.offsetTop - 50,
+                behavior: 'smooth'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error', 'Gagal memuat data surat: ' + error.message, 'bg-danger text-white');
+        
+        // Menampilkan pesan error pada tabel
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center py-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                        <p class="mt-2">Gagal memuat data. Silakan coba lagi.</p>
+                        <button class="btn btn-sm btn-primary mt-2" onclick="window.location.reload()">
+                            <i class="bi bi-arrow-clockwise me-1"></i> Muat Ulang
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// Function untuk apply filter
+function applyFilters() {
+    // Buat URL dasar dengan pathname saat ini
+    const baseUrl = window.location.pathname;
+    loadPageWithFilters(baseUrl);
+}
+
+// Handler untuk tombol filter
+document.getElementById('searchBtn').addEventListener('click', function() {
+    applyFilters();
+});
+
+// Handler untuk input filter
+['start-date-filter', 'end-date-filter', 'category-filter', 'status-filter'].forEach(id => {
+    document.getElementById(id).addEventListener('change', function() {
+        applyFilters();
+    });
+});
+
+// Handler untuk input pencarian dengan tombol Enter
+document.getElementById('search').addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') {
+        applyFilters();
+    }
+});
+
+// Export button functionality
+document.getElementById('exportBtn').addEventListener('click', function() {
+    // Dapatkan filter saat ini
+    const startDate = document.getElementById('start-date-filter').value;
+    const endDate = document.getElementById('end-date-filter').value;
+    const categoryFilter = document.getElementById('category-filter').value;
+    const statusFilter = document.getElementById('status-filter').value;
+    const searchQuery = document.getElementById('search').value;
+    
+    // Buat URL ekspor dengan parameter filter
+    let exportUrl = '/surat_keluar/export';
+    const params = [];
+    
+    if (startDate) params.push(`start_date=${encodeURIComponent(startDate)}`);
+    if (endDate) params.push(`end_date=${encodeURIComponent(endDate)}`);
+    if (categoryFilter) params.push(`kategori=${encodeURIComponent(categoryFilter)}`);
+    if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
+    if (searchQuery) params.push(`search=${encodeURIComponent(searchQuery)}`);
+    
+    if (params.length > 0) {
+        exportUrl += '?' + params.join('&');
+    }
+    
+    window.location.href = exportUrl;
+});
+
+// Validasi range tanggal secara real-time
+const startDateInput = document.getElementById('start-date-filter');
+const endDateInput = document.getElementById('end-date-filter');
+
+if (startDateInput && endDateInput) {
+    startDateInput.addEventListener('change', function() {
+        if (endDateInput.value && new Date(this.value) > new Date(endDateInput.value)) {
+            showToast('Peringatan', 'Tanggal mulai diset setelah tanggal akhir', 'bg-warning text-dark');
+            endDateInput.value = '';
+        }
+    });
+    
+    endDateInput.addEventListener('change', function() {
+        if (startDateInput.value && new Date(this.value) < new Date(startDateInput.value)) {
+            showToast('Peringatan', 'Tanggal akhir diset sebelum tanggal mulai', 'bg-warning text-dark');
+            this.value = '';
+        }
+    });
+}
+    
+    // Function untuk re-attach event listeners setelah load data baru
+    function attachEventListeners() {
+        // View button
+        document.querySelectorAll('.view-btn').forEach(button => {
+            button.addEventListener('click', viewButtonHandler);
+        });
+        
+        // Edit button
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', editButtonHandler);
+        });
+        
+        // Delete button
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', deleteButtonHandler);
+        });
+    }
+    
+    // Handler untuk tombol view
+    function viewButtonHandler() {
+        const id = this.getAttribute('data-id');
+        const url = this.getAttribute('data-url');
+        const viewLoading = document.getElementById('view-loading');
+        const viewContent = document.getElementById('view-content');
+        
+        // Show loading, hide content
+        viewLoading.classList.remove('d-none');
+        viewContent.classList.add('d-none');
+        
+        // Fetch data dari server
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Populate modal dengan data
+                document.getElementById('view-nomor-surat').textContent = data.nomor_surat;
+                document.getElementById('view-tanggal-surat').textContent = formatDate(data.tanggal_surat);
+                document.getElementById('view-perihal').textContent = data.perihal;
+                document.getElementById('view-penerima').textContent = data.penerima;
+                document.getElementById('view-tanggal-pengiriman').textContent = data.tanggal_pengiriman ? formatDate(data.tanggal_pengiriman) : '-';
+                
+                // Status dengan badge yang sesuai
+                let statusClass = 'bg-secondary';
+                if (data.status === 'draft') statusClass = 'bg-warning text-dark';
+                else if (data.status === 'dikirim') statusClass = 'bg-info';
+                else if (data.status === 'diterima') statusClass = 'bg-success';
+                
+                document.getElementById('view-status').innerHTML = `<span class="badge ${statusClass}">${data.status}</span>`;
+                document.getElementById('view-isi-surat').textContent = data.isi_surat || '-';
+                
+                // Populate lampiran
+                const lampiranContainer = document.getElementById('view-lampiran');
+                lampiranContainer.innerHTML = '';
+                
+                if (data.lampiran && data.lampiran.length > 0) {
+                    data.lampiran.forEach((item, index) => {
+                        let icon = 'file-earmark';
+                        let bgColor = 'bg-secondary';
+                        
+                        if (item.tipe === 'pdf') {
+                            icon = 'file-earmark-pdf';
+                            bgColor = 'bg-danger';
+                        } else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) {
+                            icon = 'file-earmark-image';
+                            bgColor = 'bg-primary';
+                        } else if (['doc', 'docx'].includes(item.tipe)) {
+                            icon = 'file-earmark-word';
+                            bgColor = 'bg-info';
+                        } else if (['xls', 'xlsx'].includes(item.tipe)) {
+                            icon = 'file-earmark-excel';
+                            bgColor = 'bg-success';
+                        }
+                        
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'border rounded p-2 d-flex align-items-center';
+                        fileItem.innerHTML = `
+                            <div class="p-2 rounded ${bgColor} text-white me-2">
+                                <i class="bi bi-${icon}"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-bold">${item.nama}</p>
+                                <small class="text-muted">${item.ukuran}</small>
+                            </div>
+                            <a href="/surat_keluar/${data.id}/download/${index}" class="btn btn-sm btn-link ms-auto" title="Download">
+                                <i class="bi bi-download"></i>
+                            </a>
+                        `;
+                        lampiranContainer.appendChild(fileItem);
+                    });
+                } else {
+                    lampiranContainer.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran</p>';
+                }
+                
+                // Hide loading, show content
+                viewLoading.classList.add('d-none');
+                viewContent.classList.remove('d-none');
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                showToast('Error', 'Gagal memuat data surat', 'bg-danger text-white');
+                viewLoading.classList.add('d-none');
+            });
+    }
+    
+    // Handler untuk tombol edit
+    function editButtonHandler() {
         const id = this.getAttribute('data-id');
         const url = this.getAttribute('data-url');
         
@@ -649,7 +905,7 @@ document.querySelectorAll('.edit-btn').forEach(button => {
         editModal.show();
         
         // Fetch data untuk edit
-        fetch(`/surat_keluar/${id}/edit`)
+        fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -712,28 +968,63 @@ document.querySelectorAll('.edit-btn').forEach(button => {
                 console.error('Error fetching data:', error);
                 showToast('Error', 'Gagal memuat data untuk edit', 'bg-danger text-white');
             });
-    });
-});
+    }
     
-    // Delete button functionality
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const url = this.getAttribute('data-url');
-            const nomorSurat = this.getAttribute('data-nomor');
-            
-            // Set form action
-            const deleteForm = document.getElementById('deleteForm');
-            deleteForm.action = url;
-            
-            // Set surat number in confirmation text
-            document.getElementById('delete-nomor-surat').textContent = nomorSurat || '';
+    // Handler untuk tombol delete
+    function deleteButtonHandler() {
+        const id = this.getAttribute('data-id');
+        const url = this.getAttribute('data-url');
+        const nomorSurat = this.getAttribute('data-nomor');
+        
+        // Set form action
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = url;
+        
+        // Set surat number in confirmation text
+        document.getElementById('delete-nomor-surat').textContent = nomorSurat || '';
+    }
+    
+    // Handler untuk tombol filter
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        applyFilters();
+    });
+    
+    // Handler untuk input filter
+    ['date-filter', 'category-filter', 'status-filter'].forEach(id => {
+        document.getElementById(id).addEventListener('change', function() {
+            applyFilters();
         });
+    });
+    
+    // Handler untuk input pencarian dengan tombol Enter
+    document.getElementById('search').addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+            applyFilters();
+        }
     });
     
     // Export button functionality
     document.getElementById('exportBtn').addEventListener('click', function() {
-        window.location.href = '/surat_keluar/export';
+        // Dapatkan filter saat ini
+        const dateFilter = document.getElementById('date-filter').value;
+        const categoryFilter = document.getElementById('category-filter').value;
+        const statusFilter = document.getElementById('status-filter').value;
+        const searchQuery = document.getElementById('search').value;
+        
+        // Buat URL ekspor dengan parameter filter
+        let exportUrl = '/surat_keluar/export';
+        const params = [];
+        
+        if (dateFilter) params.push(`date=${encodeURIComponent(dateFilter)}`);
+        if (categoryFilter) params.push(`category=${encodeURIComponent(categoryFilter)}`);
+        if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
+        if (searchQuery) params.push(`search=${encodeURIComponent(searchQuery)}`);
+        
+        if (params.length > 0) {
+            exportUrl += '?' + params.join('&');
+        }
+        
+        window.location.href = exportUrl;
     });
     
     // Print button functionality
@@ -747,16 +1038,27 @@ document.querySelectorAll('.edit-btn').forEach(button => {
                 <head>
                     <title>Cetak Surat Keluar</title>
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
                     <style>
                         body { padding: 20px; }
                         @media print {
                             .no-print { display: none; }
+                            a[href]::after { content: none !important; }
+                        }
+                        .print-header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                            padding-bottom: 20px;
+                            border-bottom: 2px solid #dee2e6;
                         }
                     </style>
                 </head>
                 <body>
                     <div class="container">
-                        <h2 class="text-center mb-4">Detail Surat Keluar</h2>
+                        <div class="print-header">
+                            <h2 class="mb-1">Detail Surat Keluar</h2>
+                            <p class="text-muted">Dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
+                        </div>
                         ${contentToPrint.innerHTML}
                         <div class="text-center mt-4 no-print">
                             <button onclick="window.print()" class="btn btn-primary">Cetak</button>
@@ -792,6 +1094,9 @@ document.querySelectorAll('.edit-btn').forEach(button => {
             year: 'numeric' 
         });
     }
+    
+    // Initial setup - attach event listeners ke tombol-tombol tindakan
+    attachEventListeners();
 });
 </script>
 @endsection
