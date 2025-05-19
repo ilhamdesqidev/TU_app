@@ -592,7 +592,341 @@ document.addEventListener('DOMContentLoaded', function() {
         bsToast.show();
     }
 
-    // --- PERBAIKAN PAGINATION ---
+    // --- VIEW FUNCTIONALITY ---
+    function setupViewButtons() {
+        document.querySelectorAll('.view-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const url = this.getAttribute('data-url');
+                const viewLoading = document.getElementById('view-loading');
+                const viewContent = document.getElementById('view-content');
+                
+                // Show loading, hide content
+                viewLoading.classList.remove('d-none');
+                viewContent.classList.add('d-none');
+                
+                // Fetch data dari server
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Populate modal dengan data
+                        document.getElementById('view-nomor-surat').textContent = data.nomor_surat;
+                        document.getElementById('view-tanggal-surat').textContent = formatDate(data.tanggal_surat);
+                        document.getElementById('view-perihal').textContent = data.perihal;
+                        document.getElementById('view-penerima').textContent = data.penerima;
+                        document.getElementById('view-tanggal-pengiriman').textContent = data.tanggal_pengiriman ? formatDate(data.tanggal_pengiriman) : '-';
+                        
+                        // Status dengan badge yang sesuai
+                        let statusClass = 'bg-secondary';
+                        if (data.status === 'draft') statusClass = 'bg-warning text-dark';
+                        else if (data.status === 'dikirim') statusClass = 'bg-info';
+                        else if (data.status === 'diterima') statusClass = 'bg-success';
+                        
+                        document.getElementById('view-status').innerHTML = `<span class="badge ${statusClass}">${data.status}</span>`;
+                        document.getElementById('view-isi-surat').textContent = data.isi_surat || '-';
+                        
+                        // Populate lampiran
+                        const lampiranContainer = document.getElementById('view-lampiran');
+                        lampiranContainer.innerHTML = '';
+                        
+                        if (data.lampiran && data.lampiran.length > 0) {
+                            data.lampiran.forEach((item, index) => {
+                                let icon = 'file-earmark';
+                                let bgColor = 'bg-secondary';
+                                
+                                if (item.tipe === 'pdf') {
+                                    icon = 'file-earmark-pdf';
+                                    bgColor = 'bg-danger';
+                                } else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) {
+                                    icon = 'file-earmark-image';
+                                    bgColor = 'bg-primary';
+                                } else if (['doc', 'docx'].includes(item.tipe)) {
+                                    icon = 'file-earmark-word';
+                                    bgColor = 'bg-info';
+                                } else if (['xls', 'xlsx'].includes(item.tipe)) {
+                                    icon = 'file-earmark-excel';
+                                    bgColor = 'bg-success';
+                                }
+                                
+                                const fileItem = document.createElement('div');
+                                fileItem.className = 'border rounded p-2 d-flex align-items-center';
+                                fileItem.innerHTML = `
+                                    <div class="p-2 rounded ${bgColor} text-white me-2">
+                                        <i class="bi bi-${icon}"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-bold">${item.nama}</p>
+                                        <small class="text-muted">${item.ukuran}</small>
+                                    </div>
+                                    <a href="/surat_keluar/${data.id}/download/${index}" class="btn btn-sm btn-link ms-auto" title="Download">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                `;
+                                lampiranContainer.appendChild(fileItem);
+                            });
+                        } else {
+                            lampiranContainer.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran</p>';
+                        }
+                        
+                        // Hide loading, show content
+                        viewLoading.classList.add('d-none');
+                        viewContent.classList.remove('d-none');
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        showToast('Error', 'Gagal memuat data surat: ' + error.message, 'bg-danger text-white');
+                        viewLoading.classList.add('d-none');
+                    });
+            });
+        });
+    }
+
+    // --- EDIT FUNCTIONALITY ---
+    function setupEditButtons() {
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const url = this.getAttribute('data-url');
+                
+                // Tampilkan loading
+                showToast('Info', 'Memuat data surat...', 'bg-info text-white');
+                
+                // Fetch data untuk edit
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Set form action
+                        document.getElementById('editSuratForm').action = `/surat_keluar/${id}`;
+                        
+                        // Populate form fields
+                        document.getElementById('nomor_surat_edit').value = data.nomor_surat;
+                        document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
+                        document.getElementById('penerima_edit').value = data.penerima;
+                        document.getElementById('tanggal_pengiriman_edit').value = data.tanggal_pengiriman || '';
+                        document.getElementById('perihal_edit').value = data.perihal;
+                        document.getElementById('isi_surat_edit').value = data.isi_surat || '';
+                        
+                        // Populate kategori dan status dropdown
+                        if (data.kategori) {
+                            document.getElementById('kategori_edit').value = data.kategori;
+                        }
+                        if (data.status) {
+                            document.getElementById('status_edit').value = data.status;
+                        }
+                        
+                        // Menangani lampiran yang ada
+                        const lampiranList = document.getElementById('lampiran-list');
+                        const lampiranContainer = lampiranList.querySelector('.border');
+                        lampiranContainer.innerHTML = '';
+                        
+                        if (data.lampiran && data.lampiran.length > 0) {
+                            lampiranList.classList.remove('d-none');
+                            
+                            data.lampiran.forEach((item, index) => {
+                                let icon = 'file-earmark';
+                                if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
+                                else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) icon = 'file-earmark-image';
+                                else if (['doc', 'docx'].includes(item.tipe)) icon = 'file-earmark-word';
+                                else if (['xls', 'xlsx'].includes(item.tipe)) icon = 'file-earmark-excel';
+                                
+                                const fileItem = document.createElement('div');
+                                fileItem.className = 'd-flex align-items-center mb-2';
+                                fileItem.innerHTML = `
+                                    <i class="bi bi-${icon} me-2 text-warning"></i>
+                                    <span>${item.nama}</span>
+                                    <small class="text-muted ms-2">(${item.ukuran})</small>
+                                    <div class="form-check ms-auto">
+                                        <input class="form-check-input" type="checkbox" id="keep-file-${index}" name="keep_file[]" value="${index}" checked>
+                                        <label class="form-check-label" for="keep-file-${index}">Pertahankan</label>
+                                    </div>
+                                `;
+                                lampiranContainer.appendChild(fileItem);
+                            });
+                        } else {
+                            lampiranList.classList.add('d-none');
+                        }
+                        
+                        // Tampilkan modal edit
+                        const editModal = new bootstrap.Modal(document.getElementById('editSuratModal'));
+                        editModal.show();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        showToast('Error', 'Gagal memuat data untuk edit: ' + error.message, 'bg-danger text-white');
+                    });
+            });
+        });
+    }
+
+    // --- DELETE FUNCTIONALITY ---
+    function setupDeleteButtons() {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const nomorSurat = this.getAttribute('data-nomor');
+                
+                // Set form action
+                const deleteForm = document.getElementById('deleteForm');
+                deleteForm.action = `/surat_keluar/${id}`; 
+                
+                // Set nomor surat in confirmation text
+                document.getElementById('delete-nomor-surat').textContent = nomorSurat || '';
+                
+                // Show delete modal
+                const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+                deleteModal.show();
+            });
+        });
+    }
+
+    // Function for formatting dates
+    function formatDate(dateString) {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('id-ID', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+        });
+    }
+
+    // Function untuk apply filter
+    function applyFilters() {
+        // Buat URL dasar dengan pathname saat ini
+        const baseUrl = window.location.pathname;
+        loadPageWithFilters(baseUrl);
+    }
+
+    // Function untuk load halaman dengan filter
+    function loadPageWithFilters(baseUrl) {
+        // Pastikan baseUrl adalah URL yang valid
+        const url = new URL(baseUrl, window.location.origin);
+        
+        // Tambahkan parameter filter yang aktif ke URL
+        const startDate = document.getElementById('start-date-filter').value;
+        const endDate = document.getElementById('end-date-filter').value;
+        const categoryFilter = document.getElementById('category-filter').value;
+        const statusFilter = document.getElementById('status-filter').value;
+        const searchQuery = document.getElementById('search').value;
+        
+        if (startDate) url.searchParams.set('start_date', startDate);
+        if (endDate) url.searchParams.set('end_date', endDate);
+        if (categoryFilter) url.searchParams.set('kategori', categoryFilter);
+        if (statusFilter) url.searchParams.set('status', statusFilter);
+        if (searchQuery) url.searchParams.set('search', searchQuery);
+        
+        // Tampilkan indikator loading
+        const tableBody = document.querySelector('tbody');
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Sedang memuat data...</p>
+                </td>
+            </tr>
+        `;
+        
+        // Load data dengan AJAX
+        fetch(url.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html, application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            try {
+                return response.json();
+            } catch (e) {
+                // If not JSON, just return the response to handle as HTML
+                return response.text().then(text => ({ html: text }));
+            }
+        })
+        .then(data => {
+            if (typeof data === 'string') {
+                // If data is a string, it's HTML
+                window.location.href = url.toString();
+                return;
+            }
+            
+            // Handle JSON response
+            if (!data.html && typeof data !== 'string') {
+                throw new Error('Invalid response format');
+            }
+            
+            // Update tabel dengan data baru
+            if (data.html) {
+                tableBody.innerHTML = data.html;
+            } else {
+                window.location.href = url.toString();
+                return;
+            }
+            
+            // Update pagination jika ada
+            const paginationContainer = document.querySelector('.pagination');
+            if (paginationContainer && data.pagination) {
+                paginationContainer.innerHTML = data.pagination;
+            }
+            
+            // Update jumlah total records
+            const totalRecordsElement = document.getElementById('totalRecords');
+            if (totalRecordsElement && data.total !== undefined) {
+                totalRecordsElement.textContent = data.total + ' Surat';
+            }
+            
+            // Update URL browser tanpa reload halaman
+            window.history.pushState({}, '', url.toString());
+            
+            // Re-attach event listeners untuk tombol-tombol aksi
+            setupViewButtons();
+            setupEditButtons();
+            setupDeleteButtons();
+            
+            // Scroll ke atas tabel
+            const tableElement = document.querySelector('.table-responsive');
+            if (tableElement) {
+                window.scrollTo({
+                    top: tableElement.offsetTop - 50,
+                    behavior: 'smooth'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Error', 'Gagal memuat data surat: ' + error.message, 'bg-danger text-white');
+            
+            // Menampilkan pesan error pada tabel
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center py-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                            <p class="mt-2">Gagal memuat data. Silakan coba lagi.</p>
+                            <button class="btn btn-sm btn-primary mt-2" onclick="window.location.reload()">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Muat Ulang
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // --- PAGINATION HANDLING ---
     // Tangkap semua klik pagination dengan event delegation
     document.addEventListener('click', function(e) {
         const paginationLink = e.target.closest('.page-link');
@@ -613,400 +947,38 @@ document.addEventListener('DOMContentLoaded', function() {
             loadPageWithFilters(pageUrl);
         }
     });
-    
-    // Function untuk load halaman dengan filter
-function loadPageWithFilters(baseUrl) {
-    // Pastikan baseUrl adalah URL yang valid
-    const url = new URL(baseUrl, window.location.origin);
-    
-    // Tambahkan parameter filter yang aktif ke URL
-    const startDate = document.getElementById('start-date-filter').value;
-    const endDate = document.getElementById('end-date-filter').value;
-    const categoryFilter = document.getElementById('category-filter').value;
-    const statusFilter = document.getElementById('status-filter').value;
-    const searchQuery = document.getElementById('search').value;
-    
-    if (startDate) url.searchParams.set('start_date', startDate);
-    if (endDate) url.searchParams.set('end_date', endDate);
-    if (categoryFilter) url.searchParams.set('kategori', categoryFilter);
-    if (statusFilter) url.searchParams.set('status', statusFilter);
-    if (searchQuery) url.searchParams.set('search', searchQuery);
-    
-    // Tampilkan indikator loading
-    const tableBody = document.querySelector('tbody');
-    tableBody.innerHTML = `
-        <tr>
-            <td colspan="8" class="text-center py-4">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p class="mt-2">Sedang memuat data...</p>
-            </td>
-        </tr>
-    `;
-    
-    // Load data dengan AJAX
-    fetch(url.toString(), {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Periksa apakah data.html ada
-        if (!data.html) {
-            throw new Error('Invalid response format: missing html');
-        }
-        
-        // Update tabel dengan data baru
-        tableBody.innerHTML = data.html;
-        
-        // Update pagination jika ada
-        const paginationContainer = document.querySelector('.pagination');
-        if (paginationContainer && data.pagination) {
-            paginationContainer.innerHTML = data.pagination;
-        }
-        
-        // Update jumlah total records
-        const totalRecordsElement = document.getElementById('totalRecords');
-        if (totalRecordsElement && data.total !== undefined) {
-            totalRecordsElement.textContent = data.total + ' Surat';
-        }
-        
-        // Update URL browser tanpa reload halaman
-        window.history.pushState({}, '', url.toString());
-        
-        // Reattach event listeners untuk tombol-tombol aksi
-        attachEventListeners();
-        
-        // Scroll ke atas tabel
-        const tableElement = document.querySelector('.table-responsive');
-        if (tableElement) {
-            window.scrollTo({
-                top: tableElement.offsetTop - 50,
-                behavior: 'smooth'
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showToast('Error', 'Gagal memuat data surat: ' + error.message, 'bg-danger text-white');
-        
-        // Menampilkan pesan error pada tabel
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="8" class="text-center py-4">
-                    <div class="d-flex flex-column align-items-center">
-                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
-                        <p class="mt-2">Gagal memuat data. Silakan coba lagi.</p>
-                        <button class="btn btn-sm btn-primary mt-2" onclick="window.location.reload()">
-                            <i class="bi bi-arrow-clockwise me-1"></i> Muat Ulang
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
-}
 
-// Function untuk apply filter
-function applyFilters() {
-    // Buat URL dasar dengan pathname saat ini
-    const baseUrl = window.location.pathname;
-    loadPageWithFilters(baseUrl);
-}
-
-// Handler untuk tombol filter
-document.getElementById('searchBtn').addEventListener('click', function() {
-    applyFilters();
-});
-
-// Handler untuk input filter
-['start-date-filter', 'end-date-filter', 'category-filter', 'status-filter'].forEach(id => {
-    document.getElementById(id).addEventListener('change', function() {
-        applyFilters();
-    });
-});
-
-// Handler untuk input pencarian dengan tombol Enter
-document.getElementById('search').addEventListener('keyup', function(e) {
-    if (e.key === 'Enter') {
-        applyFilters();
-    }
-});
-
-// Export button functionality
-document.getElementById('exportBtn').addEventListener('click', function() {
-    // Dapatkan filter saat ini
-    const startDate = document.getElementById('start-date-filter').value;
-    const endDate = document.getElementById('end-date-filter').value;
-    const categoryFilter = document.getElementById('category-filter').value;
-    const statusFilter = document.getElementById('status-filter').value;
-    const searchQuery = document.getElementById('search').value;
-    
-    // Buat URL ekspor dengan parameter filter
-    let exportUrl = '/surat_keluar/export';
-    const params = [];
-    
-    if (startDate) params.push(`start_date=${encodeURIComponent(startDate)}`);
-    if (endDate) params.push(`end_date=${encodeURIComponent(endDate)}`);
-    if (categoryFilter) params.push(`kategori=${encodeURIComponent(categoryFilter)}`);
-    if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
-    if (searchQuery) params.push(`search=${encodeURIComponent(searchQuery)}`);
-    
-    if (params.length > 0) {
-        exportUrl += '?' + params.join('&');
-    }
-    
-    window.location.href = exportUrl;
-});
-
-// Validasi range tanggal secara real-time
-const startDateInput = document.getElementById('start-date-filter');
-const endDateInput = document.getElementById('end-date-filter');
-
-if (startDateInput && endDateInput) {
-    startDateInput.addEventListener('change', function() {
-        if (endDateInput.value && new Date(this.value) > new Date(endDateInput.value)) {
-            showToast('Peringatan', 'Tanggal mulai diset setelah tanggal akhir', 'bg-warning text-dark');
-            endDateInput.value = '';
-        }
-    });
-    
-    endDateInput.addEventListener('change', function() {
-        if (startDateInput.value && new Date(this.value) < new Date(startDateInput.value)) {
-            showToast('Peringatan', 'Tanggal akhir diset sebelum tanggal mulai', 'bg-warning text-dark');
-            this.value = '';
-        }
-    });
-}
-    
-    // Function untuk re-attach event listeners setelah load data baru
-    function attachEventListeners() {
-        // View button
-        document.querySelectorAll('.view-btn').forEach(button => {
-            button.addEventListener('click', viewButtonHandler);
-        });
-        
-        // Edit button
-        document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', editButtonHandler);
-        });
-        
-        // Delete button
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', deleteButtonHandler);
-        });
-    }
-    
-    // Handler untuk tombol view
-    function viewButtonHandler() {
-        const id = this.getAttribute('data-id');
-        const url = this.getAttribute('data-url');
-        const viewLoading = document.getElementById('view-loading');
-        const viewContent = document.getElementById('view-content');
-        
-        // Show loading, hide content
-        viewLoading.classList.remove('d-none');
-        viewContent.classList.add('d-none');
-        
-        // Fetch data dari server
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Populate modal dengan data
-                document.getElementById('view-nomor-surat').textContent = data.nomor_surat;
-                document.getElementById('view-tanggal-surat').textContent = formatDate(data.tanggal_surat);
-                document.getElementById('view-perihal').textContent = data.perihal;
-                document.getElementById('view-penerima').textContent = data.penerima;
-                document.getElementById('view-tanggal-pengiriman').textContent = data.tanggal_pengiriman ? formatDate(data.tanggal_pengiriman) : '-';
-                
-                // Status dengan badge yang sesuai
-                let statusClass = 'bg-secondary';
-                if (data.status === 'draft') statusClass = 'bg-warning text-dark';
-                else if (data.status === 'dikirim') statusClass = 'bg-info';
-                else if (data.status === 'diterima') statusClass = 'bg-success';
-                
-                document.getElementById('view-status').innerHTML = `<span class="badge ${statusClass}">${data.status}</span>`;
-                document.getElementById('view-isi-surat').textContent = data.isi_surat || '-';
-                
-                // Populate lampiran
-                const lampiranContainer = document.getElementById('view-lampiran');
-                lampiranContainer.innerHTML = '';
-                
-                if (data.lampiran && data.lampiran.length > 0) {
-                    data.lampiran.forEach((item, index) => {
-                        let icon = 'file-earmark';
-                        let bgColor = 'bg-secondary';
-                        
-                        if (item.tipe === 'pdf') {
-                            icon = 'file-earmark-pdf';
-                            bgColor = 'bg-danger';
-                        } else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) {
-                            icon = 'file-earmark-image';
-                            bgColor = 'bg-primary';
-                        } else if (['doc', 'docx'].includes(item.tipe)) {
-                            icon = 'file-earmark-word';
-                            bgColor = 'bg-info';
-                        } else if (['xls', 'xlsx'].includes(item.tipe)) {
-                            icon = 'file-earmark-excel';
-                            bgColor = 'bg-success';
-                        }
-                        
-                        const fileItem = document.createElement('div');
-                        fileItem.className = 'border rounded p-2 d-flex align-items-center';
-                        fileItem.innerHTML = `
-                            <div class="p-2 rounded ${bgColor} text-white me-2">
-                                <i class="bi bi-${icon}"></i>
-                            </div>
-                            <div>
-                                <p class="mb-0 fw-bold">${item.nama}</p>
-                                <small class="text-muted">${item.ukuran}</small>
-                            </div>
-                            <a href="/surat_keluar/${data.id}/download/${index}" class="btn btn-sm btn-link ms-auto" title="Download">
-                                <i class="bi bi-download"></i>
-                            </a>
-                        `;
-                        lampiranContainer.appendChild(fileItem);
-                    });
-                } else {
-                    lampiranContainer.innerHTML = '<p class="text-muted mb-0">Tidak ada lampiran</p>';
-                }
-                
-                // Hide loading, show content
-                viewLoading.classList.add('d-none');
-                viewContent.classList.remove('d-none');
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                showToast('Error', 'Gagal memuat data surat', 'bg-danger text-white');
-                viewLoading.classList.add('d-none');
-            });
-    }
-    
-    // Handler untuk tombol edit
-    function editButtonHandler() {
-        const id = this.getAttribute('data-id');
-        const url = this.getAttribute('data-url');
-        
-        // Tampilkan modal edit
-        const editModal = new bootstrap.Modal(document.getElementById('editSuratModal'));
-        editModal.show();
-        
-        // Fetch data untuk edit
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Set form action
-                document.getElementById('editSuratForm').action = `/surat_keluar/${id}`;
-                
-                // Populate form fields
-                document.getElementById('nomor_surat_edit').value = data.nomor_surat;
-                document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
-                document.getElementById('penerima_edit').value = data.penerima;
-                document.getElementById('tanggal_pengiriman_edit').value = data.tanggal_pengiriman || '';
-                document.getElementById('perihal_edit').value = data.perihal;
-                document.getElementById('isi_surat_edit').value = data.isi_surat || '';
-                
-                // Populate kategori dan status dropdown
-                if (data.kategori) {
-                    document.getElementById('kategori_edit').value = data.kategori;
-                }
-                if (data.status) {
-                    document.getElementById('status_edit').value = data.status;
-                }
-                
-                // Menangani lampiran yang ada
-                const lampiranList = document.getElementById('lampiran-list');
-                const lampiranContainer = lampiranList.querySelector('.border');
-                lampiranContainer.innerHTML = '';
-                
-                if (data.lampiran && data.lampiran.length > 0) {
-                    lampiranList.classList.remove('d-none');
-                    
-                    data.lampiran.forEach((item, index) => {
-                        let icon = 'file-earmark';
-                        if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
-                        else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) icon = 'file-earmark-image';
-                        else if (['doc', 'docx'].includes(item.tipe)) icon = 'file-earmark-word';
-                        else if (['xls', 'xlsx'].includes(item.tipe)) icon = 'file-earmark-excel';
-                        
-                        const fileItem = document.createElement('div');
-                        fileItem.className = 'd-flex align-items-center mb-2';
-                        fileItem.innerHTML = `
-                            <i class="bi bi-${icon} me-2 text-warning"></i>
-                            <span>${item.nama}</span>
-                            <small class="text-muted ms-2">(${item.ukuran})</small>
-                            <div class="form-check ms-auto">
-                                <input class="form-check-input" type="checkbox" id="keep-file-${index}" name="keep_file[]" value="${index}" checked>
-                                <label class="form-check-label" for="keep-file-${index}">Pertahankan</label>
-                            </div>
-                        `;
-                        lampiranContainer.appendChild(fileItem);
-                    });
-                } else {
-                    lampiranList.classList.add('d-none');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                showToast('Error', 'Gagal memuat data untuk edit', 'bg-danger text-white');
-            });
-    }
-    
-    // Handler untuk tombol delete
-    function deleteButtonHandler() {
-        const id = this.getAttribute('data-id');
-        const url = this.getAttribute('data-url');
-        const nomorSurat = this.getAttribute('data-nomor');
-        
-        // Set form action
-        const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = url;
-        
-        // Set surat number in confirmation text
-        document.getElementById('delete-nomor-surat').textContent = nomorSurat || '';
-    }
-    
+    // --- FILTER HANDLING ---
     // Handler untuk tombol filter
-    document.getElementById('searchBtn').addEventListener('click', function() {
+    document.getElementById('searchBtn').addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent form submission
         applyFilters();
     });
     
     // Handler untuk input filter
-    ['date-filter', 'category-filter', 'status-filter'].forEach(id => {
-        document.getElementById(id).addEventListener('change', function() {
-            applyFilters();
-        });
+    ['start-date-filter', 'end-date-filter', 'category-filter', 'status-filter'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('change', function() {
+                // No automatic filtering on change to prevent too many requests
+            });
+        }
     });
     
     // Handler untuk input pencarian dengan tombol Enter
     document.getElementById('search').addEventListener('keyup', function(e) {
         if (e.key === 'Enter') {
+            e.preventDefault(); // Prevent form submission
             applyFilters();
         }
     });
-    
+
+    // --- OTHER FUNCTIONALITY ---
     // Export button functionality
     document.getElementById('exportBtn').addEventListener('click', function() {
         // Dapatkan filter saat ini
-        const dateFilter = document.getElementById('date-filter').value;
+        const startDate = document.getElementById('start-date-filter').value;
+        const endDate = document.getElementById('end-date-filter').value;
         const categoryFilter = document.getElementById('category-filter').value;
         const statusFilter = document.getElementById('status-filter').value;
         const searchQuery = document.getElementById('search').value;
@@ -1015,8 +987,9 @@ if (startDateInput && endDateInput) {
         let exportUrl = '/surat_keluar/export';
         const params = [];
         
-        if (dateFilter) params.push(`date=${encodeURIComponent(dateFilter)}`);
-        if (categoryFilter) params.push(`category=${encodeURIComponent(categoryFilter)}`);
+        if (startDate) params.push(`start_date=${encodeURIComponent(startDate)}`);
+        if (endDate) params.push(`end_date=${encodeURIComponent(endDate)}`);
+        if (categoryFilter) params.push(`kategori=${encodeURIComponent(categoryFilter)}`);
         if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
         if (searchQuery) params.push(`search=${encodeURIComponent(searchQuery)}`);
         
@@ -1070,33 +1043,31 @@ if (startDateInput && endDateInput) {
         `);
         printWin.document.close();
     });
-    
-    // Form submission handlers
-    document.getElementById('tambahSuratForm').addEventListener('submit', function(event) {
-        // Form validation can be added here if needed
-    });
-    
-    document.getElementById('editSuratForm').addEventListener('submit', function(event) {
-        // Form validation can be added here if needed
-    });
-    
-    document.getElementById('deleteForm').addEventListener('submit', function(event) {
-        // Form validation can be added here if needed
-    });
-    
-    // Helper function to format dates
-    function formatDate(dateString) {
-        if (!dateString) return '-';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('id-ID', { 
-            day: 'numeric', 
-            month: 'long', 
-            year: 'numeric' 
+
+    // Validasi range tanggal secara real-time
+    const startDateInput = document.getElementById('start-date-filter');
+    const endDateInput = document.getElementById('end-date-filter');
+
+    if (startDateInput && endDateInput) {
+        startDateInput.addEventListener('change', function() {
+            if (endDateInput.value && new Date(this.value) > new Date(endDateInput.value)) {
+                showToast('Peringatan', 'Tanggal mulai diset setelah tanggal akhir', 'bg-warning text-dark');
+                endDateInput.value = '';
+            }
+        });
+        
+        endDateInput.addEventListener('change', function() {
+            if (startDateInput.value && new Date(this.value) < new Date(startDateInput.value)) {
+                showToast('Peringatan', 'Tanggal akhir diset sebelum tanggal mulai', 'bg-warning text-dark');
+                this.value = '';
+            }
         });
     }
-    
-    // Initial setup - attach event listeners ke tombol-tombol tindakan
-    attachEventListeners();
+
+    // Initialize all functionality
+    setupViewButtons();
+    setupEditButtons();
+    setupDeleteButtons();
 });
 </script>
 @endsection
