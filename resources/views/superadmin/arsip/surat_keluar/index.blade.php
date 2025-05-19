@@ -686,87 +686,141 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- EDIT FUNCTIONALITY ---
-    function setupEditButtons() {
-        document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const url = this.getAttribute('data-url');
-                
-                // Tampilkan loading
-                showToast('Info', 'Memuat data surat...', 'bg-info text-white');
-                
-                // Fetch data untuk edit
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Set form action
-                        document.getElementById('editSuratForm').action = `/surat_keluar/${id}`;
+    // --- PERBAIKAN EDIT FUNCTIONALITY ---
+document.addEventListener('DOMContentLoaded', function() {
+    setupEditButtons();
+});
+
+function setupEditButtons() {
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            // Mencegah perilaku default tombol
+            event.preventDefault();
+            
+            const id = this.getAttribute('data-id');
+            const url = this.getAttribute('data-url');
+            
+            // Tampilkan loading
+            showToast('Info', 'Memuat data surat...', 'bg-info text-white');
+            
+            // Fetch data untuk edit
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Set form action
+                    document.getElementById('editSuratForm').action = `/surat_keluar/${id}`;
+                    
+                    // Populate form fields
+                    document.getElementById('nomor_surat_edit').value = data.nomor_surat;
+                    document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
+                    document.getElementById('penerima_edit').value = data.penerima;
+                    document.getElementById('tanggal_pengiriman_edit').value = data.tanggal_pengiriman || '';
+                    document.getElementById('perihal_edit').value = data.perihal;
+                    document.getElementById('isi_surat_edit').value = data.isi_surat || '';
+                    
+                    // Populate kategori dan status dropdown
+                    if (data.kategori) {
+                        document.getElementById('kategori_edit').value = data.kategori;
+                    }
+                    if (data.status) {
+                        document.getElementById('status_edit').value = data.status;
+                    }
+                    
+                    // Menangani lampiran yang ada
+                    const lampiranList = document.getElementById('lampiran-list');
+                    const lampiranContainer = lampiranList.querySelector('.border');
+                    lampiranContainer.innerHTML = '';
+                    
+                    if (data.lampiran && data.lampiran.length > 0) {
+                        lampiranList.classList.remove('d-none');
                         
-                        // Populate form fields
-                        document.getElementById('nomor_surat_edit').value = data.nomor_surat;
-                        document.getElementById('tanggal_surat_edit').value = data.tanggal_surat;
-                        document.getElementById('penerima_edit').value = data.penerima;
-                        document.getElementById('tanggal_pengiriman_edit').value = data.tanggal_pengiriman || '';
-                        document.getElementById('perihal_edit').value = data.perihal;
-                        document.getElementById('isi_surat_edit').value = data.isi_surat || '';
-                        
-                        // Populate kategori dan status dropdown
-                        if (data.kategori) {
-                            document.getElementById('kategori_edit').value = data.kategori;
-                        }
-                        if (data.status) {
-                            document.getElementById('status_edit').value = data.status;
-                        }
-                        
-                        // Menangani lampiran yang ada
-                        const lampiranList = document.getElementById('lampiran-list');
-                        const lampiranContainer = lampiranList.querySelector('.border');
-                        lampiranContainer.innerHTML = '';
-                        
-                        if (data.lampiran && data.lampiran.length > 0) {
-                            lampiranList.classList.remove('d-none');
+                        data.lampiran.forEach((item, index) => {
+                            let icon = 'file-earmark';
+                            if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
+                            else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) icon = 'file-earmark-image';
+                            else if (['doc', 'docx'].includes(item.tipe)) icon = 'file-earmark-word';
+                            else if (['xls', 'xlsx'].includes(item.tipe)) icon = 'file-earmark-excel';
                             
-                            data.lampiran.forEach((item, index) => {
-                                let icon = 'file-earmark';
-                                if (item.tipe === 'pdf') icon = 'file-earmark-pdf';
-                                else if (['jpg', 'jpeg', 'png'].includes(item.tipe)) icon = 'file-earmark-image';
-                                else if (['doc', 'docx'].includes(item.tipe)) icon = 'file-earmark-word';
-                                else if (['xls', 'xlsx'].includes(item.tipe)) icon = 'file-earmark-excel';
-                                
-                                const fileItem = document.createElement('div');
-                                fileItem.className = 'd-flex align-items-center mb-2';
-                                fileItem.innerHTML = `
-                                    <i class="bi bi-${icon} me-2 text-warning"></i>
-                                    <span>${item.nama}</span>
-                                    <small class="text-muted ms-2">(${item.ukuran})</small>
-                                    <div class="form-check ms-auto">
-                                        <input class="form-check-input" type="checkbox" id="keep-file-${index}" name="keep_file[]" value="${index}" checked>
-                                        <label class="form-check-label" for="keep-file-${index}">Pertahankan</label>
-                                    </div>
-                                `;
-                                lampiranContainer.appendChild(fileItem);
-                            });
-                        } else {
-                            lampiranList.classList.add('d-none');
-                        }
-                        
-                        // Tampilkan modal edit
-                        const editModal = new bootstrap.Modal(document.getElementById('editSuratModal'));
-                        editModal.show();
-                    })
-                    .catch(error => {
-                        console.error('Error fetching data:', error);
-                        showToast('Error', 'Gagal memuat data untuk edit: ' + error.message, 'bg-danger text-white');
-                    });
-            });
+                            const fileItem = document.createElement('div');
+                            fileItem.className = 'd-flex align-items-center mb-2';
+                            fileItem.innerHTML = `
+                                <i class="bi bi-${icon} me-2 text-warning"></i>
+                                <span>${item.nama}</span>
+                                <small class="text-muted ms-2">(${item.ukuran})</small>
+                                <div class="form-check ms-auto">
+                                    <input class="form-check-input" type="checkbox" id="keep-file-${index}" name="keep_file[]" value="${index}" checked>
+                                    <label class="form-check-label" for="keep-file-${index}">Pertahankan</label>
+                                </div>
+                            `;
+                            lampiranContainer.appendChild(fileItem);
+                        });
+                    } else {
+                        lampiranList.classList.add('d-none');
+                    }
+                    
+                    // Tampilkan modal edit
+                    const editModal = new bootstrap.Modal(document.getElementById('editSuratModal'));
+                    editModal.show();
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    showToast('Error', 'Gagal memuat data untuk edit: ' + error.message, 'bg-danger text-white');
+                });
         });
+    });
+}
+
+// Fungsi untuk menampilkan toast notification
+function showToast(title, message, bgClass) {
+    // Periksa apakah elemen toast container sudah ada
+    let toastContainer = document.getElementById('toast-container');
+    
+    if (!toastContainer) {
+        // Buat container jika belum ada
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+        document.body.appendChild(toastContainer);
     }
+    
+    // Buat toast element
+    const toastId = 'toast-' + Date.now();
+    const toastElement = document.createElement('div');
+    toastElement.id = toastId;
+    toastElement.className = `toast ${bgClass}`;
+    toastElement.setAttribute('role', 'alert');
+    toastElement.setAttribute('aria-live', 'assertive');
+    toastElement.setAttribute('aria-atomic', 'true');
+    
+    toastElement.innerHTML = `
+        <div class="toast-header">
+            <strong class="me-auto">${title}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+    `;
+    
+    toastContainer.appendChild(toastElement);
+    
+    // Tampilkan toast
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+    
+    // Hapus toast setelah 5 detik
+    setTimeout(() => {
+        toast.hide();
+        setTimeout(() => {
+            toastElement.remove();
+        }, 500);
+    }, 5000);
+}
 
     // --- DELETE FUNCTIONALITY ---
     function setupDeleteButtons() {
