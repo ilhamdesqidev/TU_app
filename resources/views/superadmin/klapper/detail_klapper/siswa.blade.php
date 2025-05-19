@@ -160,7 +160,7 @@
 <div class="modal fade" id="tanggalLulusModal" tabindex="-1" aria-labelledby="tanggalLulusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{ route('klapper.lulusSemua', $klapper->id) }}" method="POST">
+            <form action="{{ route('siswa.lulusSemua', $klapper->id) }}" method="POST">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="tanggalLulusModalLabel">Masukkan Tanggal Lulus</h5>
@@ -186,7 +186,7 @@
 <div class="modal fade" id="naikKelasXIModal" tabindex="-1" aria-labelledby="naikKelasXIModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{ route('klapper.naikKelasXI', $klapper->id) }}" method="POST">
+            <form action="{{ route('siswa.naikKelasXI', $klapper->id) }}" method="POST">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="naikKelasXIModalLabel">Masukkan Tanggal Naik Kelas XI</h5>
@@ -212,7 +212,7 @@
 <div class="modal fade" id="naikKelasXIIModal" tabindex="-1" aria-labelledby="naikKelasXIIModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{ route('klapper.naikKelasXII', $klapper->id) }}" method="POST">
+            <form action="{{ route('siswa.naikKelasXII', $klapper->id) }}" method="POST">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="naikKelasXIIModalLabel">Masukkan Tanggal Naik Kelas XII</h5>
@@ -313,7 +313,7 @@
                                                 </a>
                                                 
                                                 @if($siswa->status == 0)
-                                                <a href="{{ route('klapper.keluar', $siswa->id) }}" class="btn btn-sm btn-outline-danger">
+                                                <a href="{{ route('siswa.keluar', $siswa->id) }}" class="btn btn-sm btn-outline-danger">
                                                     <i class="fas fa-arrow-right-from-bracket"></i>
                                                 </a>
                                                 @endif

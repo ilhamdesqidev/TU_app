@@ -45,7 +45,7 @@
                             </h4>
                             <p class="text-muted mb-0">Menampilkan seluruh data klapper siswa</p>
                         </div>
-                        <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary rounded-pill">
+                        <a href="{{ route('klapper.create') }}" class="btn btn-primary rounded-pill">
                             <i class="fas fa-plus me-2"></i> Tambah Klapper
                         </a>
                     </div>

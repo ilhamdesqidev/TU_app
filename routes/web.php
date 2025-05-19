@@ -8,33 +8,37 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SuratmasukController;
 use App\Http\Controllers\SuratkeluarController;
 use App\Http\Controllers\IjazahController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('superadmin/welcome', function () {
-    return view('welcome');
-});
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::get('main', function () {
     return view('main');
 });
 
-
+// Routes untuk Klapper
 Route::get('/klapper', [KlapperController::class, 'indexKlapper'])->name('klapper.index');
-Route::get('/klapper/tambahdataklapper', [KlapperController::class, 'createKlapper'])->name('klapper.create');
+Route::get('/klapper/create', [KlapperController::class, 'createKlapper'])->name('klapper.create');
 Route::post('/klapper', [KlapperController::class, 'storeKlapper'])->name('klapper.store');
 Route::get('/klapper/{id}', [KlapperController::class, 'showKlapper'])->name('klapper.show');
 Route::delete('/klapper/{id}', [KlapperController::class, 'deleteKlapper'])->name('klapper.delete');
 
-Route::get('/klapper/{klapperId}', [KlapperController::class, 'indexSiswa'])->name('klapper.siswa');
-Route::get('klapper/{id}/siswa/create', [KlapperController::class, 'createSiswa'])->name('siswa.create');
-Route::post('klapper/{id}/siswa', [KlapperController::class, 'storeSiswa'])->name('siswa.store');
-Route::get('/siswa/{id}', [KlapperController::class, 'showSiswa'])->name('siswa.show');
-Route::get('siswa/{id}/edit', [KlapperController::class, 'editSiswa'])->name('siswa.edit');
-Route::put('siswa/{id}', [KlapperController::class, 'updateSiswa'])->name('siswa.update');
+// Routes untuk Siswa
+Route::get('/siswa', [SiswaController::class, 'indexSiswa'])->name('siswa.index');
+Route::get('/siswa/create/{klappersId}', [SiswaController::class, 'createSiswa'])->name('siswa.create');
+Route::post('/siswa/store/{klappersId}', [SiswaController::class, 'storeSiswa'])->name('siswa.store');
+Route::get('/siswa/{id}', [SiswaController::class, 'showSiswa'])->name('siswa.show');
+Route::get('/siswa/edit/{id}', [SiswaController::class, 'editSiswa'])->name('siswa.edit');
+Route::put('/siswa/update/{id}', [SiswaController::class, 'updateSiswa'])->name('siswa.update');
 
-Route::get('/', [KlapperController::class, 'index'])->name('welcome');
-Route::get('/siswa/{id}/keluar', [KlapperController::class, 'keluar'])->name('klapper.keluar');
-Route::post('/klapper/{id}/luluskan', [KlapperController::class, 'lulusSemua'])->name('klapper.lulusSemua');
-Route::post('/klapper/{id}/naik-kelas-xi', [KlapperController::class, 'naikKelasXI'])->name('klapper.naikKelasXI');
-Route::post('/klapper/{id}/naik-kelas-xii', [KlapperController::class, 'naikKelasXII'])->name('klapper.naikKelasXII');
+Route::post('/siswa/lulus/{id}', [SiswaController::class, 'lulusSemua'])->name('siswa.lulusSemua');
+Route::post('/siswa/keluar/{id}', [SiswaController::class, 'keluar'])->name('siswa.keluar');
+Route::post('/siswa/naik-kelas-xi/{id}', [SiswaController::class, 'naikKelasXI'])->name('siswa.naikKelasXI');
+Route::post('/siswa/naik-kelas-xii/{id}', [SiswaController::class, 'naikKelasXII'])->name('siswa.naikKelasXII');
+
+Route::get('/siswa/get-siswa/{nama_siswa}', [SiswaController::class, 'getSiswa'])->name('siswa.get');
+
 
 //Resource route untuk operasi lainnya
 Route::get('/tu', [TuController::class, 'index'])->name('tu.index');
@@ -80,13 +84,13 @@ Route::get('surat_keluar/export', [SuratKeluarController::class, 'export'])->nam
 Route::get('surat_keluar/{id}/download/{index}', [SuratKeluarController::class, 'downloadAttachment'])->name('surat_keluar.download_attachment');
 
 
-Route::get('/ijazah', [IjazahController::class, 'index']);
-Route::get('/ijazah/create/{angkatan}', [IjazahController::class, 'create'])->name('ijazah.create');
-// index global dengan search
-Route::get('ijazah', [IjazahController::class,'index'])->name('ijazah.index');
-// lihat per angkatan (klapper)
-Route::get('ijazah/angkatan/{klapper}', [IjazahController::class,'perAngkatan'])->name('ijazah.perAngkatan');
-// CRUD
-Route::resource('ijazah', IjazahController::class)->except(['index','show']);
-Route::get('/ijazah/{ijazah}', [IjazahController::class, 'show'])->name('ijazah.show');
+// Route::get('/ijazah', [IjazahController::class, 'index']);
+// Route::get('/ijazah/create/{angkatan}', [IjazahController::class, 'create'])->name('ijazah.create');
+// // index global dengan search
+// Route::get('ijazah', [IjazahController::class,'index'])->name('ijazah.index');
+// // lihat per angkatan (klapper)
+// Route::get('ijazah/angkatan/{klapper}', [IjazahController::class,'perAngkatan'])->name('ijazah.perAngkatan');
+// // CRUD
+// Route::resource('ijazah', IjazahController::class)->except(['index','show']);
+// Route::get('/ijazah/{ijazah}', [IjazahController::class, 'show'])->name('ijazah.show');
 

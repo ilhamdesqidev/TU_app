@@ -65,7 +65,7 @@
                             </a>
                         @endif
                         
-                        <a href="{{ route('klapper.siswa', $siswa->klapper_id) }}" class="btn btn-outline-primary rounded-pill">
+                        <a href="{{ route('klapper.show', $siswa->klapper_id) }}" class="btn btn-outline-primary rounded-pill">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
