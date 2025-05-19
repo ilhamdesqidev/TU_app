@@ -54,11 +54,11 @@
                             <label for="category-filter" class="form-label fw-bold">
                                 <i class="bi bi-tag me-1 text-primary"></i>Kategori
                             </label>
-                            <select class="form-select shadow-sm" name="kategori" id="category-filter">
+                            <select class="form-select shadow-sm" name="category" id="category-filter">
                                 <option value="">Semua Kategori</option>
-                                <option value="penting" {{ request('kategori') == 'penting' ? 'selected' : '' }}>Penting</option>
-                                <option value="segera" {{ request('kategori') == 'segera' ? 'selected' : '' }}>Segera</option>
-                                <option value="biasa" {{ request('kategori') == 'biasa' ? 'selected' : '' }}>Biasa</option>
+                                <option value="penting" {{ request('category') == 'penting' ? 'selected' : '' }}>Penting</option>
+                                <option value="segera" {{ request('category') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                <option value="biasa" {{ request('category') == 'biasa' ? 'selected' : '' }}>Biasa</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <div class="mt-3 text-end">
-                        @if(request()->has('search') || request()->has('kategori') || request()->has('status') || request()->has('start_date') || request()->has('end_date'))
+                        @if(request()->has('search') || request()->has('category') || request()->has('status') || request()->has('start_date') || request()->has('end_date'))
                         <a href="{{ route('surat_keluar.index') }}" class="btn btn-outline-danger me-2" id="resetFilter">
                             <i class="bi bi-x-circle me-1"></i> Reset Filter
                         </a>
@@ -1003,56 +1003,32 @@ function showToast(title, message, bgClass) {
     });
 
     // --- FILTER HANDLING ---
-    // Handler untuk tombol filter
-    document.getElementById('searchBtn').addEventListener('click', function(e) {
-        e.preventDefault(); // Prevent form submission
-        applyFilters();
-    });
+     // Setup filter functionality
+   const filterForm = document.getElementById('filterForm');
     
-    // Handler untuk input filter
-    ['start-date-filter', 'end-date-filter', 'category-filter', 'status-filter'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.addEventListener('change', function() {
-                // No automatic filtering on change to prevent too many requests
-            });
-        }
-    });
-    
-    // Handler untuk input pencarian dengan tombol Enter
-    document.getElementById('search').addEventListener('keyup', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent form submission
-            applyFilters();
-        }
-    });
-
-    // --- OTHER FUNCTIONALITY ---
-    // Export button functionality
-    document.getElementById('exportBtn').addEventListener('click', function() {
-        // Dapatkan filter saat ini
-        const startDate = document.getElementById('start-date-filter').value;
-        const endDate = document.getElementById('end-date-filter').value;
-        const categoryFilter = document.getElementById('category-filter').value;
-        const statusFilter = document.getElementById('status-filter').value;
-        const searchQuery = document.getElementById('search').value;
+    if (filterForm) {
+        // Validasi tanggal sebelum submit
+        filterForm.addEventListener('submit', function(e) {
+            const startDate = document.getElementById('start-date-filter').value;
+            const endDate = document.getElementById('end-date-filter').value;
+            const categoryFilter = document.getElementById('category-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+            
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                e.preventDefault();
+                showToast('Error', 'Tanggal mulai tidak boleh lebih besar dari tanggal akhir', 'bg-danger text-white');
+                return false;
+            }
+            
+            return true;
+        });
         
-        // Buat URL ekspor dengan parameter filter
-        let exportUrl = '/surat_keluar/export';
-        const params = [];
-        
-        if (startDate) params.push(`start_date=${encodeURIComponent(startDate)}`);
-        if (endDate) params.push(`end_date=${encodeURIComponent(endDate)}`);
-        if (categoryFilter) params.push(`kategori=${encodeURIComponent(categoryFilter)}`);
-        if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
-        if (searchQuery) params.push(`search=${encodeURIComponent(searchQuery)}`);
-        
-        if (params.length > 0) {
-            exportUrl += '?' + params.join('&');
-        }
-        
-        window.location.href = exportUrl;
-    });
+        // Reset filter
+        document.getElementById('resetFilter')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '{{ route("surat_keluar.index") }}';
+        });
+    }
     
     // Print button functionality
     document.getElementById('print-btn').addEventListener('click', function() {
