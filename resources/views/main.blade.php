@@ -28,11 +28,10 @@
             overflow-x: hidden;
         }
         
-        /* Improved Sidebar */
+        /* Improved Sidebar with better scrolling */
         .sidebar {
             display: flex;
             flex-direction: column;
-            height: 100vh;
             width: var(--sidebar-width);
             height: 100vh;
             position: fixed;
@@ -42,9 +41,19 @@
             background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
             transition: all var(--transition-speed) ease;
             z-index: 1000;
-            overflow-y: auto;
-            padding-bottom: 20px;
             border-radius: 0 15px 15px 0;
+            /* Improved scroll behavior */
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        /* Main sidebar content area that needs to scroll */
+        .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px; /* Space for logout button */
         }
         
         .sidebar.collapsed {
@@ -59,6 +68,7 @@
             color: white;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 10px;
+            flex-shrink: 0; /* Prevent brand from shrinking */
         }
         
         .logo-img {
@@ -203,15 +213,20 @@
         }
 
         /* Logout Section */
-        .sidebar-divider {
-            margin: 1rem;
+        .sidebar-footer {
+            padding: 1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0; /* Prevent from shrinking */
+            margin-top: auto; /* Push to bottom when there's space */
+            width: 100%;
         }
         
         .logout-link {
             border-radius: 10px;
             background: linear-gradient(135deg, rgba(255, 59, 48, 0.7) 0%, rgba(255, 59, 48, 0.9) 100%);
-            margin: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
             transition: all 0.3s;
         }
         
@@ -259,7 +274,7 @@
             justify-content: center;
             align-items: center;
             padding: 0;
-            margin: 0.5rem auto;
+            margin: 0 auto;
         }
         
         /* Hover effects */
@@ -277,6 +292,31 @@
         .sidebar:not(.collapsed) .nav-link:hover::after,
         .sidebar:not(.collapsed) .nav-link.active::after {
             width: 50%;
+        }
+        
+        /* Improved scrollbars for better UX */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Firefox scrollbar styling */
+        .sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
         }
         
         /* Main Content Layout */
@@ -386,24 +426,6 @@
             transform: rotate(90deg);
         }
         
-        /* Scrollbars */
-        .sidebar::-webkit-scrollbar {
-            width: 5px;
-        }
-        
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-        }
-        
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-        
         /* Notification Pulse Animation */
         @keyframes pulse {
             0% {
@@ -421,7 +443,7 @@
             animation: pulse 2s infinite;
         }
         
-        /* CONSISTENT DETAIL PAGE STYLING */
+        /* Detail Page Styling */
         .detail-page-header {
             background-color: #fff;
             border-radius: 10px;
@@ -493,7 +515,7 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
+    <!-- Sidebar with improved scrolling -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <img src="/asset/img/logo-12 (1).png" alt="Logo" class="logo-img">
@@ -503,54 +525,88 @@
             </div>
         </div>
         
-        <ul class="nav flex-column mt-3">
-            <li class="nav-item">
-                <a href="{{url('/')}}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
-                    <div class="icon-wrapper"><i class='bx bx-grid-alt fs-5'></i></div>
-                    <span class="nav-text">Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{url('klapper')}}" class="nav-link {{ Request::is('klapper*') ? 'active' : '' }}">
-                    <div class="icon-wrapper"><i class='bx bx-book fs-5'></i></div>
-                    <span class="nav-text">Klapper</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{url('spensasi')}}" class="nav-link {{ Request::is('spensasi*') ? 'active' : '' }}">
-                    <div class="icon-wrapper"><i class='bx bx-message-square-detail fs-5'></i></div>
-                    <span class="nav-text">Spensasi</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('surat_masuk*') || Request::is('surat_keluar*') || Request::is('ijazah*') ? 'active' : '' }}" id="archiveToggle">
-                    <div class="icon-wrapper"><i class='bx bx-folder fs-5'></i></div>
-                    <span class="nav-text">Arsip</span>
-                    <i class='bx bx-chevron-down ms-2 dropdown-icon'></i>
-                </a>
-                <ul class="nested-menu" id="archiveMenu">
-                    <li>
-                        <a href="{{url('surat_masuk')}}" class="nested-link {{ Request::is('surat_masuk*') ? 'active' : '' }}">
-                            <i class='bx bx-envelope-open'></i>Surat Masuk
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{url('surat_keluar')}}" class="nested-link {{ Request::is('surat_keluar*') ? 'active' : '' }}">
-                            <i class='bx bx-envelope'></i>Surat Keluar
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{url('ijazah')}}" class="nested-link {{ Request::is('ijazah*') ? 'active' : '' }}">
-                            <i class='bx bx-file'></i>Ijazah
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <!-- Scrollable sidebar content -->
+        <div class="sidebar-content">
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item">
+                    <a href="{{url('/')}}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">
+                        <div class="icon-wrapper"><i class='bx bx-grid-alt fs-5'></i></div>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url('klapper')}}" class="nav-link {{ Request::is('klapper*') ? 'active' : '' }}">
+                        <div class="icon-wrapper"><i class='bx bx-book fs-5'></i></div>
+                        <span class="nav-text">Klapper</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url('spensasi')}}" class="nav-link {{ Request::is('spensasi*') ? 'active' : '' }}">
+                        <div class="icon-wrapper"><i class='bx bx-message-square-detail fs-5'></i></div>
+                        <span class="nav-text">Spensasi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ Request::is('surat_masuk*') || Request::is('surat_keluar*') || Request::is('ijazah*') ? 'active' : '' }}" id="archiveToggle">
+                        <div class="icon-wrapper"><i class='bx bx-folder fs-5'></i></div>
+                        <span class="nav-text">Arsip</span>
+                        <i class='bx bx-chevron-down ms-2 dropdown-icon'></i>
+                    </a>
+                    <ul class="nested-menu" id="archiveMenu">
+                        <li>
+                            <a href="{{url('surat_masuk')}}" class="nested-link {{ Request::is('surat_masuk*') ? 'active' : '' }}">
+                                <i class='bx bx-envelope-open'></i>Surat Masuk
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url('surat_keluar')}}" class="nested-link {{ Request::is('surat_keluar*') ? 'active' : '' }}">
+                                <i class='bx bx-envelope'></i>Surat Keluar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{url('ijazah')}}" class="nested-link {{ Request::is('ijazah*') ? 'active' : '' }}">
+                                <i class='bx bx-file'></i>Ijazah
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <!-- You can add more menu items here to test scrolling -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <div class="icon-wrapper"><i class='bx bx-user fs-5'></i></div>
+                        <span class="nav-text">Menu Item 1</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <div class="icon-wrapper"><i class='bx bx-cog fs-5'></i></div>
+                        <span class="nav-text">Menu Item 2</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <div class="icon-wrapper"><i class='bx bx-calendar fs-5'></i></div>
+                        <span class="nav-text">Menu Item 3</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <div class="icon-wrapper"><i class='bx bx-chart fs-5'></i></div>
+                        <span class="nav-text">Menu Item 4</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <div class="icon-wrapper"><i class='bx bx-bell fs-5'></i></div>
+                        <span class="nav-text">Menu Item 5</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
         
-        <!-- Logout Section -->
-        <div class="mt-auto" style="position: absolute; bottom: 20px; width: 100%;">
-            <hr class="sidebar-divider">
+        <!-- Logout Section - Now as a footer component -->
+        <div class="sidebar-footer">
             <a href="#" class="nav-link text-danger logout-link">
                 <div class="icon-wrapper"><i class='bx bx-log-out fs-5'></i></div>
                 <span class="nav-text">Keluar</span>
@@ -623,53 +679,6 @@
     <div class="main-content" id="main-content">
         <div class="content-wrapper">
             @yield('content')
-            
-            <!-- Example of a detail page structure (to be placed in content section) -->
-            <!--
-            <div class="detail-page-header">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Module</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail</li>
-                    </ol>
-                </nav>
-                <h1>Detail Title</h1>
-                <div class="meta-info">
-                    <span>Created: 15 May 2025</span> | 
-                    <span>Status: Active</span>
-                </div>
-            </div>
-            
-            <div class="detail-page-content">
-                <div class="detail-page-section">
-                    <h2>Section Title</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="mb-2"><strong>Field 1:</strong> Value 1</p>
-                            <p class="mb-2"><strong>Field 2:</strong> Value 2</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="mb-2"><strong>Field 3:</strong> Value 3</p>
-                            <p class="mb-2"><strong>Field 4:</strong> Value 4</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="detail-page-section">
-                    <h2>Another Section</h2>
-                    <p>Content goes here...</p>
-                </div>
-                
-                <div class="detail-page-actions">
-                    <a href="#" class="btn btn-primary">Edit</a>
-                    <button class="btn btn-danger">Delete</button>
-                    <a href="#" class="back-button ms-auto">
-                        <i class='bx bx-arrow-back'></i> Back
-                    </a>
-                </div>
-            </div>
-            -->
         </div>
     </div>
     
@@ -704,10 +713,9 @@
             });
         }
 
-        // Improved active state handling
+        // Auto-expand the archive menu if any of its child links are active
         const currentLocation = window.location.pathname;
         
-        // Auto-expand the archive menu if any of its child links are active
         const isArchiveActive = 
             currentLocation.includes('surat_masuk') || 
             currentLocation.includes('surat_keluar') || 
@@ -731,25 +739,6 @@
                 dropdownIcon.classList.add('bx-chevron-up');
             }
         }
-        
-        // Fix for logout button when sidebar is collapsed
-        window.addEventListener('resize', adjustLogoutPosition);
-        
-        function adjustLogoutPosition() {
-            const logoutSection = document.querySelector('.sidebar .mt-auto');
-            if (logoutSection) {
-                if (sidebar.classList.contains('collapsed')) {
-                    logoutSection.style.position = 'static';
-                    logoutSection.style.bottom = 'auto';
-                } else {
-                    logoutSection.style.position = 'absolute';
-                    logoutSection.style.bottom = '20px';
-                }
-            }
-        }
-        
-        // Run once on load
-        adjustLogoutPosition();
     });
     </script>
 </body>
