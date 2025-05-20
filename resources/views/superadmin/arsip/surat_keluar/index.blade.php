@@ -981,23 +981,28 @@ function showToast(title, message, bgClass) {
     }
 
     // --- PAGINATION HANDLING ---
-    // Tangkap semua klik pagination dengan event delegation
     document.addEventListener('click', function(e) {
         const paginationLink = e.target.closest('.page-link');
         
         if (paginationLink && !paginationLink.parentElement.classList.contains('disabled')) {
             e.preventDefault();
             
-            let pageUrl;
-            if (paginationLink.hasAttribute('href') && paginationLink.getAttribute('href') !== '#') {
-                pageUrl = paginationLink.getAttribute('href');
-            } else {
-                // Jika tidak ada href atau href="#", ambil dari data-page jika ada
-                const page = paginationLink.getAttribute('data-page') || '1';
-                pageUrl = window.location.pathname + '?page=' + page;
+            // Dapatkan URL dari href atau bangun dari data-page
+            let pageUrl = paginationLink.getAttribute('href');
+            
+            // Jika tidak ada href (misalnya untuk ellipsis), gunakan URL saat ini dengan parameter page baru
+            if (!pageUrl || pageUrl === '#') {
+                const page = paginationLink.getAttribute('data-page');
+                if (page) {
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set('page', page);
+                    pageUrl = currentUrl.toString();
+                } else {
+                    return; // Tidak ada data-page, keluar
+                }
             }
             
-            // Arahkan ke halaman dengan filter yang ada
+            // Load halaman dengan AJAX
             loadPageWithFilters(pageUrl);
         }
     });

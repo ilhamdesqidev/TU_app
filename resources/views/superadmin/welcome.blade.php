@@ -34,7 +34,7 @@
                     <div class="bg-success bg-opacity-10 p-3 rounded-circle mx-auto mb-3" style="width: 70px; height: 70px;">
                         <i class="fa fa-chalkboard-teacher fa-2x text-success"></i>
                     </div>
-                    <h2 class="display-6 fw-bold">108</h2>
+                    <h2 class="display-6 fw-bold">0</h2>
                     <p class="text-uppercase small fw-bold text-secondary mb-0">Guru</p>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                     <div class="bg-warning bg-opacity-10 p-3 rounded-circle mx-auto mb-3" style="width: 70px; height: 70px;">
                         <i class="fa fa-users fa-2x text-warning"></i>
                     </div>
-                    <h2 class="display-6 fw-bold">107</h2>
+                    <h2 class="display-6 fw-bold">0</h2>
                     <p class="text-uppercase small fw-bold text-secondary mb-0">Staf</p>
                 </div>
             </div>
