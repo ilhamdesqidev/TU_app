@@ -199,19 +199,44 @@
                         </table>
                     </div>
                 </div>
-                <!-- Pagination dengan styling yang ditingkatkan -->
-                <div class="card-footer bg-white">
+                 <!-- Pagination Section -->
+                 <div class="card-footer bg-white">
                     <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link rounded-start" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link rounded-end" href="#">Next</a>
-                            </li>
+                        <ul class="pagination justify-content-center mb-0">
+                            {{-- Previous Page Link --}}
+                            @if ($suratMasuks->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">&laquo;</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $suratMasuks->previousPageUrl() }}" rel="prev">&laquo;</a>
+                                </li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @foreach ($suratMasuks->getUrlRange(1, $suratMasuks->lastPage()) as $page => $url)
+                                @if ($page == $suratMasuks->currentPage())
+                                    <li class="page-item active" aria-current="page">
+                                        <span class="page-link">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Page Link --}}
+                            @if ($suratMasuks->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $suratMasuks->nextPageUrl() }}" rel="next">&raquo;</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">&raquo;</span>
+                                </li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
@@ -709,6 +734,111 @@
             toast.remove();
         }, 5000);
     }
+
+     // --- IMPROVED PAGINATION HANDLING ---
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup pagination event delegation for dynamic content
+    document.addEventListener('click', function(e) {
+        const paginationLink = e.target.closest('.page-link');
+        
+        if (paginationLink && !paginationLink.parentElement.classList.contains('disabled')) {
+            e.preventDefault();
+            
+            // Get URL from the href attribute
+            const pageUrl = paginationLink.getAttribute('href');
+            
+            if (pageUrl && pageUrl !== '#') {
+                // Show loading indicator
+                const tableBody = document.querySelector('tbody');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Sedang memuat data...</p>
+                        </td>
+                    </tr>
+                `;
+                
+                // Load page with AJAX
+                fetch(pageUrl, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json, text/html'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Update table with new data
+                    if (data.html) {
+                        tableBody.innerHTML = data.html;
+                    } else {
+                        // If no HTML in response, redirect to the page
+                        window.location.href = pageUrl;
+                        return;
+                    }
+                    
+                    // Update pagination if available
+                    const paginationContainer = document.querySelector('.pagination');
+                    if (paginationContainer && data.pagination) {
+                        paginationContainer.innerHTML = data.pagination;
+                    }
+                    
+                    // Update total records count
+                    const totalRecordsElement = document.getElementById('totalRecords');
+                    if (totalRecordsElement && data.total !== undefined) {
+                        totalRecordsElement.textContent = data.total + ' Surat';
+                    }
+                    
+                    // Update browser URL without reloading
+                    window.history.pushState({}, '', pageUrl);
+                    
+                     // Re-attach event listeners to the new buttons
+                     if (typeof setupViewButtons === 'function') setupViewButtons();
+                    if (typeof setupEditButtons === 'function') setupEditButtons();
+                    if (typeof setupDeleteButtons === 'function') setupDeleteButtons();
+                    
+                    // Scroll to top of table
+                    const tableElement = document.querySelector('.table-responsive');
+                    if (tableElement) {
+                        window.scrollTo({
+                            top: tableElement.offsetTop - 50,
+                            behavior: 'smooth'
+                        });
+                    }
+                    
+                    // Show success notification
+                    showToast('Sukses', 'Data berhasil diperbarui', 'bg-success text-white');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Error', 'Gagal memuat data: ' + error.message, 'bg-danger text-white');
+                    
+                    // Show error message in table
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                    <p class="mt-2">Gagal memuat data. Silakan coba lagi.</p>
+                                    <button class="btn btn-sm btn-primary mt-2" onclick="window.location.reload()">
+                                        <i class="bi bi-arrow-clockwise me-1"></i> Muat Ulang
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+    });
+});
 
     
     // View button functionality

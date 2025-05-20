@@ -49,6 +49,36 @@ class SuratMasukController extends Controller
     
     $suratMasuks = $query->orderBy('tanggal_diterima', 'desc')->paginate(10);
     
+     // Paginate results
+     $suratMasuks = $query->paginate(1);
+    
+     // Handle AJAX request
+     if ($request->ajax()) {
+         $html = '';
+         
+         if ($suratMasuks->count() > 0) {
+             foreach ($suratMasuks as $index => $surat) {
+                 $html .= view('surat_masuk.partials.table_row', [
+                     'surat' => $surat,
+                     'index' => ($suratMasuks->currentPage() - 1) * $suratMasuks->perPage() + $index + 1
+                 ])->render();
+             }
+         } else {
+             $html = view('surat_masuk.partials.empty_state')->render();
+         }
+         
+         // Generate pagination HTML
+         $paginationHtml = $suratMasuks->links()->toHtml();
+         
+         return response()->json([
+             'html' => $html,
+             'pagination' => $paginationHtml,
+             'total' => $suratMasuks->total(),
+             'currentPage' => $suratMasuks->currentPage(),
+             'lastPage' => $suratMasuks->lastPage()
+         ]);
+     }
+     
         return view('superadmin.arsip.surat_masuk.index', compact('suratMasuks'));
     }
     
