@@ -570,38 +570,6 @@
                         </li>
                     </ul>
                 </li>
-                
-                <!-- You can add more menu items here to test scrolling -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <div class="icon-wrapper"><i class='bx bx-user fs-5'></i></div>
-                        <span class="nav-text">Menu Item 1</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <div class="icon-wrapper"><i class='bx bx-cog fs-5'></i></div>
-                        <span class="nav-text">Menu Item 2</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <div class="icon-wrapper"><i class='bx bx-calendar fs-5'></i></div>
-                        <span class="nav-text">Menu Item 3</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <div class="icon-wrapper"><i class='bx bx-chart fs-5'></i></div>
-                        <span class="nav-text">Menu Item 4</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <div class="icon-wrapper"><i class='bx bx-bell fs-5'></i></div>
-                        <span class="nav-text">Menu Item 5</span>
-                    </a>
-                </li>
             </ul>
         </div>
         
