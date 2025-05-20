@@ -1,7 +1,7 @@
-```blade
 @extends('main')
 
 @section('content')
+<!-- Header Banner -->
 <div class="bg-light py-5">
     <div class="container">
         <div class="row my-3">
@@ -18,13 +18,15 @@
     </div>
 </div>
 
-<div class="container py-4">
+<!-- Main Content -->
+<div class="container-fluid py-4">
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
-            <div class="card shadow-lg border-0 rounded-4">
+        <div class="col-lg-10 col-md-12">
+            <div class="card shadow-lg border-0 rounded-4 w-100 mx-auto" style="max-width: 1140px;">
+                <!-- Card Header -->
                 <div class="card-header bg-white border-0 pt-4 pb-0 px-5">
                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
                             <i class="fas fa-user-edit text-primary"></i>
                         </div>
                         <div>
@@ -33,10 +35,12 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Card Body -->
                 <div class="card-body p-5">
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <ul class="mb-0">
+                        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                            <ul class="mb-0 ps-3">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -44,115 +48,122 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    
+
                     <form action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
+
+                        <!-- NIS and NISN -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
                                 <label for="nis" class="form-label fw-semibold">
-                                    <i class="fas fa-id-card me-1 text-primary"></i> NIS
+                                    <i class="fas fa-id-card text-primary me-1"></i> NIS
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="text" name="nis" id="nis" class="form-control rounded-start-3" 
+                                    <input type="text" name="nis" id="nis" class="form-control" 
                                            value="{{ $siswa->nis }}" required onkeypress="return isNumberKey(event)">
-                                    <span class="input-group-text bg-light rounded-end-3">
+                                    <span class="input-group-text bg-light">
                                         <i class="fas fa-hashtag text-muted"></i>
                                     </span>
                                 </div>
-                                <small class="text-muted mt-1 d-block">Nomor Induk Siswa (hanya angka)</small>
+                                <div class="form-text">Nomor Induk Siswa (hanya angka)</div>
                             </div>
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6">
                                 <label for="nisn" class="form-label fw-semibold">
-                                    <i class="fas fa-fingerprint me-1 text-primary"></i> NISN
+                                    <i class="fas fa-fingerprint text-primary me-1"></i> NISN
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="text" name="nisn" id="nisn" class="form-control rounded-start-3" 
+                                    <input type="text" name="nisn" id="nisn" class="form-control" 
                                            value="{{ $siswa->nisn }}" required onkeypress="return isNumberKey(event)">
-                                    <span class="input-group-text bg-light rounded-end-3">
+                                    <span class="input-group-text bg-light">
                                         <i class="fas fa-hashtag text-muted"></i>
                                     </span>
                                 </div>
-                                <small class="text-muted mt-1 d-block">Nomor Induk Siswa Nasional (hanya angka)</small>
+                                <div class="form-text">Nomor Induk Siswa Nasional (hanya angka)</div>
                             </div>
                         </div>
                         
+                        <!-- Nama Siswa -->
                         <div class="mb-4">
                             <label for="nama_siswa" class="form-label fw-semibold">
-                                <i class="fas fa-user me-1 text-primary"></i> Nama Siswa
+                                <i class="fas fa-user text-primary me-1"></i> Nama Siswa
                                 <span class="text-danger">*</span>
                             </label>
-                            <input type="text" name="nama_siswa" id="nama_siswa" class="form-control rounded-3" 
-                                   value="{{ $siswa->nama_siswa }}" required style="text-transform: capitalize;">
-                            <small class="text-muted mt-1 d-block">Nama lengkap sesuai dokumen resmi</small>
+                            <input type="text" name="nama_siswa" id="nama_siswa" class="form-control text-capitalize" 
+                                   value="{{ $siswa->nama_siswa }}" required>
+                            <div class="form-text">Nama lengkap sesuai dokumen resmi</div>
                         </div>
                         
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
+                        <!-- Tempat & Tanggal Lahir -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
                                 <label for="tempat_lahir" class="form-label fw-semibold">
-                                    <i class="fas fa-map-marker-alt me-1 text-primary"></i> Tempat Lahir
+                                    <i class="fas fa-map-marker-alt text-primary me-1"></i> Tempat Lahir
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control rounded-3" 
-                                       value="{{ $siswa->tempat_lahir }}" required style="text-transform: capitalize;">
-                                <small class="text-muted mt-1 d-block">Kota tempat siswa dilahirkan</small>
+                                <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control text-capitalize" 
+                                       value="{{ $siswa->tempat_lahir }}" required>
+                                <div class="form-text">Kota tempat siswa dilahirkan</div>
                             </div>
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6">
                                 <label for="tanggal_lahir" class="form-label fw-semibold">
-                                    <i class="fas fa-calendar-day me-1 text-primary"></i> Tanggal Lahir
+                                    <i class="fas fa-calendar-day text-primary me-1"></i> Tanggal Lahir
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control rounded-3" 
+                                <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" 
                                        value="{{ $siswa->tanggal_lahir }}" required>
-                                <small class="text-muted mt-1 d-block">Format: YYYY-MM-DD</small>
+                                <div class="form-text">Format: YYYY-MM-DD</div>
                             </div>
                         </div>
                         
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
+                        <!-- Gender & Sekolah -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
                                 <label for="gender" class="form-label fw-semibold">
-                                    <i class="fas fa-venus-mars me-1 text-primary"></i> Gender
+                                    <i class="fas fa-venus-mars text-primary me-1"></i> Gender
                                     <span class="text-danger">*</span>
                                 </label>
-                                <select name="gender" id="gender" class="form-select rounded-3" required>
+                                <select name="gender" id="gender" class="form-select" required>
                                     <option value="laki-laki" {{ strtolower($siswa->gender) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                                     <option value="perempuan" {{ strtolower($siswa->gender) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
-                                <small class="text-muted mt-1 d-block">Jenis kelamin siswa</small>
+                                <div class="form-text">Jenis kelamin siswa</div>
                             </div>
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6">
                                 <label for="sekolah" class="form-label fw-semibold">
-                                    <i class="fas fa-school me-1 text-primary"></i> Sekolah
+                                    <i class="fas fa-school text-primary me-1"></i> Sekolah
                                     <span class="text-danger">*</span>
                                 </label>
-                                <select name="sekolah" id="sekolah" class="form-select rounded-3" required>
+                                <select name="sekolah" id="sekolah" class="form-select" required>
                                     <option value="smk_amaliah_1" {{ strpos($siswa->jurusan, 'an') !== false || strpos($siswa->jurusan, 'pplg') !== false || strpos($siswa->jurusan, 'tjkt') !== false || strpos($siswa->jurusan, 'dkv') !== false ? 'selected' : '' }}>SMK Amaliah 1</option>
                                     <option value="smk_amaliah_2" {{ strpos($siswa->jurusan, 'mp') !== false || strpos($siswa->jurusan, 'akl') !== false || strpos($siswa->jurusan, 'br') !== false || strpos($siswa->jurusan, 'lps') !== false || strpos($siswa->jurusan, 'dpb') !== false ? 'selected' : '' }}>SMK Amaliah 2</option>
                                 </select>
-                                <small class="text-muted mt-1 d-block">Pilih sekolah siswa</small>
+                                <div class="form-text">Pilih sekolah siswa</div>
                             </div>
                         </div>
                         
+                        <!-- Jurusan -->
                         <div class="mb-4">
                             <label for="jurusan" class="form-label fw-semibold">
-                                <i class="fas fa-graduation-cap me-1 text-primary"></i> Jurusan
+                                <i class="fas fa-graduation-cap text-primary me-1"></i> Jurusan
                                 <span class="text-danger">*</span>
                             </label>
-                            <select name="jurusan" id="jurusan" class="form-select rounded-3" required>
+                            <select name="jurusan" id="jurusan" class="form-select" required>
                                 <!-- Options will be loaded via JavaScript -->
                                 <option value="{{ $siswa->jurusan }}" selected>{{ ucwords(str_replace('_', ' ', $siswa->jurusan)) }}</option>
                             </select>
-                            <small class="text-muted mt-1 d-block">Pilih jurusan sesuai dengan sekolah</small>
+                            <div class="form-text">Pilih jurusan sesuai dengan sekolah</div>
                         </div>
                         
+                        <!-- Kelas -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">
-                                <i class="fas fa-layer-group me-1 text-primary"></i> Kelas
+                                <i class="fas fa-layer-group text-primary me-1"></i> Kelas
                                 <span class="text-danger">*</span>
                             </label>
-                            <div class="d-flex gap-3 mt-2">
+                            <div class="d-flex flex-wrap gap-3 mt-2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="kelas" id="kelasX" value="X" 
                                            {{ $siswa->kelas == 'X' ? 'checked' : '' }}>
@@ -175,64 +186,69 @@
                                     </label>
                                 </div>
                             </div>
-                            <small class="text-muted mt-2 d-block">Pilih tingkat kelas siswa</small>
+                            <div class="form-text mt-2">Pilih tingkat kelas siswa</div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
+                        <!-- Nama Orang Tua -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
                                 <label for="nama_ibu" class="form-label fw-semibold">
-                                    <i class="fas fa-female me-1 text-primary"></i> Nama Ibu
+                                    <i class="fas fa-female text-primary me-1"></i> Nama Ibu
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="nama_ibu" id="nama_ibu" class="form-control rounded-3" 
-                                       value="{{ $siswa->nama_ibu }}" required style="text-transform: capitalize;">
-                                <small class="text-muted mt-1 d-block">Nama lengkap ibu kandung</small>
+                                <input type="text" name="nama_ibu" id="nama_ibu" class="form-control text-capitalize" 
+                                       value="{{ $siswa->nama_ibu }}" required>
+                                <div class="form-text">Nama lengkap ibu kandung</div>
                             </div>
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-6">
                                 <label for="nama_ayah" class="form-label fw-semibold">
-                                    <i class="fas fa-male me-1 text-primary"></i> Nama Ayah
+                                    <i class="fas fa-male text-primary me-1"></i> Nama Ayah
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="nama_ayah" id="nama_ayah" class="form-control rounded-3" 
-                                       value="{{ $siswa->nama_ayah }}" required style="text-transform: capitalize;">
-                                <small class="text-muted mt-1 d-block">Nama lengkap ayah kandung</small>
+                                <input type="text" name="nama_ayah" id="nama_ayah" class="form-control text-capitalize" 
+                                       value="{{ $siswa->nama_ayah }}" required>
+                                <div class="form-text">Nama lengkap ayah kandung</div>
                             </div>
                         </div>
                         
+                        <!-- Tanggal Masuk -->
                         <div class="mb-4">
                             <label for="tanggal_masuk" class="form-label fw-semibold">
-                                <i class="fas fa-calendar-check me-1 text-primary"></i> Tanggal Masuk
+                                <i class="fas fa-calendar-check text-primary me-1"></i> Tanggal Masuk
                                 <span class="text-danger">*</span>
                             </label>
-                            <input type="date" name="tanggal_masuk" id="tanggal_masuk" class="form-control rounded-3" 
+                            <input type="date" name="tanggal_masuk" id="tanggal_masuk" class="form-control" 
                                    value="{{ $siswa->tanggal_masuk }}" required>
-                            <small class="text-muted mt-1 d-block">Tanggal siswa mulai bersekolah</small>
+                            <div class="form-text">Tanggal siswa mulai bersekolah</div>
                         </div>
                         
+                        <!-- Foto Upload -->
                         <div class="mb-4">
                             <label for="foto" class="form-label fw-semibold">
-                                <i class="fas fa-camera me-1 text-primary"></i> Foto
+                                <i class="fas fa-camera text-primary me-1"></i> Foto
                             </label>
-                            <input type="file" name="foto" id="foto" class="form-control rounded-3" accept="image/*">
-                            <small class="text-muted mt-1 d-block">Unggah foto terbaru siswa (opsional, format: JPG, PNG)</small>
+                            <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                            <div class="form-text">Unggah foto terbaru siswa (opsional, format: JPG, PNG)</div>
                         </div>
                         
+                        <!-- Current Photo -->
                         @if($siswa->foto)
                         <div class="mb-4">
                             <label class="form-label fw-semibold">
-                                <i class="fas fa-image me-1 text-primary"></i> Foto Saat Ini
+                                <i class="fas fa-image text-primary me-1"></i> Foto Saat Ini
                             </label>
-                            <div class="mt-2 border rounded-3 p-3 text-center bg-light">
+                            <div class="card bg-light border-0 p-3 text-center">
                                 <img src="{{ asset('image/' . $siswa->foto) }}" alt="Foto {{ $siswa->nama_siswa }}" 
-                                     class="img-thumbnail" style="max-height: 200px;">
-                                <p class="small text-muted mt-2 mb-0">Foto yang tersimpan saat ini</p>
+                                     class="img-thumbnail mx-auto" style="max-height: 200px;">
+                                <div class="card-text small text-muted mt-2">Foto yang tersimpan saat ini</div>
                             </div>
                         </div>
                         @endif
                         
-                        <div class="alert alert-light border rounded-3 mt-4 mb-4">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-info-circle text-primary me-3 fa-lg"></i>
+                        <!-- Info Alert -->
+                        <div class="alert alert-info border-0 rounded-3 mt-4 mb-4">
+                            <div class="d-flex">
+                                <i class="fas fa-info-circle text-primary me-3 fa-lg mt-1"></i>
                                 <div>
                                     <p class="mb-0 small">Pastikan seluruh data yang diperbarui sudah benar dan sesuai dengan dokumen resmi. 
                                     Field yang bertanda <span class="text-danger">*</span> wajib diisi.</p>
@@ -240,11 +256,12 @@
                             </div>
                         </div>
                         
+                        <!-- Form Buttons -->
                         <div class="d-flex gap-2 mt-4">
                             <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-outline-secondary rounded-pill py-2 px-4">
                                 <i class="fas fa-arrow-left me-2"></i> Kembali
                             </a>
-                            <button type="submit" class="btn btn-primary rounded-pill shadow-sm py-2 px-4 ms-auto">
+                            <button type="submit" class="btn btn-primary rounded-pill py-2 px-4 ms-auto">
                                 <i class="fas fa-save me-2"></i> Simpan Perubahan
                             </button>
                         </div>
@@ -255,8 +272,8 @@
     </div>
 </div>
 
+<!-- Script tetap -->
 <script>
-    // Function to restrict input to numbers only
     function isNumberKey(evt) {
         var charCode = (evt.which) ? evt.which : evt.keyCode;
         if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -264,16 +281,13 @@
         return true;
     }
 
-    // Load jurusan based on selected sekolah
-    document.getElementById('sekolah').addEventListener('change', function() {
+    document.getElementById('sekolah').addEventListener('change', function () {
         const sekolah = this.value;
         const jurusanSelect = document.getElementById('jurusan');
         const currentJurusan = "{{ $siswa->jurusan }}";
-        
-        // Clear existing options
+
         jurusanSelect.innerHTML = '';
-        
-        // Add options based on selected school
+
         if (sekolah === 'smk_amaliah_1') {
             const jurusanSMK1 = [
                 { value: 'an', label: 'AN - Animasi' },
@@ -281,7 +295,7 @@
                 { value: 'tjkt', label: 'TJKT - Teknik Jaringan Komputer dan Telekomunikasi' },
                 { value: 'dkv', label: 'DKV - Desain Komunikasi Visual' }
             ];
-            
+
             jurusanSMK1.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.value;
@@ -299,7 +313,7 @@
                 { value: 'lps', label: 'LPS - Layanan Perbankan Syariah' },
                 { value: 'dpb', label: 'DPB - Desain Produk Busana' }
             ];
-            
+
             jurusanSMK2.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.value;
@@ -312,17 +326,7 @@
         }
     });
 
-    // Trigger the sekolah change event to populate jurusan on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Auto-capitalize inputs that need capitalization
-        const capitalizeInputs = document.querySelectorAll('input[style*="text-transform: capitalize;"]');
-        capitalizeInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/\b\w/g, function(l) { return l.toUpperCase(); });
-            });
-        });
-        
-        // Initialize jurusan dropdown based on selected sekolah
+    document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('sekolah').dispatchEvent(new Event('change'));
     });
 </script>

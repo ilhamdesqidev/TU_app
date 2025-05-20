@@ -980,27 +980,159 @@ function showToast(title, message, bgClass) {
         });
     }
 
-    // --- PAGINATION HANDLING ---
-    // Tangkap semua klik pagination dengan event delegation
+    // --- IMPROVED PAGINATION HANDLING ---
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup pagination event delegation for dynamic content
     document.addEventListener('click', function(e) {
         const paginationLink = e.target.closest('.page-link');
         
         if (paginationLink && !paginationLink.parentElement.classList.contains('disabled')) {
             e.preventDefault();
             
-            let pageUrl;
-            if (paginationLink.hasAttribute('href') && paginationLink.getAttribute('href') !== '#') {
-                pageUrl = paginationLink.getAttribute('href');
-            } else {
-                // Jika tidak ada href atau href="#", ambil dari data-page jika ada
-                const page = paginationLink.getAttribute('data-page') || '1';
-                pageUrl = window.location.pathname + '?page=' + page;
-            }
+            // Get URL from the href attribute
+            const pageUrl = paginationLink.getAttribute('href');
             
-            // Arahkan ke halaman dengan filter yang ada
-            loadPageWithFilters(pageUrl);
+            if (pageUrl && pageUrl !== '#') {
+                // Show loading indicator
+                const tableBody = document.querySelector('tbody');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Sedang memuat data...</p>
+                        </td>
+                    </tr>
+                `;
+                
+                // Load page with AJAX
+                fetch(pageUrl, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json, text/html'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Update table with new data
+                    if (data.html) {
+                        tableBody.innerHTML = data.html;
+                    } else {
+                        // If no HTML in response, redirect to the page
+                        window.location.href = pageUrl;
+                        return;
+                    }
+                    
+                    // Update pagination if available
+                    const paginationContainer = document.querySelector('.pagination');
+                    if (paginationContainer && data.pagination) {
+                        paginationContainer.innerHTML = data.pagination;
+                    }
+                    
+                    // Update total records count
+                    const totalRecordsElement = document.getElementById('totalRecords');
+                    if (totalRecordsElement && data.total !== undefined) {
+                        totalRecordsElement.textContent = data.total + ' Surat';
+                    }
+                    
+                    // Update browser URL without reloading
+                    window.history.pushState({}, '', pageUrl);
+                    
+                    // Re-attach event listeners to the new buttons
+                    if (typeof setupViewButtons === 'function') setupViewButtons();
+                    if (typeof setupEditButtons === 'function') setupEditButtons();
+                    if (typeof setupDeleteButtons === 'function') setupDeleteButtons();
+                    
+                    // Scroll to top of table
+                    const tableElement = document.querySelector('.table-responsive');
+                    if (tableElement) {
+                        window.scrollTo({
+                            top: tableElement.offsetTop - 50,
+                            behavior: 'smooth'
+                        });
+                    }
+                    
+                    // Show success notification
+                    showToast('Sukses', 'Data berhasil diperbarui', 'bg-success text-white');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Error', 'Gagal memuat data: ' + error.message, 'bg-danger text-white');
+                    
+                    // Show error message in table
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                    <p class="mt-2">Gagal memuat data. Silakan coba lagi.</p>
+                                    <button class="btn btn-sm btn-primary mt-2" onclick="window.location.reload()">
+                                        <i class="bi bi-arrow-clockwise me-1"></i> Muat Ulang
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
         }
     });
+});
+
+// Function for showing toast notifications
+function showToast(title, message, bgClass = 'bg-success text-white') {
+    // Check if toast container exists
+    let toastContainer = document.getElementById('toast-container');
+    
+    if (!toastContainer) {
+        // Create container if it doesn't exist
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+        toastContainer.style.zIndex = '1050';
+        document.body.appendChild(toastContainer);
+    }
+    
+    // Create toast element
+    const toastId = 'toast-' + Date.now();
+    const toastElement = document.createElement('div');
+    toastElement.id = toastId;
+    toastElement.className = `toast ${bgClass}`;
+    toastElement.setAttribute('role', 'alert');
+    toastElement.setAttribute('aria-live', 'assertive');
+    toastElement.setAttribute('aria-atomic', 'true');
+    
+    toastElement.innerHTML = `
+        <div class="toast-header">
+            <i class="bi bi-bell me-2"></i>
+            <strong class="me-auto">${title}</strong>
+            <small>Baru saja</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+    `;
+    
+    toastContainer.appendChild(toastElement);
+    
+    // Show toast using Bootstrap's Toast
+    const toast = new bootstrap.Toast(toastElement, {
+        delay: 4000
+    });
+    toast.show();
+    
+    // Remove toast after it's hidden
+    toastElement.addEventListener('hidden.bs.toast', function() {
+        toastElement.remove();
+    });
+}
 
     // --- FILTER HANDLING ---
      // Setup filter functionality

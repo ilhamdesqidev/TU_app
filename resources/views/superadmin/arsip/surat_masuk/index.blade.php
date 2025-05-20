@@ -935,21 +935,79 @@
         printWin.document.close();
     });
     
-    // Disposition button functionality (Khusus untuk Surat Masuk)
-    document.querySelectorAll('.disposition-btn').forEach(button => {
+    // Disposisi button functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup disposisi buttons from the main table
+    document.querySelectorAll('.disposisi-btn').forEach(button => {
         button.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
             const nomorSurat = this.getAttribute('data-nomor');
             
-            // Set form action dan nomor surat
-            document.getElementById('dispositionForm').action = `/surat_masuk/${id}/disposition`;
-            document.getElementById('disposition-nomor-surat').textContent = nomorSurat || '';
+            // Set the surat ID in the hidden field
+            document.getElementById('disposisi-surat-id').value = id;
             
-            // Tampilkan modal
-            const dispositionModal = new bootstrap.Modal(document.getElementById('dispositionModal'));
-            dispositionModal.show();
+            // Set the form action URL correctly
+            document.getElementById('disposisiForm').action = `/surat_masuk/${id}/disposisi`;
+            
+            // Display the nomor surat in the modal
+            document.getElementById('disposisi-nomor-surat').textContent = nomorSurat || '';
+            
+            // Set today's date as default for tenggat_waktu
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('tenggat_waktu').value = formattedDate;
         });
     });
+    
+    // Setup disposisi button from view modal
+    document.getElementById('disposisi-modal-btn')?.addEventListener('click', function() {
+        // Close view modal
+        const viewModal = bootstrap.Modal.getInstance(document.getElementById('viewModal'));
+        viewModal.hide();
+        
+        // Get the active surat ID from the view button that was clicked
+        const activeViewBtn = document.querySelector('.view-btn[data-bs-toggle="modal"][data-bs-target="#viewModal"].active');
+        if (activeViewBtn) {
+            const id = activeViewBtn.getAttribute('data-id');
+            const nomorSurat = activeViewBtn.getAttribute('data-nomor');
+            
+            // Set values in disposisi modal
+            document.getElementById('disposisi-surat-id').value = id;
+            document.getElementById('disposisiForm').action = `/surat_masuk/${id}/disposisi`;
+            document.getElementById('disposisi-nomor-surat').textContent = nomorSurat || '';
+            
+            // Set today's date as default for tenggat_waktu
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('tenggat_waktu').value = formattedDate;
+            
+            // Show disposisi modal
+            const disposisiModal = new bootstrap.Modal(document.getElementById('disposisiModal'));
+            disposisiModal.show();
+        }
+    });
+    
+    // Add active class to view button when clicked to track which one is active
+    document.querySelectorAll('.view-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
+    // Form validation for disposisi
+    document.getElementById('disposisiForm').addEventListener('submit', function(event) {
+        const tujuan = document.getElementById('tujuan_disposisi').value;
+        const catatan = document.getElementById('catatan_disposisi').value;
+        const tenggat = document.getElementById('tenggat_waktu').value;
+        const prioritas = document.getElementById('prioritas_disposisi').value;
+        
+        if (!tujuan || !catatan || !tenggat || !prioritas) {
+            event.preventDefault();
+            showToast('Error', 'Semua field disposisi harus diisi', 'bg-danger text-white');
+        }
+    });
+})
     
     // Form submission handlers
     document.getElementById('tambahSuratForm').addEventListener('submit', function(event) {
