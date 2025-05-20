@@ -9,44 +9,76 @@ use App\Exports\SuratKeluarExport;
 
 class SuratKeluarController extends Controller
 {
-    public function index(Request $request)
+    // --- AJAX RESPONSE HANDLER FOR LARAVEL ---
+/**
+ * This controller method handles AJAX pagination requests 
+ * Add this to your SuratKeluarController.php
+ */
+
+public function index(Request $request)
 {
-    $perPage = $request->input('per_page', 1);
-    
-    $query = SuratKeluar::query()->orderBy('created_at', 'desc');
+    $query = SuratKeluar::query();
     
     // Apply filters
-    if ($request->has('date') && $request->date) {
-        $query->whereDate('tanggal_surat', $request->date);
-    }
-    
-    if ($request->has('category') && $request->category) {
-        $query->where('kategori', $request->category);
-    }
-    
-    if ($request->has('status') && $request->status) {
-        $query->where('status', $request->status);
-    }
-    
-    if ($request->has('search') && $request->search) {
-        $search = $request->search;
-        $query->where(function($q) use ($search) {
-            $q->where('nomor_surat', 'like', "%$search%")
-              ->orWhere('penerima', 'like', "%$search%")
-              ->orWhere('perihal', 'like', "%$search%");
+    if ($request->filled('search')) {
+        $searchTerm = $request->search;
+        $query->where(function($q) use ($searchTerm) {
+            $q->where('nomor_surat', 'like', "%{$searchTerm}%")
+              ->orWhere('penerima', 'like', "%{$searchTerm}%")
+              ->orWhere('perihal', 'like', "%{$searchTerm}%");
         });
     }
     
-    $suratKeluars = $query->paginate($perPage);
+    if ($request->filled('category')) {
+        $query->where('kategori', $request->category);
+    }
     
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+    
+    if ($request->filled('start_date')) {
+        $query->whereDate('tanggal_surat', '>=', $request->start_date);
+    }
+    
+    if ($request->filled('end_date')) {
+        $query->whereDate('tanggal_surat', '<=', $request->end_date);
+    }
+    
+    // Order by date
+    $query->orderBy('tanggal_surat', 'desc');
+    
+    // Paginate results
+    $suratKeluars = $query->paginate(1);
+    
+    // Handle AJAX request
     if ($request->ajax()) {
+        $html = '';
+        
+        if ($suratKeluars->count() > 0) {
+            foreach ($suratKeluars as $index => $surat) {
+                $html .= view('surat_keluar.partials.table_row', [
+                    'surat' => $surat,
+                    'index' => ($suratKeluars->currentPage() - 1) * $suratKeluars->perPage() + $index + 1
+                ])->render();
+            }
+        } else {
+            $html = view('surat_keluar.partials.empty_state')->render();
+        }
+        
+        // Generate pagination HTML
+        $paginationHtml = $suratKeluars->links()->toHtml();
+        
         return response()->json([
-            'html' => view('surat_keluar.partials.table', compact('suratKeluars'))->render(),
-            'pagination' => $suratKeluars->links()->toHtml(),
-            'total' => $suratKeluars->total()
+            'html' => $html,
+            'pagination' => $paginationHtml,
+            'total' => $suratKeluars->total(),
+            'currentPage' => $suratKeluars->currentPage(),
+            'lastPage' => $suratKeluars->lastPage()
         ]);
     }
     
+    // Regular view response
     return view('superadmin.arsip.surat_keluar.index', compact('suratKeluars'));
 }
 
