@@ -183,7 +183,7 @@
                         </div>
                         <h5 class="fw-bold text-muted mb-3">Belum Ada Data Klapper Siswa</h5>
                         <p class="text-muted mb-4">Silakan tambahkan data klapper baru untuk mulai mengelola data siswa</p>
-                        <a href="{{ url('klapper/tambahdataklapper') }}" class="btn btn-primary rounded-pill px-4 py-2">
+                        <a href="{{ url('klapper/create') }}" class="btn btn-primary rounded-pill px-4 py-2">
                             <i class="fas fa-plus me-2"></i> Tambah Klapper Baru
                         </a>
                     </div>
@@ -232,7 +232,7 @@
                 <h6 class="dropdown-header">Tambah Data Baru</h6>
             </li>
             <li>
-                <a class="dropdown-item d-flex align-items-center" href="{{ url('klapper/tambahdataklapper') }}">
+                <a class="dropdown-item d-flex align-items-center" href="{{ url('klapper/create') }}">
                     <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
                         <i class="fas fa-user-graduate text-primary"></i>
                     </div>
