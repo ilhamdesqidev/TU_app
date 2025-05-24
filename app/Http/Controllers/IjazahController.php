@@ -5,91 +5,68 @@ namespace App\Http\Controllers;
 use App\Models\Ijazah;
 use App\Models\Klapper;
 use App\Models\Siswa;
-use App\Models\Angkatan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class IjazahController extends Controller
 {
-    // 1. Listing + search global
-    public function index(Request $req)
+    public function index(Request $request)
     {
-        $q = $req->input('q');
-        $ijazahs = Ijazah::with('siswa.klapper')
-            ->when($q, fn($qb) => $qb->whereHas('siswa', fn($q2) => 
-                 $q2->where('nama_siswa','like',"%{$q}%")))
-            ->paginate(20);
-        return view('superadmin.arsip.ijazah.index', compact('ijazahs','q'));
-    }
+        $filter = $request->get('filter');
 
-    // 2. Listing per angkatan
-    public function perAngkatan(Klapper $klapper)
-    {
-        // ambil siswa pada klapper tersebut dengan ijazah
-        $siswa = $klapper->siswa()->with('ijazah')->get();
-        return view('ijazah.per-angkatan', compact('klapper','siswa'));
-    }
+        $query = Ijazah::query()->with('siswa', 'klapper');
 
-    // 3. Show form create
-    public function create(Angkatan $angkatan)
-    {
-
-        // Contoh ambil siswa dari angkatan terkait yang belum punya ijazah
-        $siswaList = Siswa::where('angkatan_id', $angkatan->id)->doesntHave('ijazah')->orderBy('nama_siswa')->get();
-        $klapper = Klapper::where('angkatan_id', $angkatan->id)->first();
-        return view('superadmin.arsip.ijazah.create', compact('angkatan', 'siswaList', 'klapper'));
-    }
-    // 4. Simpan
-    public function store(Request $req)
-    {
-        $data = $req->validate([
-            'siswa_id'=>'required|exists:siswa,id',
-            'nomor_ijazah'=>'required|unique:ijazahs',
-            'tgl_terbit'=>'required|date',
-            'file'=>'required|file|mimes:pdf,jpg,png|max:2048',
-        ]);
-        $data['file_path'] = $req->file('file')->store('ijazah');
-        Ijazah::create($data);
-        return redirect()->route('ijazah.index')->with('success','Ijazah tersimpan.');
-    }
-
-    // 5. Edit
-    public function edit(Ijazah $ijazah)
-    {
-        return view('ijazah.edit', compact('ijazah'));
-    }
-
-    public function update(Request $req, Ijazah $ijazah)
-    {
-        $data = $req->validate([
-            'nomor_ijazah'=>"required|unique:ijazahs,nomor_ijazah,{$ijazah->id}",
-            'tgl_terbit'=>'required|date',
-            'file'=>'nullable|file|mimes:pdf,jpg,png|max:2048',
-        ]);
-        if($req->hasFile('file')){
-            // hapus lama
-            Storage::delete($ijazah->file_path);
-            $data['file_path'] = $req->file('file')->store('ijazah');
+        if ($filter && $filter !== 'all') {
+            if (str_starts_with($filter, 'klapper-')) {
+                $klapperId = explode('-', $filter)[1] ?? null;
+                $query->where('klapper_id', $klapperId);
+            }
         }
-        $ijazah->update($data);
-        return back()->with('success','Ijazah diperbarui.');
+
+        $ijazahs = $query->latest()->paginate(10);
+
+        // Ambil daftar klapper dan jumlah ijazah terkait untuk menu filter
+        $availableKlappers = Klapper::withCount('ijazahs')->get();
+        return view('superadmin.arsip.ijazah.index', compact('ijazahs', 'availableKlappers'));
     }
 
-    public function destroy(Ijazah $ijazah)
+    public function create()
     {
-        Storage::delete($ijazah->file_path);
-        $ijazah->delete();
-        return back()->with('success','Ijazah dihapus.');
+        $klappers = Klapper::whereHas('siswas', function($query) {
+            $query->where('status', 1); // Hanya klapper dengan siswa yang sudah lulus
+        })->get();
+        
+        return view('ijazah.create', compact('klappers'));
     }
 
-    public function show(Ijazah $ijazah)
+    public function store(Request $request)
     {
-        $ijazah->load('siswa.klapper'); // memastikan eager loading
-        $klapper = optional($ijazah->siswa)->klapper;
-    
-        return view('superadmin.arsip.ijazah.show', compact('ijazah', 'klapper'));
-    }
-    
+        $request->validate([
+            'klapper_id' => 'required|exists:klappers,id',
+            'siswa_id' => 'required|exists:siswas,id',
+            'nomor_ijazah' => 'required|unique:ijazahs'
+        ]);
 
-    
+        $siswa = Siswa::findOrFail($request->siswa_id);
+
+        Ijazah::create([
+            'klapper_id' => $request->klapper_id,
+            'siswa_id' => $request->siswa_id,
+            'nama_siswa' => $siswa->nama_siswa,
+            'nis' => $siswa->nis,
+            'jurusan' => $siswa->jurusan,
+            'tanggal_lulus' => $siswa->tanggal_lulus ?? now(),
+            'nomor_ijazah' => $request->nomor_ijazah
+        ]);
+
+        return redirect()->route('ijazah.index')->with('success', 'Data ijazah berhasil ditambahkan');
+    }
+
+    // Method lainnya (show, edit, update, destroy) bisa disesuaikan kebutuhan
+
+    public function download($id)
+    {
+        $ijazah = Ijazah::findOrFail($id);
+        $pdf = PDF::loadView('ijazah.pdf', compact('ijazah'));
+        return $pdf->download('ijazah-'.$ijazah->nomor_ijazah.'.pdf');
+    }
 }

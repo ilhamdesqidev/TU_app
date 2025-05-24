@@ -32,7 +32,7 @@ Route::get('/siswa/{id}', [SiswaController::class, 'showSiswa'])->name('siswa.sh
 Route::get('/siswa/edit/{id}', [SiswaController::class, 'editSiswa'])->name('siswa.edit');
 Route::put('/siswa/update/{id}', [SiswaController::class, 'updateSiswa'])->name('siswa.update');
 
-Route::post('/siswa/lulus/{id}', [SiswaController::class, 'lulusSemua'])->name('siswa.lulusSemua');
+Route::post('/klapper/{id}/luluskan', [SiswaController::class, 'luluskanSiswa'])->name('siswa.luluskan');
 Route::post('/siswa/keluar/{id}', [SiswaController::class, 'keluar'])->name('siswa.keluar');
 Route::post('/siswa/naik-kelas-xi/{id}', [SiswaController::class, 'naikKelasXI'])->name('siswa.naikKelasXI');
 Route::post('/siswa/naik-kelas-xii/{id}', [SiswaController::class, 'naikKelasXII'])->name('siswa.naikKelasXII');
@@ -83,14 +83,6 @@ Route::get('arsip/surat_keluar', [SuratkeluarController::class, 'surat_keluarInd
 Route::get('surat_keluar/export', [SuratKeluarController::class, 'export'])->name('surat_keluar.export');
 Route::get('surat_keluar/{id}/download/{index}', [SuratKeluarController::class, 'downloadAttachment'])->name('surat_keluar.download_attachment');
 
-
-// Route::get('/ijazah', [IjazahController::class, 'index']);
-// Route::get('/ijazah/create/{angkatan}', [IjazahController::class, 'create'])->name('ijazah.create');
-// // index global dengan search
-// Route::get('ijazah', [IjazahController::class,'index'])->name('ijazah.index');
-// // lihat per angkatan (klapper)
-// Route::get('ijazah/angkatan/{klapper}', [IjazahController::class,'perAngkatan'])->name('ijazah.perAngkatan');
-// // CRUD
-// Route::resource('ijazah', IjazahController::class)->except(['index','show']);
-// Route::get('/ijazah/{ijazah}', [IjazahController::class, 'show'])->name('ijazah.show');
-
+//ijazah 
+Route::resource('/ijazah', IjazahController::class);
+Route::get('/ijazah/download/{id}', [IjazahController::class, 'download'])->name('ijazah.download');

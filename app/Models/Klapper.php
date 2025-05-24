@@ -14,4 +14,9 @@ class Klapper extends Model
     {
         return $this->hasMany(Siswa::class);
     }
+
+    public function ijazahs()
+    {
+        return $this->hasMany(Ijazah::class);
+    }
 }

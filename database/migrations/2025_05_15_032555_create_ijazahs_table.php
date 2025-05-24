@@ -10,14 +10,24 @@ class CreateIjazahsTable extends Migration
     {
         Schema::create('ijazahs', function (Blueprint $table) {
             $table->id();
-            // relasi ke siswa (yang sudah ada di klapper)
+            
+            // Relasi ke klapper dan siswa
+            $table->foreignId('klapper_id')->constrained()->onDelete('cascade');
             $table->foreignId('siswa_id')->constrained()->onDelete('cascade');
+            
+            // Data siswa (denormalized untuk arsip)
+            $table->string('nama_siswa');
+            $table->string('nis');
+            $table->string('jurusan');
+            $table->date('tanggal_lulus');
             $table->string('nomor_ijazah')->unique();
-            $table->date('tgl_terbit');
-            $table->string('file_path');    // path upload PDF/gambar ijazah
+            
             $table->timestamps();
+            
+            // Index untuk pencarian
+            $table->index('nomor_ijazah');
+            $table->index('nis');
         });
-        
     }
 
     public function down()
