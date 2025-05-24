@@ -36,7 +36,8 @@
                             <th>Klapper</th>
                             <th>Tanggal Lulus</th>
                             <th>Nomor Ijazah</th>
-                            <th width="120">Aksi</th>
+                            <th>File Ijazah</th>
+                            <th width="150">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,21 +73,71 @@
                                 </span>
                             </td>
                             <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('ijazah.download', $ijazah->id) }}" 
-                                       class="btn btn-outline-primary" title="Unduh PDF">
-                                        <i class="fas fa-file-pdf"></i>
+                                @if($ijazah->file_path)
+                                    <a href="{{ Storage::url($ijazah->file_path) }}" 
+                                    target="_blank" class="badge bg-success bg-opacity-10 text-success">
+                                        <i class="fas fa-file-pdf me-1"></i> Lihat
                                     </a>
+                                @else
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">Belum Upload</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    @if($ijazah->file_path)
+                                        <a href="{{ route('ijazah.download', $ijazah->id) }}" 
+                                           class="btn btn-outline-primary" title="Unduh PDF">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                    @endif
+                                    <button class="btn btn-outline-secondary" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#uploadModal{{ $ijazah->id }}"
+                                            title="Upload Ijazah">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
                                     <a href="{{ route('ijazah.edit', $ijazah->id) }}" 
                                        class="btn btn-outline-warning" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </div>
+                                
+                                <!-- Modal Upload -->
+                                <div class="modal fade" id="uploadModal{{ $ijazah->id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <form action="{{ route('ijazah.upload', $ijazah->id) }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Upload File Ijazah</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label for="file_ijazah" class="form-label">Pilih File Ijazah (PDF)</label>
+                                                        <input type="file" class="form-control" id="file_ijazah" name="file_ijazah" accept=".pdf" required>
+                                                        <div class="form-text">Maksimal ukuran file: 5MB</div>
+                                                    </div>
+                                                    @if($ijazah->file_path)
+                                                    <div class="alert alert-info">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        File ijazah sudah ada. Upload baru akan menggantikan file yang lama.
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="8" class="text-center py-4">
+                            <td colspan="9" class="text-center py-4">
                                 <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                                 <h5 class="text-muted">Belum ada arsip ijazah</h5>
                             </td>

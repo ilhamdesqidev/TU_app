@@ -313,9 +313,12 @@
                                                 </a>
                                                 
                                                 @if($siswa->status == 0)
-                                                <a href="{{ route('siswa.keluar', $siswa->id) }}" class="btn btn-sm btn-outline-danger">
-                                                    <i class="fas fa-arrow-right-from-bracket"></i>
-                                                </a>
+                                                <form action="{{ route('siswa.keluar', $siswa->id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin mengeluarkan siswa ini?')">
+                                                        <i class="fas fa-arrow-right-from-bracket"></i>
+                                                    </button>
+                                                </form>
                                                 @endif
                                             </div>
                                         </td>

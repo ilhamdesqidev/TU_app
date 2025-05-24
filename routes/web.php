@@ -86,3 +86,4 @@ Route::get('surat_keluar/{id}/download/{index}', [SuratKeluarController::class, 
 //ijazah 
 Route::resource('/ijazah', IjazahController::class);
 Route::get('/ijazah/download/{id}', [IjazahController::class, 'download'])->name('ijazah.download');
+Route::post('/ijazah/upload/{ijazah}', [IjazahController::class, 'upload'])->name('ijazah.upload');

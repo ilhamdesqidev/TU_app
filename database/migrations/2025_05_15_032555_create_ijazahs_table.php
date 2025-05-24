@@ -21,6 +21,7 @@ class CreateIjazahsTable extends Migration
             $table->string('jurusan');
             $table->date('tanggal_lulus');
             $table->string('nomor_ijazah')->unique();
+            $table->string('file_path')->nullable()->after('nomor_ijazah');
             
             $table->timestamps();
             

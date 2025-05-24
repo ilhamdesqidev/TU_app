@@ -16,7 +16,8 @@ class Ijazah extends Model
         'nis',
         'jurusan',
         'tanggal_lulus',
-        'nomor_ijazah'
+        'nomor_ijazah',
+        'file_path' // Pastikan ini ada
     ];
 
     public function klapper()
