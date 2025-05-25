@@ -126,4 +126,32 @@ public function download($id)
 
     return back()->with('success', 'File ijazah berhasil diupload!');
 }
+
+public function edit($id)
+{
+    $ijazah = Ijazah::with(['siswa', 'klapper'])->findOrFail($id);
+    $klappers = Klapper::all(); // Jika diperlukan untuk dropdown klapper
+    return view('superadmin.arsip.ijazah.edit', compact('ijazah', 'klappers'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nomor_ijazah' => 'required|unique:ijazahs,nomor_ijazah,'.$id,
+        'tanggal_lulus' => 'required|date',
+        'klapper_id' => 'required|exists:klappers,id',
+        // tambahkan validasi lain sesuai kebutuhan
+    ]);
+
+    $ijazah = Ijazah::findOrFail($id);
+    $ijazah->update([
+        'nomor_ijazah' => $request->nomor_ijazah,
+        'tanggal_lulus' => $request->tanggal_lulus,
+        'klapper_id' => $request->klapper_id,
+        // tambahkan field lain yang perlu diupdate
+    ]);
+
+    return redirect()->route('ijazah.index')
+        ->with('success', 'Data ijazah berhasil diperbarui');
+}
 }
