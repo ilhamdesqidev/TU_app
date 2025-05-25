@@ -23,6 +23,16 @@ class IjazahController extends Controller
             }
         }
 
+        // Pencarian berdasarkan nama atau NIS
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('nama_siswa', 'like', "%{$searchTerm}%")
+                ->orWhere('nis', 'like', "%{$searchTerm}%")
+                ->orWhere('nomor_ijazah', 'like', "%{$searchTerm}%");
+            });
+        }
+
         $ijazahs = $query->latest()->paginate(10);
 
         // Ambil daftar klapper dan jumlah ijazah terkait untuk menu filter

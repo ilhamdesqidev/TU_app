@@ -3,27 +3,69 @@
 @section('content')
 <div class="container py-4">
     <div class="card shadow border-0 rounded-3">
-        <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">
-                <i class="fas fa-archive me-2 text-primary"></i>Arsip Ijazah
-            </h4>
-            <div class="dropdown">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter me-1"></i> Filter Klapper
+    <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center flex-wrap">
+    <div class="d-flex align-items-center mb-2 mb-md-0">
+        <h4 class="card-title mb-0">
+            <i class="fas fa-archive me-2 text-primary"></i>Arsip Ijazah
+        </h4>
+    </div>
+    
+    <div class="d-flex flex-wrap gap-2">
+        <!-- Search Form -->
+        <form action="{{ route('ijazah.index') }}" method="GET" class="position-relative" id="searchForm">
+            <div class="input-group">
+                <input type="text" 
+                       name="search" 
+                       id="searchInput"
+                       class="form-control" 
+                       placeholder="Cari nama/NIS..." 
+                       value="{{ request('search') }}"
+                       style="min-width: 250px;">
+                <button class="btn btn-outline-primary" type="submit">
+                    <i class="fas fa-search"></i>
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="?filter=all">Semua Klapper</a></li>
-                    @foreach($availableKlappers as $klapper)
-                    <li>
-                        <a class="dropdown-item" href="?filter=klapper-{{ $klapper->id }}">
-                            Angkatan {{ $klapper->tahun_ajaran }}
-                            <span class="badge bg-primary float-end">{{ $klapper->ijazahs_count }}</span>
-                        </a>
-                    </li>
-                    @endforeach
-                </ul>
+                <div class="position-absolute top-50 end-0 translate-middle-y pe-4 d-none" id="searchLoading">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
             </div>
+        </form>
+        
+        <!-- Filter Dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-filter me-1"></i> Filter Klapper
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="?filter=all{{ request('search') ? '&search='.request('search') : '' }}">Semua Klapper</a></li>
+                @foreach($availableKlappers as $klapper)
+                <li>
+                    <a class="dropdown-item" href="?filter=klapper-{{ $klapper->id }}{{ request('search') ? '&search='.request('search') : '' }}">
+                        Angkatan {{ $klapper->tahun_ajaran }}
+                        <span class="badge bg-primary float-end">{{ $klapper->ijazahs_count }}</span>
+                    </a>
+                </li>
+                @endforeach
+            </ul>
         </div>
+    </div>
+</div>
+        @if(request('search'))
+        <div class="alert alert-info alert-dismissible fade show mx-3 mt-3 mb-0" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-info-circle me-2"></i>
+                <div>
+                    Hasil pencarian untuk: <strong>"{{ request('search') }}"</strong>
+                    @if(request('filter') && request('filter') != 'all')
+                        - Filter Klapper: <strong>{{ $availableKlappers->firstWhere('id', str_replace('klapper-', '', request('filter')))->tahun_ajaran ?? '' }}</strong>
+                    @endif
+                    <span class="badge bg-primary ms-2">{{ $ijazahs->total() }} hasil</span>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -155,4 +197,38 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const searchForm = document.getElementById('searchForm');
+    const searchLoading = document.getElementById('searchLoading');
+    let typingTimer;
+    const doneTypingInterval = 500; // 0.5 detik setelah selesai mengetik
+    
+    // Auto submit form setelah selesai mengetik
+    searchInput.addEventListener('input', function() {
+        clearTimeout(typingTimer);
+        searchLoading.classList.remove('d-none');
+        
+        typingTimer = setTimeout(() => {
+            searchForm.submit();
+        }, doneTypingInterval);
+    });
+    
+    // Jika tekan enter, langsung submit
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            clearTimeout(typingTimer);
+            searchForm.submit();
+        }
+    });
+    
+    // Reset loading indicator saat form submit
+    searchForm.addEventListener('submit', function() {
+        searchLoading.classList.remove('d-none');
+    });
+});
+</script>
+
 @endsection
