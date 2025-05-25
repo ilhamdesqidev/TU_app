@@ -20,6 +20,7 @@ class Siswa extends Model
         'angkatan',
         'nama_ibu',
         'nama_ayah',
+        'status',
         'tanggal_masuk',
         'tanggal_naik_kelas_xi',
         'tanggal_naik_kelas_xii',
