@@ -33,25 +33,29 @@ class SiswaController extends Controller
     }
 
     public function storeSiswa(Request $request, $klappersId)
-    {
-        $request->validate([
-            'nis' => 'required',
-            'nisn' => 'required',
-            'nama_siswa' => 'required',
-            'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required|date',
-            'gender' => 'required',
-            'kelas' => 'required',
-            'jurusan' => 'required',
-            'nama_ibu' => 'required',
-            'nama_ayah' => 'required',
-            'tanggal_masuk' => 'required|date',
-            'tanggal_naik_kelas_xi' => 'nullable|date',
-            'tanggal_naik_kelas_xii' => 'nullable|date',
-            'tanggal_lulus' => 'nullable|date',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+{
+    $request->validate([
+        'nis' => 'required|unique:siswas,nis',
+        'nisn' => 'required|unique:siswas,nisn',
+        'nama_siswa' => 'required',
+        'tempat_lahir' => 'required',
+        'tanggal_lahir' => 'required|date',
+        'gender' => 'required',
+        'kelas' => 'required',
+        'jurusan' => 'required',
+        'nama_ibu' => 'required',
+        'nama_ayah' => 'required',
+        'tanggal_masuk' => 'required|date',
+        'tanggal_naik_kelas_xi' => 'nullable|date',
+        'tanggal_naik_kelas_xii' => 'nullable|date',
+        'tanggal_lulus' => 'nullable|date',
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ], [
+        'nis.unique' => 'NIS sudah digunakan oleh siswa lain',
+        'nisn.unique' => 'NISN sudah digunakan oleh siswa lain',
+    ]);
 
+    try {
         $siswa = new Siswa();
         $siswa->nis = $request->nis;
         $siswa->nisn = $request->nisn;
@@ -80,7 +84,17 @@ class SiswaController extends Controller
         $siswa->save();
 
         return redirect()->route('klapper.show', $klappersId)->with('status', 'Berhasil Menambahkan Data Siswa!');
+    } catch (\Illuminate\Database\QueryException $e) {
+        $errorCode = $e->errorInfo[1];
+        if ($errorCode == 1062) { // Duplicate entry error code
+            return back()->withInput()->withErrors([
+                'nis' => $e->getMessage(),
+                'nisn' => $e->getMessage(),
+            ]);
+        }
+        return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data']);
     }
+}
 
     public function showSiswa($id)
     {
@@ -95,13 +109,19 @@ class SiswaController extends Controller
     }
 
     public function updateSiswa(Request $request, $id)
-    {
-        $siswa = Siswa::findOrFail($id);
+{
+    $siswa = Siswa::findOrFail($id);
 
-        $request->validate([
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+    $request->validate([
+        'nis' => 'required|unique:siswas,nis,'.$id,
+        'nisn' => 'required|unique:siswas,nisn,'.$id,
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ], [
+        'nis.unique' => 'NIS sudah digunakan oleh siswa lain',
+        'nisn.unique' => 'NISN sudah digunakan oleh siswa lain',
+    ]);
 
+    try {
         $siswa->update($request->except('foto'));
 
         if ($request->hasFile('foto')) {
@@ -118,7 +138,17 @@ class SiswaController extends Controller
         $siswa->save();
 
         return redirect()->route('siswa.show', $siswa->id)->with('success', 'Data siswa berhasil diperbarui.');
+    } catch (\Illuminate\Database\QueryException $e) {
+        $errorCode = $e->errorInfo[1];
+        if ($errorCode == 1062) {
+            return back()->withInput()->withErrors([
+                'nis' => 'NIS sudah digunakan oleh siswa lain',
+                'nisn' => 'NISN sudah digunakan oleh siswa lain',
+            ]);
+        }
+        return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat memperbarui data']);
     }
+}
 
     public function luluskanSiswa(Request $request, $klapperId)
 {
