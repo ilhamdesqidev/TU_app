@@ -541,12 +541,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{url('spensasi')}}" class="nav-link {{ Request::is('spensasi*') ? 'active' : '' }}">
-                        <div class="icon-wrapper"><i class='bx bx-message-square-detail fs-5'></i></div>
-                        <span class="nav-text">Spensasi</span>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="#" class="nav-link {{ Request::is('surat_masuk*') || Request::is('surat_keluar*') || Request::is('ijazah*') ? 'active' : '' }}" id="archiveToggle">
                         <div class="icon-wrapper"><i class='bx bx-folder fs-5'></i></div>
                         <span class="nav-text">Arsip</span>

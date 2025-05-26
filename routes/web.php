@@ -46,18 +46,6 @@ Route::resource('tu', TuController::class)->except(['index']); // Menyertakan se
 Route::post('superadmin/spensasi/tu/approve/{id}', [TuController::class, 'approve'])->name('superadmin.spensasi.tu.approve');
 Route::post('superadmin/spensasi/tu/reject/{id}', [TuController::class, 'reject'])->name('superadmin.spensasi.tu.reject');
 
-//super
-Route::get('/spensasi/tu', [TuController::class, 'index'])->name('spensasi.tu.index');
-Route::resource('spensasi', SpensasiController::class)->except(['show'])->names([
-    'index' => 'superadmin.spensasi.index',
-    'create' => 'superadmin.spensasi.create',
-    'store' => 'superadmin.spensasi.store',
-    'edit' => 'superadmin.spensasi.edit',
-    'update' => 'superadmin.spensasi.update',
-    'destroy' => 'superadmin.spensasi.destroy'
-]);
-
-
 //guru
 Route::resource('guru', GuruController::class);
 Route::get('spensasi/guru', [GuruController::class, 'index'])->name('superadmin.spensasi.guru.index');

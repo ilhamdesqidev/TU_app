@@ -49,7 +49,7 @@ public function index(Request $request)
     $query->orderBy('tanggal_surat', 'desc');
     
     // Paginate results
-    $suratKeluars = $query->paginate(1);
+    $suratKeluars = $query->paginate(25);
     
     // Handle AJAX request
     if ($request->ajax()) {

@@ -50,7 +50,7 @@ class SuratMasukController extends Controller
     $suratMasuks = $query->orderBy('tanggal_diterima', 'desc')->paginate(10);
     
      // Paginate results
-     $suratMasuks = $query->paginate(1);
+     $suratMasuks = $query->paginate(25);
     
      // Handle AJAX request
      if ($request->ajax()) {
