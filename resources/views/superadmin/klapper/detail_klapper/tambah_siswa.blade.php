@@ -46,6 +46,8 @@
                     
                     <form action="{{ route('siswa.store', $klappersId) }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="kelas" value="{{ $minClass }}">
+                        
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label for="nis" class="form-label fw-semibold">
@@ -152,38 +154,34 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="d-flex gap-3 mt-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="kelas" id="kelasX" value="X" 
-                                           {{ $minClass == 'X' ? 'checked' : '' }} {{ $minClass == 'XI' || $minClass == 'XII' ? 'disabled' : '' }}>
-                                    <label class="form-check-label {{ $minClass == 'XI' || $minClass == 'XII' ? 'text-muted' : '' }}" for="kelasX">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">Kelas X</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXI" value="XI" 
-                                           {{ $minClass == 'XI' ? 'checked' : '' }} {{ $minClass == 'XII' ? 'disabled' : '' }}>
-                                    <label class="form-check-label {{ $minClass == 'XII' ? 'text-muted' : '' }}" for="kelasXI">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">Kelas XI</span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="kelas" id="kelasXII" value="XII" 
-                                           {{ $minClass == 'XII' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="kelasXII">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">Kelas XII</span>
-                                    </label>
+                                <div>
+                                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">
+                                        Kelas {{ $minClass }}
+                                    </span>
                                 </div>
                             </div>
                             <small class="text-muted mt-2 d-block">
                                 @if($minClass != 'X')
                                     <i class="fas fa-info-circle me-1"></i> 
-                                    Kelas yang tidak tersedia telah dinonaktifkan berdasarkan tingkat kelas siswa yang ada.
+                                    Siswa baru untuk kelas {{ $minClass }} harus memiliki alasan masuk yang valid.
                                 @else
-                                    Pilih tingkat kelas siswa
+                                    Siswa baru kelas X (tidak memerlukan alasan masuk)
                                 @endif
                             </small>
                         </div>
 
+                        @if($minClass != 'X')
+                        <div class="mb-4">
+                            <label for="alasan_masuk" class="form-label fw-semibold">
+                                <i class="fas fa-comment-dots me-1 text-primary"></i> Alasan Masuk
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea name="alasan_masuk" id="alasan_masuk" class="form-control rounded-3" 
+                                      rows="3" placeholder="Jelaskan alasan siswa masuk di kelas {{ $minClass }}" required></textarea>
+                            <small class="text-muted mt-1 d-block">Contoh: Pindahan dari sekolah lain, mengulang tahun ajaran, dll.</small>
+                        </div>
+                        @endif
+                        
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label for="nama_ibu" class="form-label fw-semibold">
@@ -295,10 +293,6 @@
     // Set current date as default for tanggal_masuk
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('tanggal_masuk').value = new Date().toISOString().split('T')[0];
-        
-        // Add validation for NIS and NISN
-        const nisInput = document.getElementById('nis');
-        const nisnInput = document.getElementById('nisn');
         
         // Auto-capitalize inputs that need capitalization
         const capitalizeInputs = document.querySelectorAll('input[style*="text-transform: capitalize;"]');

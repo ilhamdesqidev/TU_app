@@ -50,6 +50,7 @@ class SiswaController extends Controller
         'tanggal_naik_kelas_xii' => 'nullable|date',
         'tanggal_lulus' => 'nullable|date',
         'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'alasan_masuk' => 'required_if:kelas,XI,XII|nullable|string|max:500',
     ], [
         'nis.unique' => 'NIS sudah digunakan oleh siswa lain',
         'nisn.unique' => 'NISN sudah digunakan oleh siswa lain',
@@ -73,6 +74,7 @@ class SiswaController extends Controller
         $siswa->tanggal_lulus = $request->tanggal_lulus;
         $siswa->klapper_id = $klappersId;
         $siswa->status = 0;
+        $siswa->alasan_masuk = $request->kelas === 'X' ? null : $request->alasan_masuk;
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');

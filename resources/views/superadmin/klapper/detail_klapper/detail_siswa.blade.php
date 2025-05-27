@@ -189,6 +189,19 @@
                                             </td>
                                             <td class="border-0">{{ $siswa->kelas }}</td>
                                         </tr>
+                                        <!-- Di halaman profil/detail siswa -->
+                                        @if($siswa->kelas != 'X' && $siswa->alasan_masuk)
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="fw-bold mb-0">
+                                                    <i class="fas fa-info-circle me-2 text-primary"></i> Alasan Masuk di Kelas {{ $siswa->kelas }}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="mb-0">{{ $siswa->alasan_masuk }}</p>
+                                            </div>
+                                        </div>
+                                        @endif
                                         <tr>
                                             <td class="border-0">
                                                 <div class="d-flex align-items-center">
