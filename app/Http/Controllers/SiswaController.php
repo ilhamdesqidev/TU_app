@@ -73,7 +73,7 @@ class SiswaController extends Controller
         $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
         $siswa->tanggal_lulus = $request->tanggal_lulus;
         $siswa->klapper_id = $klappersId;
-        $siswa->status = 0;
+        $siswa->status = 2;
         $siswa->alasan_masuk = $request->kelas === 'X' ? null : $request->alasan_masuk;
 
         if ($request->hasFile('foto')) {
@@ -196,15 +196,36 @@ private function generateNomorIjazah($siswa, $klapper)
     return "IJZ-{$klapper->id}-{$sequence}-{$tahun}";
 }
 
-    public function keluar($id)
-    {
-        $siswa = Siswa::findOrFail($id);
-        $siswa->status = 2;
-        $siswa->tanggal_keluar = now();
-        $siswa->save();
+public function keluar(Request $request, $id)
+{
+    // Validasi input
+    $request->validate([
+        'tanggal_keluar' => 'required|date',
+        'alasan_keluar' => 'required|string|max:500',
+    ], [
+        'tanggal_keluar.required' => 'Tanggal keluar harus diisi',
+        'tanggal_keluar.date' => 'Format tanggal tidak valid',
+        'alasan_keluar.required' => 'Alasan keluar harus diisi',
+        'alasan_keluar.max' => 'Alasan keluar maksimal 500 karakter',
+    ]);
 
-        return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Keluar.');
+    try {
+        $siswa = Siswa::findOrFail($id);
+        
+        // Update data siswa
+        $siswa->update([
+            'status' => 0, // 0 = keluar/tidak aktif, 2 = aktif/pelajar, 1 = lulus
+            'tanggal_keluar' => $request->tanggal_keluar,
+            'alasan_keluar' => $request->alasan_keluar,
+        ]);
+
+        // Gunakan nama_siswa sesuai dengan field di database
+        return redirect()->back()->with('success', 'Siswa ' . $siswa->nama_siswa . ' berhasil dikeluarkan dari sistem.');
+        
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
+}
 
     public function naikKelasXI(Request $request, $id)
     {

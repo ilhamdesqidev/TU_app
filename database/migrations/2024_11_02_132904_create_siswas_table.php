@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('gender');
             $table->string('kelas');
+            $table->text('alasan_masuk')->nullable(); // Pindah ke posisi yang benar
             $table->string('jurusan');
             $table->string('nama_ibu');
             $table->string('nama_ayah');
@@ -28,13 +29,14 @@ return new class extends Migration
             $table->date('tanggal_naik_kelas_xii')->nullable();
             $table->date('tanggal_lulus')->nullable();
             $table->date('tanggal_keluar')->nullable();
+            $table->text('alasan_keluar')->nullable(); // Tambahkan kolom ini
             $table->string('foto')->nullable();
-            $table->foreignId('klapper_id')->constrained('klappers')->onDelete('cascade'); // Menghubungkan ke tabel klappers
+            $table->foreignId('klapper_id')->constrained('klappers')->onDelete('cascade'); //menghubungkan ke tabel klapper
             $table->integer('status')->default(2); // 2 untuk Pelajar, 1 untuk Lulus
-            $table->text('alasan_masuk')->nullable()->after('kelas');
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

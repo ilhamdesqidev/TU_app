@@ -292,7 +292,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @if($siswa->status == 0)
+                                            @if($siswa->status == 2)
                                             <span class="badge bg-primary text-white">
                                                 <i class="fas fa-user-graduate me-1"></i> Pelajar
                                             </span>
@@ -300,7 +300,7 @@
                                             <span class="badge bg-success text-white">
                                                 <i class="fas fa-graduation-cap me-1"></i> Lulus
                                             </span>
-                                            @else
+                                            @elseif($siswa->status == 0)
                                             <span class="badge bg-danger text-white">
                                                 <i class="fas fa-arrow-right-from-bracket me-1"></i> Keluar
                                             </span>
@@ -312,18 +312,80 @@
                                                     <i class="fa-solid fa-folder-open"></i>
                                                 </a>
                                                 
-                                                @if($siswa->status == 0)
-                                                <form action="{{ route('siswa.keluar', $siswa->id) }}" method="POST" style="display: inline;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin mengeluarkan siswa ini?')">
+                                                {{-- Tombol Keluarkan Siswa (tambahkan ini) --}}
+                                                @if($siswa->status == 2)
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#modalKeluarkanSiswa{{ $siswa->id }}"
+                                                            title="Keluarkan Siswa">
                                                         <i class="fas fa-arrow-right-from-bracket"></i>
                                                     </button>
-                                                </form>
-                                                @endif
-                                            </div>
+                                               @endif
                                         </td>
                                     </tr>
-                                    @endforeach
+
+                                    <!-- Modal Keluarkan Siswa -->
+                <div class="modal fade" id="modalKeluarkanSiswa{{ $siswa->id }}" tabindex="-1" aria-labelledby="modalKeluarkanSiswaLabel{{ $siswa->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalKeluarkanSiswaLabel{{ $siswa->id }}">
+                                    <i class="fas fa-arrow-right-from-bracket text-danger me-2"></i>
+                                    Keluarkan Siswa
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            
+                            <form action="{{ route('siswa.keluar', $siswa->id) }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="alert alert-warning" role="alert">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Peringatan!</strong> Tindakan ini akan mengeluarkan siswa <strong>{{ $siswa->nama_siswa }}</strong> dari sistem.
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="tanggal_keluar{{ $siswa->id }}" class="form-label">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            Tanggal Keluar <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="date" class="form-control" id="tanggal_keluar{{ $siswa->id }}" name="tanggal_keluar" 
+                                            value="{{ date('Y-m-d') }}" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="alasan_keluar{{ $siswa->id }}" class="form-label">
+                                            <i class="fas fa-comment me-1"></i>
+                                            Alasan Keluar <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select mb-2" id="alasan_keluar_select{{ $siswa->id }}" onchange="handleAlasanChange({{ $siswa->id }})">
+                                            <option value="">Pilih alasan...</option>
+                                            <option value="Lulus">Lulus</option>
+                                            <option value="Pindah Sekolah">Pindah Sekolah</option>
+                                            <option value="Mengundurkan Diri">Mengundurkan Diri</option>
+                                            <option value="Dikeluarkan">Dikeluarkan</option>
+                                            <option value="custom">Lainnya (Tulis sendiri)</option>
+                                        </select>
+                                        <textarea class="form-control" id="alasan_keluar{{ $siswa->id }}" name="alasan_keluar" 
+                                                rows="3" placeholder="Masukkan alasan keluar siswa..." required></textarea>
+                                        <div class="form-text">Jelaskan alasan mengeluarkan siswa secara detail.</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        <i class="fas fa-times me-1"></i>
+                                        Batal
+                                    </button>
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin mengeluarkan siswa ini?')">
+                                        <i class="fas fa-check me-1"></i>
+                                        Keluarkan Siswa
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
 
                                     @if(count($filteredSiswas) == 0)
                                     <tr>
@@ -337,6 +399,7 @@
                         </div>
                     </div>
                 </div>
+
                 
                 <!-- Footer info -->
                 <div class="mt-4 text-center text-muted small">
@@ -381,6 +444,17 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: 'naikKelasXIIModal', formId: 'tanggal_naik_kelas_xii' }
     ];
 
+    function handleAlasanChange(siswaId) {
+    const select = document.getElementById('alasan_keluar_select' + siswaId);
+    const textarea = document.getElementById('alasan_keluar' + siswaId);
+    
+    if (select.value === 'custom') {
+        textarea.value = '';
+        textarea.focus();
+    } else if (select.value !== '') {
+        textarea.value = select.value;
+    }
+}
     // Set today's date as default for all date inputs
     const today = new Date().toISOString().split('T')[0];
     

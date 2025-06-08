@@ -25,6 +25,8 @@ class Siswa extends Model
         'tanggal_naik_kelas_xi',
         'tanggal_naik_kelas_xii',
         'tanggal_lulus', 'foto',
+        'tanggal_keluar',
+        'alasan_keluar',
         'klappers_id'];
 
     public function klapper()
@@ -41,5 +43,20 @@ class Siswa extends Model
 {
     return $this->hasOne(Ijazah::class);
 }
+
+    public function isAktif()
+    {
+        return $this->status == 2; // 2 = aktif/pelajar
+    }
+
+    public function isLulus()
+    {
+        return $this->status == 1; // 1 = lulus
+    }
+
+    public function isKeluar()
+    {
+        return $this->status == 0; // 0 = keluar/tidak aktif
+    }
 
 }
