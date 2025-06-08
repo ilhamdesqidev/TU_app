@@ -304,6 +304,10 @@
                                             <span class="badge bg-danger text-white">
                                                 <i class="fas fa-arrow-right-from-bracket me-1"></i> Keluar
                                             </span>
+                                            <br>
+                                                <small class="text-muted">
+                                                    {{ $siswa->alasan_keluar }}
+                                                </small>
                                             @endif
                                         </td>
                                         <td>
@@ -354,20 +358,20 @@
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="alasan_keluar{{ $siswa->id }}" class="form-label">
-                                            <i class="fas fa-comment me-1"></i>
-                                            Alasan Keluar <span class="text-danger">*</span>
-                                        </label>
-                                        <select class="form-select mb-2" id="alasan_keluar_select{{ $siswa->id }}" onchange="handleAlasanChange({{ $siswa->id }})">
-                                            <option value="">Pilih alasan...</option>
-                                            <option value="Lulus">Lulus</option>
-                                            <option value="Pindah Sekolah">Pindah Sekolah</option>
-                                            <option value="Mengundurkan Diri">Mengundurkan Diri</option>
-                                            <option value="Dikeluarkan">Dikeluarkan</option>
-                                            <option value="custom">Lainnya (Tulis sendiri)</option>
-                                        </select>
-                                        <textarea class="form-control" id="alasan_keluar{{ $siswa->id }}" name="alasan_keluar" 
-                                                rows="3" placeholder="Masukkan alasan keluar siswa..." required></textarea>
+                                    <label for="alasan_keluar{{ $siswa->id }}" class="form-label">
+                                        <i class="fas fa-comment me-1"></i>
+                                        Alasan Keluar <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select mb-2" name="alasan_keluar_pilihan" id="alasan_keluar_select{{ $siswa->id }}" onchange="handleAlasanChange({{ $siswa->id }})">
+                                        <option value="">Pilih alasan...</option>
+                                        <option value="Lulus">Lulus</option>
+                                        <option value="Pindah Sekolah">Pindah Sekolah</option>
+                                        <option value="Mengundurkan Diri">Mengundurkan Diri</option>
+                                        <option value="Dikeluarkan">Dikeluarkan</option>
+                                        <option value="custom">Lainnya (Tulis sendiri)</option>
+                                    </select>
+                                    <textarea class="form-control" name="alasan_keluar_custom" id="alasan_keluar{{ $siswa->id }}" 
+                                                rows="3" placeholder="Masukkan alasan keluar siswa..." disabled></textarea>
                                         <div class="form-text">Jelaskan alasan mengeluarkan siswa secara detail.</div>
                                     </div>
                                 </div>
@@ -444,15 +448,18 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: 'naikKelasXIIModal', formId: 'tanggal_naik_kelas_xii' }
     ];
 
-    function handleAlasanChange(siswaId) {
-    const select = document.getElementById('alasan_keluar_select' + siswaId);
-    const textarea = document.getElementById('alasan_keluar' + siswaId);
-    
-    if (select.value === 'custom') {
-        textarea.value = '';
-        textarea.focus();
-    } else if (select.value !== '') {
-        textarea.value = select.value;
+    function handleAlasanChange(id) {
+        const select = document.getElementById(`alasan_keluar_select${id}`);
+        const textarea = document.getElementById(`alasan_keluar${id}`);
+
+        if (select.value === 'custom') {
+            textarea.disabled = false;
+            textarea.required = true;
+        } else {
+            textarea.disabled = true;
+            textarea.required = false;
+            textarea.value = select.value; // atau kosongkan: textarea.value = '';
+        }
     }
 }
     // Set today's date as default for all date inputs
