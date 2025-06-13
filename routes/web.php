@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KlapperController;
 use App\Http\Controllers\TuController;
-use App\Http\Controllers\SpensasiController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SuratmasukController;
 use App\Http\Controllers\SuratkeluarController;
@@ -38,23 +37,6 @@ Route::post('/siswa/naik-kelas-xi/{id}', [SiswaController::class, 'naikKelasXI']
 Route::post('/siswa/naik-kelas-xii/{id}', [SiswaController::class, 'naikKelasXII'])->name('siswa.naikKelasXII');
 
 Route::get('/siswa/get-siswa/{nama_siswa}', [SiswaController::class, 'getSiswa'])->name('siswa.get');
-
-
-//Resource route untuk operasi lainnya
-Route::get('/tu', [TuController::class, 'index'])->name('tu.index');
-Route::resource('tu', TuController::class)->except(['index']); // Menyertakan semua metode kecuali index
-Route::post('superadmin/spensasi/tu/approve/{id}', [TuController::class, 'approve'])->name('superadmin.spensasi.tu.approve');
-Route::post('superadmin/spensasi/tu/reject/{id}', [TuController::class, 'reject'])->name('superadmin.spensasi.tu.reject');
-
-//guru
-Route::resource('guru', GuruController::class);
-Route::get('spensasi/guru', [GuruController::class, 'index'])->name('superadmin.spensasi.guru.index');
-
-//
-Route::get('/getSiswa/{nama_siswa}', [KlapperController::class, 'getSiswa']);
-Route::get('/searchSiswa', [SpensasiController::class, 'searchSiswa']);
-Route::get('/superadmin/spensasi/searchSiswa', [SpensasiController::class, 'searchSiswa'])->name('superadmin.spensasi.searchSiswa');
-
 
 //arsip
 //surat masuk
