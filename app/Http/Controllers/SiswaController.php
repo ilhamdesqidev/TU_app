@@ -11,7 +11,7 @@ class SiswaController extends Controller
     public function indexSiswa()
     {
         $siswa = Siswa::count();
-        return view('superadmin.klapper.siswa', compact('siswa'));
+        return view('klapper.siswa', compact('siswa'));
     }
 
     public function createSiswa($klappersId)
@@ -29,7 +29,7 @@ class SiswaController extends Controller
             $minClass = 'XI';
         }
 
-        return view('superadmin.klapper.detail_klapper.tambah_siswa', compact('klappersId', 'minClass'));
+        return view('klapper.detail_klapper.tambah_siswa', compact('klappersId', 'minClass'));
     }
 
     public function storeSiswa(Request $request, $klappersId)
@@ -101,13 +101,13 @@ class SiswaController extends Controller
     public function showSiswa($id)
     {
         $siswa = Siswa::findOrFail($id);
-        return view('superadmin.klapper.detail_klapper.detail_siswa', compact('siswa'));
+        return view('klapper.detail_klapper.detail_siswa', compact('siswa'));
     }
 
     public function editSiswa($id)
     {
         $siswa = Siswa::findOrFail($id);
-        return view('superadmin.klapper.detail_klapper.editdata_siswa', compact('siswa'));
+        return view('klapper.detail_klapper.editdata_siswa', compact('siswa'));
     }
 
     public function updateSiswa(Request $request, $id)

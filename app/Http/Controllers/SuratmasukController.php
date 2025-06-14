@@ -79,7 +79,7 @@ class SuratMasukController extends Controller
          ]);
      }
      
-        return view('superadmin.arsip.surat_masuk.index', compact('suratMasuks'));
+        return view('arsip.surat_masuk.index', compact('suratMasuks'));
     }
     
 

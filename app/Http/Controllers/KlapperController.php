@@ -9,7 +9,7 @@ class KlapperController extends Controller
     public function indexKlapper()
     {
         $klapper = Klapper::all();
-        return view('superadmin.klapper.index', compact('klapper'));
+        return view('klapper.index', compact('klapper'));
     }
 
     public function createKlapper()
@@ -24,7 +24,7 @@ class KlapperController extends Controller
             $newTahunAjaran = date('Y') . '/' . (date('Y') + 1);
         }
 
-        return view('superadmin.klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran'));
+        return view('klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran'));
     }
 
     public function storeKlapper(Request $request)
@@ -64,7 +64,7 @@ class KlapperController extends Controller
             $query->orderBy('nama_siswa', 'asc');
         }])->findOrFail($id);
 
-        return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah'));
+        return view('klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah'));
     }
 
     public function deleteKlapper($id)

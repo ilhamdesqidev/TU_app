@@ -37,7 +37,7 @@ class IjazahController extends Controller
 
         // Ambil daftar klapper dan jumlah ijazah terkait untuk menu filter
         $availableKlappers = Klapper::withCount('ijazahs')->get();
-        return view('superadmin.arsip.ijazah.index', compact('ijazahs', 'availableKlappers'));
+        return view('arsip.ijazah.index', compact('ijazahs', 'availableKlappers'));
     }
 
     public function create()
@@ -131,7 +131,7 @@ public function edit($id)
 {
     $ijazah = Ijazah::with(['siswa', 'klapper'])->findOrFail($id);
     $klappers = Klapper::all(); // Jika diperlukan untuk dropdown klapper
-    return view('superadmin.arsip.ijazah.edit', compact('ijazah', 'klappers'));
+    return view('arsip.ijazah.edit', compact('ijazah', 'klappers'));
 }
 
 public function update(Request $request, $id)

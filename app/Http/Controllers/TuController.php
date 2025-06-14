@@ -12,7 +12,7 @@ class TuController extends Controller
     public function index()
     {
         $surat = Spensasi::where('status', 'menunggu')->paginate(10);
-        return view('superadmin.spensasi.tu.index', compact('surat'));
+        return view('spensasi.tu.index', compact('surat'));
     }
 
     /**

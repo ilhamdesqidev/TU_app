@@ -13,7 +13,7 @@ class GuruController extends Controller
     public function index()
     {
         $surat = Spensasi::where('status', 'disetujui')->paginate(10);
-        return view('superadmin.spensasi.guru.index', compact('surat'));
+        return view('spensasi.guru.index', compact('surat'));
     }
     
 

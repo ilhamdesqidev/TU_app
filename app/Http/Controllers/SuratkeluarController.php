@@ -79,7 +79,7 @@ public function index(Request $request)
     }
     
     // Regular view response
-    return view('superadmin.arsip.surat_keluar.index', compact('suratKeluars'));
+    return view('arsip.surat_keluar.index', compact('suratKeluars'));
 }
 
     public function store(Request $request)
