@@ -204,12 +204,29 @@
                     </div>
                 </div>
                 <!-- Pagination Section -->
-                <div class="card-footer bg-white">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-0">
-                            {{ $suratMasuks->links() }}
-                        </ul>
-                    </nav>
+                <!-- Pagination Section -->
+                <div class="card-footer bg-light border-0 py-3 shadow-sm">
+                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center gap-3">
+                        <div class="order-2 order-lg-1">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-primary fs-7 me-2">
+                                    {{ $suratMasuks->firstItem() }} - {{ $suratMasuks->lastItem() }}
+                                </span>
+                                <span class="text-muted small">dari</span>
+                                <span class="badge bg-info ms-2 fs-7">
+                                    {{ $suratMasuks->total() }}
+                                </span>
+                                <span class="text-muted small ms-1">data</span>
+                            </div>
+                        </div>
+                        <nav aria-label="Page navigation" class="order-1 order-lg-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="pagination-container">
+                                    {{ $suratMasuks->appends(request()->query())->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
@@ -222,12 +239,11 @@
 @includeWhen(isset($suratMasuk), 'arsip.surat_masuk.modals.show')   
 @includeWhen(isset($suratMasuk), 'arsip.surat_masuk.modals.disposisi')
 @includeWhen(isset($suratMasuk), 'arsip.surat_masuk.modals.delete')
+
 <!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
 <!-- Bootstrap JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Pastikan ini ada sebelum penutup </body> -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
