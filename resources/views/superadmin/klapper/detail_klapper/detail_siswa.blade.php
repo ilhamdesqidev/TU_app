@@ -8,6 +8,9 @@
     <style>
         .tab-button {
             transition: all 0.3s ease;
+            padding: 0.6rem 1.2rem;
+            margin: 0 0.25rem;
+            min-width: 180px;
         }
         .tab-button:hover {
             transform: translateY(-3px);
@@ -59,7 +62,7 @@
                     
                     <!-- Tombol aksi -->
                     <div class="d-grid gap-2 mt-4">
-                        @if ($siswa->status != 1 && $siswa->status != 2)
+                        @if ($siswa->status == 2)
                             <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-primary rounded-pill">
                                 <i class="fas fa-edit me-2"></i>Edit Data
                             </a>
@@ -78,7 +81,7 @@
             <div class="card border-0 rounded-4 shadow-sm h-100">
                 <div class="card-body p-4">
                     <!-- Nav Tabs yang lebih modern -->
-                    <ul class="nav nav-tabs nav-fill bg-light rounded-3 p-2 mb-4 shadow-sm" id="myTab" role="tablist">
+                    <ul class="nav nav-tabs bg-light rounded-3 p-2 mb-4 shadow-sm justify-content-center" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link tab-button active fw-medium bg-primary text-white border-0 mx-1 rounded-pill" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="true">
                                 <i class="fas fa-user me-2"></i>Data Pribadi

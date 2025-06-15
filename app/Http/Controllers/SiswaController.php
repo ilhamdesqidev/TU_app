@@ -20,8 +20,8 @@ class SiswaController extends Controller
 
         $minClass = 'X';
 
-        $hasKelasXI = $klapper->siswas()->where('kelas', 'XI')->where('status', 0)->exists();
-        $hasKelasXII = $klapper->siswas()->where('kelas', 'XII')->where('status', 0)->exists();
+        $hasKelasXI = $klapper->siswas()->where('kelas', 'XI')->where('status', 2)->exists();
+        $hasKelasXII = $klapper->siswas()->where('kelas', 'XII')->where('status', 2 )->exists();
 
         if ($hasKelasXII) {
             $minClass = 'XII';
@@ -159,7 +159,7 @@ class SiswaController extends Controller
     ]);
 
     $klapper = Klapper::findOrFail($klapperId);
-    $siswas = $klapper->siswas()->where('status', 0)->get();
+    $siswas = $klapper->siswas()->where('status', 2)->get();
 
     if ($siswas->isEmpty()) {
         return back()->with('error', 'Tidak ada siswa aktif untuk diluluskan!');
@@ -239,7 +239,7 @@ public function keluar(Request $request, $id)
         $counter = 0;
 
         foreach ($klapper->siswas as $siswa) {
-            if ($siswa->kelas == 'X' && $siswa->status == 0) {
+            if ($siswa->kelas == 'X' && $siswa->status == 2) {
                 $siswa->kelas = 'XI';
                 $siswa->tanggal_naik_kelas_xi = $request->tanggal_naik_kelas_xi;
                 $siswa->save();
@@ -256,7 +256,7 @@ public function keluar(Request $request, $id)
         $counter = 0;
 
         foreach ($klapper->siswas as $siswa) {
-            if ($siswa->kelas == 'XI' && $siswa->status == 0) {
+            if ($siswa->kelas == 'XI' && $siswa->status == 2) {
                 $siswa->kelas = 'XII';
                 $siswa->tanggal_naik_kelas_xii = $request->tanggal_naik_kelas_xii;
                 $siswa->save();

@@ -104,7 +104,7 @@
                         $hasActiveStudents = false;
                         
                         foreach ($klapper->siswas as $siswa) {
-                            if ($siswa->status == 0) {  // Only check active students
+                            if ($siswa->status == 2) {  // Only check active students
                                 $hasActiveStudents = true;
                                 $allStudentsGraduated = false;
                                 if ($siswa->kelas == 'X') $hasKelasX = true;
