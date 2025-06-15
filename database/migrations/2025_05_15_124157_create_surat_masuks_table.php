@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('surat_masuks', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_surat');
+            $table->string('nomor_surat')->unique();
             $table->date('tanggal_surat');
-            $table->date('tanggal_diterima');
             $table->string('pengirim');
+            $table->date('tanggal_diterima');
             $table->string('perihal');
+            $table->enum('kategori', ['penting', 'segera', 'biasa']);
+            $table->enum('status', ['belum_diproses', 'sedang_diproses', 'selesai']);
             $table->text('isi_surat')->nullable();
-            $table->string('kategori')->nullable();
-            $table->string('status')->default('diterima');
-            $table->json('lampiran')->nullable();
             $table->timestamps();
         });
     }
