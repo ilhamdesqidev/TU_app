@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KlapperController;
 use App\Http\Controllers\TuController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\SuratmasukController;
+use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratkeluarController;
 use App\Http\Controllers\IjazahController;
 use App\Http\Controllers\SiswaController;
@@ -38,22 +38,28 @@ Route::post('/siswa/naik-kelas-xii/{id}', [SiswaController::class, 'naikKelasXII
 
 Route::get('/siswa/get-siswa/{nama_siswa}', [SiswaController::class, 'getSiswa'])->name('siswa.get');
 
-//arsip
-//surat masuk
-Route::resource('surat_masuk', SuratmasukController::class);
-Route::get('/surat_masuk/{id}/disposisi', [SuratMasukController::class, 'disposisi'])->name('surat_masuk.disposisi');
-Route::get('surat_masuk/export', [SuratKeluarController::class, 'export'])->name('surat_masuk.export');
-Route::get('surat_masuk/{id}/download/{index}', [SuratMasukController::class, 'downloadAttachment'])->name('surat_masuk.download_attachment');
+// Route resource utama untuk Surat Masuk
+Route::resource('surat_masuk', SuratMasukController::class);
 
-//surat keluar
+// Route khusus untuk modal disposisi
+Route::get('surat_masuk/{suratMasuk}/disposisi', [SuratMasukController::class, 'disposisi'])
+    ->name('surat_masuk.disposisi');
+    
+Route::post('surat_masuk/{suratMasuk}/disposisi', [SuratMasukController::class, 'storeDisposisi'])
+    ->name('surat_masuk.disposisi.store');
+    
+Route::get('surat_masuk/{suratMasuk}/print', [SuratMasukController::class, 'print'])
+    ->name('surat_masuk.print');
+    
+Route::get('surat_masuk/export', [SuratMasukController::class, 'export'])
+    ->name('surat_masuk.export');
+
+// Route untuk Surat Keluar
 Route::resource('surat_keluar', SuratkeluarController::class);
-Route::get('arsip/surat_keluar', [SuratkeluarController::class, 'surat_keluarIndex'])->name('superadmin.arsip.surat_keluar.index');
-// Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat_keluar.store');
-// Route::get('/surat-keluar/{id}', [SuratKeluarController::class, 'show'])->name('surat_keluar.show');
-Route::get('surat_keluar/export', [SuratKeluarController::class, 'export'])->name('surat_keluar.export');
-Route::get('surat_keluar/{id}/download/{index}', [SuratKeluarController::class, 'downloadAttachment'])->name('surat_keluar.download_attachment');
+Route::get('surat_keluar/export', [SuratkeluarController::class, 'export'])->name('surat_keluar.export');
+Route::get('surat_keluar/{id}/download/{index}', [SuratkeluarController::class, 'downloadAttachment'])->name('surat_keluar.download_attachment');
 
-//ijazah 
+// Route untuk Ijazah
 Route::resource('/ijazah', IjazahController::class);
 Route::get('/ijazah/download/{id}', [IjazahController::class, 'download'])->name('ijazah.download');
 Route::post('/ijazah/upload/{ijazah}', [IjazahController::class, 'upload'])->name('ijazah.upload');

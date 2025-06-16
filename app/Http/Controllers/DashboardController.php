@@ -14,6 +14,6 @@ class DashboardController extends Controller
         $jumlahSiswa = Siswa::where('status', 0)->count();
         $jumlahAngkatan = Klapper::count();
 
-        return view('superadmin.welcome', compact('jumlahSiswa', 'jumlahAngkatan'));
+        return view('welcome', compact('jumlahSiswa', 'jumlahAngkatan'));
     }
 }

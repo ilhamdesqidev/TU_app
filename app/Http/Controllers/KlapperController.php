@@ -9,7 +9,7 @@ class KlapperController extends Controller
     public function indexKlapper()
     {
         $klapper = Klapper::all();
-        return view('superadmin.klapper.index', compact('klapper'));
+        return view('klapper.index', compact('klapper'));
     }
 
     public function createKlapper()
@@ -24,7 +24,7 @@ class KlapperController extends Controller
             $newTahunAjaran = date('Y') . '/' . (date('Y') + 1);
         }
 
-        return view('superadmin.klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran'));
+        return view('klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran'));
     }
 
     public function storeKlapper(Request $request)
@@ -64,6 +64,7 @@ class KlapperController extends Controller
             $query->orderBy('nama_siswa', 'asc');
         }])->findOrFail($id);
 
+<<<<<<< HEAD
         $enableNaikXI = $klapper->siswas()->where('kelas', 'X')->where('status', 2)->exists();
         $enableNaikXII = $klapper->siswas()->where('kelas', 'XI')->where('status', 2)->exists();
         $enableLuluskan = $klapper->siswas()->where('kelas', 'XII')->where('status', 2)->exists();
@@ -71,6 +72,9 @@ class KlapperController extends Controller
         return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah', 'enableNaikXI',
         'enableNaikXII', 
         'enableLuluskan'));
+=======
+        return view('klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah'));
+>>>>>>> cb9e3d60faefc686f872a95afdc9a918aa253310
     }
 
     public function deleteKlapper($id)
