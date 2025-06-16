@@ -1,57 +1,75 @@
 @extends('main')
 
 @section('content')
-<div class="bg-light py-3">
+<!-- Alert Message - Positioned at top right with better styling -->
+@if (session('status'))
+<div class="position-fixed top-0 end-0 p-2" style="z-index: 1100; max-width: 400px;">
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto"><i class="fas fa-check-circle me-1"></i>Berhasil</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body bg-white">
+            {{ session('status') }}
+        </div>
+    </div>
+</div>
+@endif
+
+@if ($errors->any())
+<div class="position-fixed top-0 end-0 p-2" style="z-index: 1100; max-width: 400px;">
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="8000">
+        <div class="toast-header bg-danger text-white">
+            <strong class="me-auto"><i class="fas fa-exclamation-circle me-1"></i>Error</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body bg-white">
+            <ul class="mb-0 ps-3">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+</div>
+@endif
+
+<div class="bg-light py-2">
     <div class="container">
         <!-- Header Section -->
-        <div class="row my-3">
+        <div class="row my-2">
             <div class="col-md-8 mx-auto text-center">
-                <h2 class="fw-bold text-primary mb-2">Koleksi Klapper</h2>
-                <p class="text-muted mb-2">Akses data siswa siswi smk amaliah 1&2</p>
+                <h2 class="fw-bold text-primary mb-1">Koleksi Klapper</h2>
+                <p class="text-muted mb-1">Akses data siswa siswi smk amaliah 1&2</p>
                 <div class="d-flex justify-content-center">
                     <div class="border-bottom border-primary" style="width: 50px;"></div>
                 </div>
             </div>
         </div>
-
-        <!-- Alert Message -->
-        @if (session('status'))
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-check-circle me-2"></i>
-                        <span>{{ session('status') }}</span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-        @endif
     </div>
 </div>
 
-<div class="container py-3">
+<div class="container py-2">
     <!-- Tab Content -->
     <div class="tab-content" id="data-tabs-content">
         <!-- KLAPPER TAB CONTENT -->
         <div class="tab-pane fade show active" id="klapper-content" role="tabpanel" aria-labelledby="klapper-tab">
-            <div class="card border-0 shadow-sm rounded-4 mb-3">
+            <div class="card border-0 shadow-sm rounded-4 mb-2">
                 <div class="card-body p-3">
-                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
-                        <div class="mb-2 mb-md-0">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-2">
+                        <div class="mb-1 mb-md-0">
                             <h4 class="fw-bold mb-1">
-                                <i class="fas fa-user-graduate me-2 text-primary"></i>Klapper Siswa
+                                <i class="fas fa-user-graduate me-1 text-primary"></i>Klapper Siswa
                             </h4>
                             <p class="text-muted mb-0">Menampilkan seluruh data klapper siswa</p>
                         </div>
                         <a href="{{ route('klapper.create') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-plus me-2"></i> Tambah Klapper
+                            <i class="fas fa-plus me-1"></i> Tambah Klapper
                         </a>
                     </div>
 
                     <!-- Filter Controls -->
-                    <div class="row g-2 mb-3">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-8">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0">
@@ -76,14 +94,14 @@
                     </div>
 
                     <!-- Grid View for Students -->
-                    <div class="row g-3" id="student-grid-view">
+                    <div class="row g-2" id="student-grid-view">
                         @foreach ($klapper as $item)
                         <div class="col-xl-3 col-lg-4 col-md-6 student-item" data-tahun="{{ $item->tahun_ajaran }}">
                             <div class="card h-100 rounded-4 border-0 shadow-sm" 
                                  onclick="window.location='{{ url('klapper/' . $item->id) }}'" 
                                  role="button">
-                                <div class="card-body p-3">
-                                    <div class="d-flex align-items-center mb-2">
+                                <div class="card-body p-2">
+                                    <div class="d-flex align-items-center mb-1">
                                         <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
                                             <i class="fas fa-book-open text-primary"></i>
                                         </div>
@@ -96,7 +114,7 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
                                         <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2 py-1">
                                             <i class="fas fa-user-graduate me-1"></i> Siswa
                                         </span>
@@ -105,10 +123,10 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id) }}"><i class="fas fa-eye me-2 text-primary"></i>Lihat Detail</a></li>
-                                                <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id) }}"><i class="fas fa-eye me-1 text-primary"></i>Lihat Detail</a></li>
+                                                <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id . '/edit') }}"><i class="fas fa-edit me-1 text-warning"></i>Edit</a></li>
                                                 <li><hr class="dropdown-divider"></li>
-                                                <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                                <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $item->id }}, event)"><i class="fas fa-trash-alt me-1"></i>Hapus</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -124,18 +142,18 @@
                             <table class="table table-hover align-middle bg-white rounded-3">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th scope="col" class="rounded-start-3 py-2">#</th>
-                                        <th scope="col" class="py-2">Nama Buku</th>
-                                        <th scope="col" class="py-2">Tahun Ajaran</th>
-                                        <th scope="col" class="py-2">Kategori</th>
-                                        <th scope="col" class="text-end rounded-end-3 py-2">Aksi</th>
+                                        <th scope="col" class="rounded-start-3 py-1">#</th>
+                                        <th scope="col" class="py-1">Nama Buku</th>
+                                        <th scope="col" class="py-1">Tahun Ajaran</th>
+                                        <th scope="col" class="py-1">Kategori</th>
+                                        <th scope="col" class="text-end rounded-end-3 py-1">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($klapper as $index => $item)
                                     <tr class="student-item" data-tahun="{{ $item->tahun_ajaran }}">
-                                        <td class="py-2">{{ $index + 1 }}</td>
-                                        <td class="py-2">
+                                        <td class="py-1">{{ $index + 1 }}</td>
+                                        <td class="py-1">
                                             <div class="d-flex align-items-center">
                                                 <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
                                                     <i class="fas fa-book-open text-primary"></i>
@@ -145,13 +163,13 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="py-2">{{ $item->tahun_ajaran }}</td>
-                                        <td class="py-2">
+                                        <td class="py-1">{{ $item->tahun_ajaran }}</td>
+                                        <td class="py-1">
                                             <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2 py-1">
                                                 <i class="fas fa-user-graduate me-1"></i> Siswa
                                             </span>
                                         </td>
-                                        <td class="py-2">
+                                        <td class="py-1">
                                             <div class="d-flex justify-content-end gap-1">
                                                 <a href="{{ url('klapper/' . $item->id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
                                                     <i class="fas fa-eye me-1"></i> Detail
@@ -161,9 +179,9 @@
                                                         <i class="fas fa-ellipsis-v"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id . '/edit') }}"><i class="fas fa-edit me-2 text-warning"></i>Edit</a></li>
+                                                        <li><a class="dropdown-item" href="{{ url('klapper/' . $item->id . '/edit') }}"><i class="fas fa-edit me-1 text-warning"></i>Edit</a></li>
                                                         <li><hr class="dropdown-divider"></li>
-                                                        <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $item->id }}, event)"><i class="fas fa-trash-alt me-2"></i>Hapus</a></li>
+                                                        <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $item->id }}, event)"><i class="fas fa-trash-alt me-1"></i>Hapus</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -177,14 +195,14 @@
 
                     <!-- Empty State for Students -->
                     @if(count($klapper) == 0)
-                    <div class="text-center py-4">
-                        <div class="mb-3">
+                    <div class="text-center py-3">
+                        <div class="mb-2">
                             <i class="fas fa-book-open text-muted opacity-25 fa-4x"></i>
                         </div>
-                        <h5 class="fw-bold text-muted mb-2">Belum Ada Data Klapper Siswa</h5>
-                        <p class="text-muted mb-3">Silakan tambahkan data klapper baru untuk mulai mengelola data siswa</p>
-                        <a href="{{ url('klapper/create') }}" class="btn btn-primary rounded-pill px-4 py-2">
-                            <i class="fas fa-plus me-2"></i> Tambah Klapper Baru
+                        <h5 class="fw-bold text-muted mb-1">Belum Ada Data Klapper Siswa</h5>
+                        <p class="text-muted mb-2">Silakan tambahkan data klapper baru untuk mulai mengelola data siswa</p>
+                        <a href="{{ url('klapper/create') }}" class="btn btn-primary rounded-pill px-4 py-1">
+                            <i class="fas fa-plus me-1"></i> Tambah Klapper Baru
                         </a>
                     </div>
                     @endif
@@ -197,24 +215,30 @@
 <!-- Confirmation Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-2">
-                <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Hapus</h5>
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-1">
+                <h5 class="modal-title fw-bold" id="confirmationModalLabel">
+                    <i class="fas fa-exclamation-triangle text-warning me-1"></i>Konfirmasi Hapus
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center py-3">
-                <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
-                <h5 class="fw-bold">Apakah Anda yakin?</h5>
-                <p class="text-muted">Data yang dihapus tidak dapat dikembalikan.</p>
+            <div class="modal-body text-center py-2">
+                <div class="rounded-circle bg-warning bg-opacity-10 p-2 mx-auto mb-2" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                </div>
+                <h5 class="fw-bold mb-1">Apakah Anda yakin?</h5>
+                <p class="text-muted mb-1">Data yang dihapus tidak dapat dikembalikan lagi.</p>
             </div>
-            <div class="modal-footer border-0 justify-content-center pt-2">
-                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
-                    Batal
+            <div class="modal-footer border-0 justify-content-center pt-1 pb-3">
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-3 me-2" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Batal
                 </button>
                 <form id="deleteForm" method="POST" style="display: inline-block;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger rounded-pill px-4">Hapus</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-3">
+                        <i class="fas fa-trash-alt me-1"></i>Hapus Data
+                    </button>
                 </form>
             </div>
         </div>
@@ -224,21 +248,26 @@
 <!-- Floating Action Button -->
 <div class="position-fixed bottom-0 end-0 m-3">
     <div class="dropup">
-        <button class="btn btn-primary rounded-circle p-3" type="button" id="quickAddBtn" data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;">
+        <button class="btn btn-primary rounded-circle shadow" type="button" id="quickAddBtn" data-bs-toggle="dropdown" aria-expanded="false" style="width: 48px; height: 48px;">
             <i class="fas fa-plus"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quickAddBtn">
+        <ul class="dropdown-menu dropdown-menu-end mb-1 border-0 shadow" aria-labelledby="quickAddBtn">
             <li>
-                <h6 class="dropdown-header">Tambah Data Baru</h6>
+                <h6 class="dropdown-header text-primary fw-bold">
+                    <i class="fas fa-plus-circle me-1"></i>Tambah Data Baru
+                </h6>
             </li>
+            <li><hr class="dropdown-divider"></li>
             <li>
-                <a class="dropdown-item d-flex align-items-center" href="{{ url('klapper/create') }}">
-                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
-                        <i class="fas fa-user-graduate text-primary"></i>
-                    </div>
-                    <div>
-                        <span>Tambah Klapper</span>
-                        <p class="text-muted small mb-0">Data siswa baru</p>
+                <a class="dropdown-item py-1" href="{{ url('klapper/create') }}">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-1 me-2">
+                            <i class="fas fa-user-graduate text-primary"></i>
+                        </div>
+                        <div>
+                            <span class="fw-semibold">Tambah Klapper</span>
+                            <p class="text-muted small mb-0">Buat data siswa baru</p>
+                        </div>
                     </div>
                 </a>
             </li>
@@ -249,143 +278,157 @@
 <!-- JavaScript for functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all toasts
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    const toastList = toastElList.map(function(toastEl) {
+        return new bootstrap.Toast(toastEl)
+    })
+    
+    // Auto hide toasts after delay
+    toastList.forEach(toast => {
+        const delay = toast._element.dataset.bsDelay || 5000
+        setTimeout(() => {
+            toast.hide()
+        }, delay)
+    })
+
     // Store the active tab in localStorage
     const saveActiveTab = function(tabId) {
-        localStorage.setItem('activeKlapperTab', tabId);
-    };
+        localStorage.setItem('activeKlapperTab', tabId)
+    }
 
     // Set active tab based on localStorage
     const setActiveTab = function() {
-        const activeTab = localStorage.getItem('activeKlapperTab');
+        const activeTab = localStorage.getItem('activeKlapperTab')
         if (activeTab) {
-            const tabEl = document.querySelector(`#${activeTab}`);
+            const tabEl = document.querySelector(`#${activeTab}`)
             if (tabEl) {
-                const tab = new bootstrap.Tab(tabEl);
-                tab.show();
+                new bootstrap.Tab(tabEl).show()
             }
         }
-    };
+    }
 
     // Initialize tabs with Bootstrap
-    const tabs = document.querySelectorAll('button[data-bs-toggle="pill"]');
+    const tabs = document.querySelectorAll('button[data-bs-toggle="pill"]')
     tabs.forEach(function(tab) {
         tab.addEventListener('shown.bs.tab', function(e) {
-            saveActiveTab(e.target.id);
-        });
-    });
+            saveActiveTab(e.target.id)
+        })
+    })
 
     // Restore active tab when page loads
-    setActiveTab();
+    setActiveTab()
 
-    // Student view toggle
-    const studentGridBtn = document.getElementById('student-grid-btn');
-    const studentListBtn = document.getElementById('student-list-btn');
-    const studentGridView = document.getElementById('student-grid-view');
-    const studentListView = document.getElementById('student-list-view');
+    // Student view toggle with improved animation
+    const studentGridBtn = document.getElementById('student-grid-btn')
+    const studentListBtn = document.getElementById('student-list-btn')
+    const studentGridView = document.getElementById('student-grid-view')
+    const studentListView = document.getElementById('student-list-view')
     
-    studentGridBtn.addEventListener('click', function() {
-        studentGridView.style.display = 'flex';
-        studentListView.style.display = 'none';
-        studentGridBtn.classList.add('active');
-        studentListBtn.classList.remove('active');
-        localStorage.setItem('studentViewPreference', 'grid');
-    });
+    const switchView = (view) => {
+        if (view === 'grid') {
+            studentGridView.classList.remove('d-none')
+            studentListView.classList.add('d-none')
+            studentGridBtn.classList.add('active')
+            studentListBtn.classList.remove('active')
+        } else {
+            studentGridView.classList.add('d-none')
+            studentListView.classList.remove('d-none')
+            studentListBtn.classList.add('active')
+            studentGridBtn.classList.remove('active')
+        }
+        localStorage.setItem('studentViewPreference', view)
+    }
     
-    studentListBtn.addEventListener('click', function() {
-        studentGridView.style.display = 'none';
-        studentListView.style.display = 'block';
-        studentListBtn.classList.add('active');
-        studentGridBtn.classList.remove('active');
-        localStorage.setItem('studentViewPreference', 'list');
-    });
+    studentGridBtn.addEventListener('click', () => switchView('grid'))
+    studentListBtn.addEventListener('click', () => switchView('list'))
     
     // Load saved student view
-    const studentViewPref = localStorage.getItem('studentViewPreference');
-    if (studentViewPref === 'list') {
-        studentListBtn.click();
-    }
+    const studentViewPref = localStorage.getItem('studentViewPreference') || 'grid'
+    switchView(studentViewPref)
 
-    // Search functionality
-    const searchSiswa = document.getElementById('searchSiswa');
-    const clearSearchSiswa = document.getElementById('clearSearchSiswa');
+    // Improved search functionality with debounce
+    const searchSiswa = document.getElementById('searchSiswa')
+    const clearSearchSiswa = document.getElementById('clearSearchSiswa')
     
-    let searchTimeout;
-    searchSiswa.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            filterStudents();
-        }, 300);
-    });
+    const debounce = (func, delay) => {
+        let timeoutId
+        return function() {
+            clearTimeout(timeoutId)
+            timeoutId = setTimeout(() => {
+                func.apply(this, arguments)
+            }, delay)
+        }
+    }
     
-    clearSearchSiswa.addEventListener('click', function() {
-        searchSiswa.value = '';
-        filterStudents();
-    });
-    
-    function filterStudents() {
-        const searchValue = searchSiswa.value.toLowerCase();
-        const studentItems = document.querySelectorAll('.student-item');
-        let count = 0;
+    const filterStudents = () => {
+        const searchValue = searchSiswa.value.toLowerCase()
+        const studentItems = document.querySelectorAll('.student-item')
+        let visibleCount = 0
         
         studentItems.forEach(item => {
-            const text = item.textContent.toLowerCase();
-            const tahun = item.getAttribute('data-tahun');
-            const showBySearch = text.includes(searchValue);
-            
-            if (showBySearch) {
-                item.style.display = '';
-                count++;
-            } else {
-                item.style.display = 'none';
-            }
-        });
+            const text = item.textContent.toLowerCase()
+            const isVisible = text.includes(searchValue)
+            item.classList.toggle('d-none', !isVisible)
+            if (isVisible) visibleCount++
+        })
         
-        handleEmptyState(count, studentItems.length);
+        showEmptyState(visibleCount)
     }
     
-    function handleEmptyState(count, totalItems) {
-        const activeView = document.getElementById('student-grid-view').style.display !== 'none' 
-            ? document.getElementById('student-grid-view') 
-            : document.getElementById('student-list-view');
+    const showEmptyState = (visibleCount) => {
+        const activeView = studentGridView.classList.contains('d-none') 
+            ? studentListView 
+            : studentGridView
         
-        // Remove any existing search-empty state first
-        const existingEmptyState = document.querySelector('.empty-state.search-empty');
-        if (existingEmptyState) {
-            existingEmptyState.remove();
-        }
+        // Remove existing empty state
+        const existingEmpty = activeView.querySelector('.search-empty-state')
+        if (existingEmpty) existingEmpty.remove()
         
-        if (count === 0 && totalItems > 0) {
-            const noResultsDiv = document.createElement('div');
-            noResultsDiv.className = 'empty-state search-empty text-center py-3';
-            noResultsDiv.innerHTML = `
+        if (visibleCount === 0 && searchSiswa.value) {
+            const emptyState = document.createElement('div')
+            emptyState.className = 'search-empty-state text-center py-4'
+            emptyState.innerHTML = `
                 <div class="mb-2">
                     <i class="fas fa-search text-muted opacity-25 fa-3x"></i>
                 </div>
-                <h5 class="fw-bold text-muted">Tidak Ada Hasil</h5>
-                <p class="text-muted mb-2">Coba ubah filter pencarian Anda</p>
-                <button id="resetFilterSiswa" class="btn btn-outline-primary rounded-pill px-4">
-                    <i class="fas fa-redo me-2"></i> Reset Filter
+                <h5 class="fw-bold text-muted mb-2">Tidak Ada Hasil</h5>
+                <p class="text-muted mb-2">Tidak ditemukan hasil untuk "${searchSiswa.value}"</p>
+                <button class="btn btn-outline-primary rounded-pill" id="resetSearchBtn">
+                    <i class="fas fa-redo me-1"></i> Reset Pencarian
                 </button>
-            `;
+            `
+            activeView.appendChild(emptyState)
             
-            activeView.appendChild(noResultsDiv);
-            
-            document.getElementById('resetFilterSiswa').addEventListener('click', function() {
-                searchSiswa.value = '';
-                filterStudents();
-            });
+            document.getElementById('resetSearchBtn').addEventListener('click', () => {
+                searchSiswa.value = ''
+                filterStudents()
+                searchSiswa.focus()
+            })
         }
     }
+    
+    searchSiswa.addEventListener('input', debounce(filterStudents, 300))
+    
+    clearSearchSiswa.addEventListener('click', () => {
+        searchSiswa.value = ''
+        filterStudents()
+        searchSiswa.focus()
+    })
 
     // Delete confirmation
     window.confirmDelete = function(id, event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = `klapper/${id}`;
-        const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-        modal.show();
-    };
-});
+        event.preventDefault()
+        event.stopPropagation()
+        document.getElementById('deleteForm').action = `klapper/${id}`
+        new bootstrap.Modal(document.getElementById('confirmationModal')).show()
+    }
+    
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+})
 </script>
 @endsection

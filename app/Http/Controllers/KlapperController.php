@@ -85,17 +85,13 @@ class KlapperController extends Controller
             $query->orderBy('nama_siswa', 'asc');
         }])->findOrFail($id);
 
-<<<<<<< HEAD
         $enableNaikXI = $klapper->siswas()->where('kelas', 'X')->where('status', 2)->exists();
         $enableNaikXII = $klapper->siswas()->where('kelas', 'XI')->where('status', 2)->exists();
         $enableLuluskan = $klapper->siswas()->where('kelas', 'XII')->where('status', 2)->exists();
 
-        return view('superadmin.klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah', 'enableNaikXI',
+        return view('klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah', 'enableNaikXI',
         'enableNaikXII', 
         'enableLuluskan'));
-=======
-        return view('klapper.detail_klapper.siswa', compact('klapper', 'search', 'amaliah'));
->>>>>>> cb9e3d60faefc686f872a95afdc9a918aa253310
     }
 
     public function deleteKlapper($id)
