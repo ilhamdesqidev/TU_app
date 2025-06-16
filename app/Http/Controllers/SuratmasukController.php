@@ -21,32 +21,42 @@ class SuratMasukController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nomor_surat' => 'required|unique:surat_masuks|max:100',
-            'tanggal_surat' => 'required|date',
-            'pengirim' => 'required|max:100',
-            'tanggal_diterima' => 'required|date',
-            'perihal' => 'required|max:255',
-            'kategori' => 'required|in:penting,segera,biasa',
-            'status' => 'required|in:belum_diproses,sedang_diproses,selesai',
-            'isi_surat' => 'nullable',
-            'lampiran.*' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:10240'
-        ]);
-        
-        $suratMasuk = SuratMasuk::create($validated);
-        
-        // Handle file upload
-        if($request->hasFile('lampiran')) {
-            foreach($request->file('lampiran') as $file) {
-                $path = $file->store('lampiran_surat_masuk', 'public');
-                $suratMasuk->lampiran()->create(['path' => $path]);
-            }
+{
+    $validated = $request->validate([
+        'nomor_surat' => 'required|unique:surat_masuks|max:100',
+        'tanggal_surat' => 'required|date',
+        'pengirim' => 'required|max:100',
+        'tanggal_diterima' => 'required|date',
+        'perihal' => 'required|max:255',
+        'kategori' => 'required|in:penting,segera,biasa',
+        'status' => 'required|in:belum_diproses,sedang_diproses,selesai',
+        'isi_surat' => 'nullable',
+        'lampiran.*' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:10240'
+    ]);
+    
+    $suratMasuk = SuratMasuk::create($validated);
+    
+    if($request->hasFile('lampiran')) {
+        foreach($request->file('lampiran') as $file) {
+            // Dapatkan ekstensi file asli
+            $extension = $file->getClientOriginalExtension();
+            // Generate nama unik dengan mempertahankan ekstensi asli
+            $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $storedName = $fileName.'_'.time().'.'.$extension;
+            
+            $path = $file->storeAs('lampiran_surat_masuk', $storedName, 'public');
+            
+            $suratMasuk->lampiran()->create([
+                'path' => $path,
+                'original_name' => $file->getClientOriginalName(),
+                'file_type' => $extension // tambahkan tipe file jika diperlukan
+            ]);
         }
-        
-        return redirect()->route('surat_masuk.index')
-            ->with('success', 'Surat masuk berhasil ditambahkan');
     }
+    
+    return redirect()->route('surat_masuk.index')
+        ->with('success', 'Surat masuk berhasil ditambahkan');
+}
 
     public function show(SuratMasuk $suratMasuk)
     {
@@ -59,39 +69,47 @@ class SuratMasukController extends Controller
     }
 
     public function update(Request $request, SuratMasuk $suratMasuk)
-    {
-        $validated = $request->validate([
-            'nomor_surat' => 'required|max:100|unique:surat_masuks,nomor_surat,'.$suratMasuk->id,
-            'tanggal_surat' => 'required|date',
-            'pengirim' => 'required|max:100',
-            'tanggal_diterima' => 'required|date',
-            'perihal' => 'required|max:255',
-            'kategori' => 'required|in:penting,segera,biasa',
-            'status' => 'required|in:belum_diproses,sedang_diproses,selesai',
-            'isi_surat' => 'nullable',
-            'lampiran.*' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:10240'
-        ]);
-        
-        $suratMasuk->update($validated);
-        
-        // Handle file upload baru
-        if($request->hasFile('lampiran')) {
-            // Hapus lampiran lama
-            foreach($suratMasuk->lampiran as $lampiran) {
-                Storage::disk('public')->delete($lampiran->path);
-                $lampiran->delete();
-            }
-            
-            // Upload lampiran baru
-            foreach($request->file('lampiran') as $file) {
-                $path = $file->store('lampiran_surat_masuk', 'public');
-                $suratMasuk->lampiran()->create(['path' => $path]);
-            }
+{
+    $validated = $request->validate([
+        'nomor_surat' => 'required|max:100|unique:surat_masuks,nomor_surat,'.$suratMasuk->id,
+        'tanggal_surat' => 'required|date',
+        'pengirim' => 'required|max:100',
+        'tanggal_diterima' => 'required|date',
+        'perihal' => 'required|max:255',
+        'kategori' => 'required|in:penting,segera,biasa',
+        'status' => 'required|in:belum_diproses,sedang_diproses,selesai',
+        'isi_surat' => 'nullable',
+        'lampiran.*' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:10240'
+    ]);
+    
+    $suratMasuk->update($validated);
+    
+    if($request->hasFile('lampiran')) {
+        // Hapus lampiran lama
+        foreach($suratMasuk->lampiran as $lampiran) {
+            Storage::disk('public')->delete($lampiran->path);
+            $lampiran->delete();
         }
         
-        return redirect()->route('surat_masuk.index')
-            ->with('success', 'Surat masuk berhasil diperbarui');
+        // Upload lampiran baru
+        foreach($request->file('lampiran') as $file) {
+            $extension = $file->getClientOriginalExtension();
+            $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $storedName = $fileName.'_'.time().'.'.$extension;
+            
+            $path = $file->storeAs('lampiran_surat_masuk', $storedName, 'public');
+            
+            $suratMasuk->lampiran()->create([
+                'path' => $path,
+                'original_name' => $file->getClientOriginalName(),
+                'file_type' => $extension
+            ]);
+        }
     }
+    
+    return redirect()->route('surat_masuk.index')
+        ->with('success', 'Surat masuk berhasil diperbarui');
+}
 
     public function destroy(SuratMasuk $suratMasuk)
     {

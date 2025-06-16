@@ -18,4 +18,6 @@ class LampiranSurat extends Model
     {
         return $this->belongsTo(SuratMasuk::class, 'surat_masuk_id');
     }
+
+    protected $fillable = ['path', 'original_name', 'file_type', 'surat_masuk_id'];
 }

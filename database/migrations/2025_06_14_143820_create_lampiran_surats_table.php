@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('surat_masuk_id')->constrained()->onDelete('cascade');
             $table->string('path');
+            $table->string('original_name')->after('path'); 
+            $table->string('file_type', 10)->after('original_name');
             $table->timestamps();
         });
     }

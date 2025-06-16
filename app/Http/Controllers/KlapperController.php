@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -8,7 +9,7 @@ class KlapperController extends Controller
 {
     public function indexKlapper()
     {
-        $klapper = Klapper::all();
+        $klapper = Klapper::orderBy('created_at', 'desc')->get();
         return view('klapper.index', compact('klapper'));
     }
 
@@ -16,12 +17,23 @@ class KlapperController extends Controller
     {
         $lastKlapper = Klapper::latest()->first();
 
-        $newNamaBuku = $lastKlapper ? 'Angkatan ' . ((int) filter_var($lastKlapper->nama_buku, FILTER_SANITIZE_NUMBER_INT) + 1) : 'Angkatan 1';
-
-        if ($lastKlapper && preg_match('/(\d{4})\/(\d{4})/', $lastKlapper->tahun_ajaran, $matches)) {
-            $newTahunAjaran = ($matches[1] + 1) . '/' . ($matches[2] + 1);
-        } else {
-            $newTahunAjaran = date('Y') . '/' . (date('Y') + 1);
+        // Jika tidak ada data sebelumnya
+        if (!$lastKlapper) {
+            $newNamaBuku = '';
+            $newTahunAjaran = '';
+        } 
+        // Jika ada data sebelumnya
+        else {
+            // Ekstrak angka dari nama buku terakhir
+            $lastNumber = (int) filter_var($lastKlapper->nama_buku, FILTER_SANITIZE_NUMBER_INT);
+            $newNamaBuku = 'Angkatan ' . ($lastNumber + 1);
+            
+            // Ekstrak tahun ajaran terakhir
+            if (preg_match('/(\d{4})\/(\d{4})/', $lastKlapper->tahun_ajaran, $matches)) {
+                $newTahunAjaran = ($matches[1] + 1) . '/' . ($matches[2] + 1);
+            } else {
+                $newTahunAjaran = date('Y') . '/' . (date('Y') + 1);
+            }
         }
 
         return view('klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran'));
@@ -37,6 +49,15 @@ class KlapperController extends Controller
             'nama_buku.unique' => 'Nama buku sudah ada, silakan gunakan nama lain.',
             'tahun_ajaran.required' => 'Tahun ajaran wajib diisi.',
         ]);
+        
+        // Jika input kosong (pertama kali membuat buku)
+        if (empty($request->nama_buku)) {
+            $request->merge([
+                'nama_buku' => 'Angkatan 1',
+                'tahun_ajaran' => date('Y') . '/' . (date('Y') + 1)
+            ]);
+        }
+        
         Klapper::create($request->all());
         return redirect()->route('klapper.index')->with('status', 'Berhasil Menambahkan Buku Angkatan');
     }
@@ -69,7 +90,9 @@ class KlapperController extends Controller
 
     public function deleteKlapper($id)
     {
-        Klapper::destroy($id);
+        $klapper = Klapper::findOrFail($id);
+        $klapper->delete();
+        
         return redirect()->route('klapper.index')->with('status', 'Data berhasil dihapus!');
     }
 }
