@@ -5,7 +5,7 @@ use App\Http\Controllers\KlapperController;
 use App\Http\Controllers\TuController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SuratMasukController;
-use App\Http\Controllers\SuratkeluarController;
+use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\IjazahController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\DashboardController;
@@ -55,10 +55,12 @@ Route::get('surat_masuk/export', [SuratMasukController::class, 'export'])
     ->name('surat_masuk.export');
 
 // Route untuk Surat Keluar
-Route::resource('surat_keluar', SuratkeluarController::class);
-Route::get('surat_keluar/export', [SuratkeluarController::class, 'export'])->name('surat_keluar.export');
-Route::get('surat_keluar/{id}/download/{index}', [SuratkeluarController::class, 'downloadAttachment'])->name('surat_keluar.download_attachment');
-
+Route::resource('surat_keluar', SuratKeluarController::class);
+// Rute tambahan
+Route::get('surat_keluar/{surat_keluar}/print', [SuratKeluarController::class, 'print'])
+    ->name('surat_keluar.print');
+    Route::get('surat_keluar/{surat_keluar}/download/{filename}', [SuratKeluarController::class, 'downloadLampiran'])
+    ->name('surat_keluar.download'); // Pastikan nama route ini konsisten
 // Route untuk Ijazah
 Route::resource('/ijazah', IjazahController::class);
 Route::get('/ijazah/download/{id}', [IjazahController::class, 'download'])->name('ijazah.download');
