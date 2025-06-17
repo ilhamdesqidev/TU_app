@@ -106,8 +106,17 @@ class SiswaController extends Controller
 
     public function editSiswa($id)
     {
+
         $siswa = Siswa::findOrFail($id);
-        return view('klapper.detail_klapper.editdata_siswa', compact('siswa'));
+
+        $minClass = 'X';
+    if ($siswa->kelas === 'XI') {
+        $minClass = 'XI';
+    } elseif ($siswa->kelas === 'XII') {
+        $minClass = 'XII';
+    }
+
+        return view('klapper.detail_klapper.editdata_siswa', compact('siswa', 'minClass'));
     }
 
     public function updateSiswa(Request $request, $id)
@@ -201,28 +210,22 @@ public function keluar(Request $request, $id)
     // Validasi input
     $request->validate([
         'tanggal_keluar' => 'required|date',
-        'alasan_keluar_pilihan' => 'required|string|max:100',
-        'alasan_keluar_custom' => 'nullable|string|max:500',
+        'alasan_keluar' => 'required|string|max:500',
     ], [
         'tanggal_keluar.required' => 'Tanggal keluar harus diisi',
         'tanggal_keluar.date' => 'Format tanggal tidak valid',
-        'alasan_keluar_pilihan.required' => 'Alasan keluar harus dipilih',
-        'alasan_keluar_custom.max' => 'Alasan keluar maksimal 500 karakter',
+        'alasan_keluar.required' => 'Alasan keluar harus diisi',
+        'alasan_keluar.max' => 'Alasan keluar maksimal 500 karakter',
     ]);
 
     try {
         $siswa = Siswa::findOrFail($id);
-        
-        // Tentukan alasan akhir
-        $alasan = $request->alasan_keluar_pilihan === 'custom'
-            ? $request->alasan_keluar_custom
-            : $request->alasan_keluar_pilihan;
             
         // Update data siswa
         $siswa->update([
             'status' => 0, // 0 = keluar/tidak aktif, 2 = aktif/pelajar, 1 = lulus
             'tanggal_keluar' => $request->tanggal_keluar,
-            'alasan_keluar' => $alasan,
+            'alasan_keluar' => $request->alasan_keluar,
         ]);
 
         // Gunakan nama_siswa sesuai dengan field di database

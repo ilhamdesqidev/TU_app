@@ -156,7 +156,50 @@
                             </select>
                             <div class="form-text">Pilih jurusan sesuai dengan sekolah</div>
                         </div>
+
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-layer-group me-1 text-primary"></i> Kelas
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">
+                                    Kelas {{ $minClass }}
+                                </span>
+                            </div>
+                            <small class="text-muted">
+                                @if($minClass != 'X')
+                                    <i class="fas fa-info-circle me-1"></i> 
+                                    Siswa baru untuk kelas {{ $minClass }} harus memiliki alasan masuk yang valid.
+                                @else
+                                    Siswa baru kelas X (tidak memerlukan alasan masuk)
+                                @endif
+                            </small>
+                        </div>
+
+
+            
+                        @if($minClass != 'X' || $siswa->alasan_masuk)
+                        <div class="mb-2">
+                            <label for="alasan_masuk" class="form-label fw-semibold">
+                                <i class="fas fa-comment-dots me-1 text-primary"></i> Alasan Masuk
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea name="alasan_masuk" id="alasan_masuk" class="form-control rounded @error('alasan_masuk') is-invalid @enderror" 
+                                    rows="2" placeholder="Jelaskan alasan siswa masuk di kelas {{ $minClass }}">
+                                {{ old('alasan_masuk', $siswa->alasan_masuk) }}
+                            </textarea>
+                            @error('alasan_masuk')
+                            <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            <small class="text-muted">Contoh: Pindahan dari sekolah lain, mengulang tahun ajaran, dll.</small>
+                        </div>
+                        @endif
+
                         
+
                         <!-- Kelas -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">

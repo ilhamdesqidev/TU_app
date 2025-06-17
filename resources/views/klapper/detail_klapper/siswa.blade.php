@@ -94,7 +94,7 @@
                             <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center">
                                 <h5 class="mb-0 text-dark small">Aksi Massal</h5>
                                 <div class="d-flex flex-wrap gap-1">
-                                    @php
+                                @php
                                         // Define variables to track student status
                                         $hasKelasX = false;
                                         $hasKelasXI = false;
@@ -102,17 +102,19 @@
                                         $allStudentsActive = true;
                                         $allStudentsGraduated = true;
                                         $hasActiveStudents = false;
+                                        $hasGraduatedStudents = false; // New variable to track if any student has graduated
                                         
                                         foreach ($klapper->siswas as $siswa) {
-                                            if ($siswa->status == 2) {  // Only check active students
+                                            if ($siswa->status == 2) {  // Active students
                                                 $hasActiveStudents = true;
                                                 $allStudentsGraduated = false;
                                                 if ($siswa->kelas == 'X') $hasKelasX = true;
                                                 if ($siswa->kelas == 'XI') $hasKelasXI = true;
                                                 if ($siswa->kelas == 'XII') $hasKelasXII = true;
-                                            } else if ($siswa->status == 1) { // Graduated
+                                            } else if ($siswa->status == 1) { // Graduated students
                                                 $allStudentsActive = false;
-                                            } else { // Dropped out
+                                                $hasGraduatedStudents = true; // Mark that we have graduated students
+                                            } else { // Dropped out students (status = 0)
                                                 $allStudentsActive = false;
                                                 $allStudentsGraduated = false;
                                             }
@@ -121,7 +123,14 @@
                                         $enableNaikXI = $hasKelasX && !$hasKelasXI && !$hasKelasXII;
                                         $enableNaikXII = !$hasKelasX && $hasKelasXI && !$hasKelasXII;
                                         $enableLuluskan = !$hasKelasX && !$hasKelasXI && $hasKelasXII;
-                                        $showTambahSiswa = !$allStudentsGraduated || count($klapper->siswas) == 0;
+                                        
+                                        // Show "Tambah Siswa" button if:
+                                        // 1. There are no students at all, OR
+                                        // 2. There are still active students (status = 2), OR
+                                        // 3. There are only dropped out students (status = 0) and no graduated students (status = 1)
+                                        $showTambahSiswa = count($klapper->siswas) == 0 || 
+                                                        $hasActiveStudents || 
+                                                        (!$hasGraduatedStudents && !$hasActiveStudents);
                                     @endphp
                                     
                                     @if($showTambahSiswa)
@@ -362,20 +371,14 @@
                                                             <i class="fas fa-comment me-1"></i>
                                                             Alasan Keluar <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="form-select form-select-sm mb-1" name="alasan_keluar_pilihan" id="alasan_keluar_select{{ $siswa->id }}" onchange="handleAlasanChange({{ $siswa->id }})">
-                                                            <option value="">Pilih alasan...</option>
-                                                            <option value="Lulus">Lulus</option>
-                                                            <option value="Pindah Sekolah">Pindah Sekolah</option>
-                                                            <option value="Mengundurkan Diri">Mengundurkan Diri</option>
-                                                            <option value="Dikeluarkan">Dikeluarkan</option>
-                                                            <option value="custom">Lainnya (Tulis sendiri)</option>
-                                                        </select>
-                                                        <textarea class="form-control form-control-sm" name="alasan_keluar_custom" id="alasan_keluar{{ $siswa->id }}" 
-                                                                    rows="2" placeholder="Masukkan alasan keluar siswa..." disabled></textarea>
-                                                            <div class="form-text small">Jelaskan alasan mengeluarkan siswa secara detail.</div>
-                                                        </div>
+                                                        <textarea class="form-control form-control-sm" 
+                                                                name="alasan_keluar" 
+                                                                id="alasan_keluar{{ $siswa->id }}" 
+                                                                rows="3" 
+                                                                placeholder="Masukkan alasan keluar siswa... (contoh: Lulus, Pindah Sekolah, Mengundurkan Diri, dll)"
+                                                                required></textarea>
+                                                        <div class="form-text small">Jelaskan alasan mengeluarkan siswa secara detail. Maksimal 500 karakter.</div>
                                                     </div>
-                                                    
                                                     <div class="modal-footer p-2">
                                                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
                                                             <i class="fas fa-times me-1"></i>

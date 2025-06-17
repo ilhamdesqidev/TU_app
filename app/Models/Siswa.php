@@ -27,6 +27,7 @@ class Siswa extends Model
         'tanggal_lulus', 'foto',
         'tanggal_keluar',
         'alasan_keluar',
+        'alasan_masuk',
         'klappers_id'];
 
     public function klapper()
