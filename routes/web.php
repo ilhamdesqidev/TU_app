@@ -54,13 +54,19 @@ Route::get('surat_masuk/{suratMasuk}/print', [SuratMasukController::class, 'prin
 Route::get('surat_masuk/export', [SuratMasukController::class, 'export'])
     ->name('surat_masuk.export');
 
+Route::get('/surat_masuk/{suratMasuk}/download', [SuratMasukController::class, 'downloadLampiran'])
+    ->name('surat_masuk.download');
+
 // Route untuk Surat Keluar
 Route::resource('surat_keluar', SuratKeluarController::class);
+
 // Rute tambahan
 Route::get('surat_keluar/{surat_keluar}/print', [SuratKeluarController::class, 'print'])
     ->name('surat_keluar.print');
-    Route::get('surat_keluar/{surat_keluar}/download/{filename}', [SuratKeluarController::class, 'downloadLampiran'])
+    
+Route::get('surat_keluar/{surat_keluar}/download/{filename}', [SuratKeluarController::class, 'downloadLampiran'])
     ->name('surat_keluar.download'); // Pastikan nama route ini konsisten
+
 // Route untuk Ijazah
 Route::resource('/ijazah', IjazahController::class);
 Route::get('/ijazah/download/{id}', [IjazahController::class, 'download'])->name('ijazah.download');

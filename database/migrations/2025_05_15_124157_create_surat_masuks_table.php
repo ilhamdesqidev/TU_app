@@ -15,12 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('nomor_surat')->unique();
             $table->date('tanggal_surat');
-            $table->string('pengirim');
             $table->date('tanggal_diterima');
+            $table->string('pengirim');
             $table->string('perihal');
+            $table->text('isi_surat')->nullable();
             $table->enum('kategori', ['penting', 'segera', 'biasa']);
             $table->enum('status', ['belum_diproses', 'sedang_diproses', 'selesai']);
-            $table->text('isi_surat')->nullable();
+            $table->string('lampiran_path')->nullable();
+            $table->string('lampiran_nama')->nullable();
+            $table->string('lampiran_tipe')->nullable();
+            $table->integer('lampiran_size')->nullable();
             $table->timestamps();
         });
     }

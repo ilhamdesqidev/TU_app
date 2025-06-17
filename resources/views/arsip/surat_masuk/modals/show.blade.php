@@ -18,11 +18,7 @@
                                 <div class="mb-2">
                                     <small class="text-muted">Tanggal Surat:</small>
                                     <p class="mb-0">
-                                        @if(is_string($suratMasuk->tanggal_surat))
-                                            {{ \Carbon\Carbon::parse($suratMasuk->tanggal_surat)->format('d M Y') }}
-                                        @else
-                                            {{ $suratMasuk->tanggal_surat->format('d M Y') }}
-                                        @endif
+                                        {{ \Carbon\Carbon::parse($suratMasuk->tanggal_surat)->format('d M Y') }}
                                     </p>
                                 </div>
                                 <div class="mb-2">
@@ -43,11 +39,7 @@
                                 <div class="mb-2">
                                     <small class="text-muted">Tanggal Diterima:</small>
                                     <p class="mb-0">
-                                        @if(is_string($suratMasuk->tanggal_diterima))
-                                            {{ \Carbon\Carbon::parse($suratMasuk->tanggal_diterima)->format('d M Y') }}
-                                        @else
-                                            {{ $suratMasuk->tanggal_diterima->format('d M Y') }}
-                                        @endif
+                                    {{ \Carbon\Carbon::parse($suratMasuk->tanggal_diterima)->format('d M Y') }}
                                     </p>
                                 </div>
                                 <div class="mb-2">
@@ -55,6 +47,14 @@
                                     <p class="mb-0">
                                         <span class="badge bg-{{ $suratMasuk->status == 'belum_diproses' ? 'warning text-dark' : ($suratMasuk->status == 'sedang_diproses' ? 'info' : 'success') }}">
                                             {{ str_replace('_', ' ', ucfirst($suratMasuk->status)) }}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="mb-2">
+                                    <small class="text-muted">Kategori:</small>
+                                    <p class="mb-0">
+                                        <span class="badge bg-{{ $suratMasuk->kategori == 'penting' ? 'warning text-dark' : ($suratMasuk->kategori == 'segera' ? 'danger' : 'secondary') }}">
+                                            {{ ucfirst($suratMasuk->kategori) }}
                                         </span>
                                     </p>
                                 </div>
@@ -67,7 +67,14 @@
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-muted">Isi Surat</h6>
                         <div class="border rounded p-3 bg-light">
-                            {!! nl2br(e($suratMasuk->isi_surat)) !!}
+                            @if($suratMasuk->isi_surat)
+                                {!! nl2br(e($suratMasuk->isi_surat)) !!}
+                            @else
+                                <div class="text-center text-muted py-3">
+                                    <i class="bi bi-info-circle fs-4"></i>
+                                    <p class="mb-0">Tidak ada konten surat yang tercatat</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -88,15 +95,17 @@
                                 <div class="col-md-6">
                                     <small class="text-muted">Tenggat Waktu:</small>
                                     <p class="mb-2">
-                                        @if(is_string($suratMasuk->disposisi->tenggat_waktu))
-                                            {{ \Carbon\Carbon::parse($suratMasuk->disposisi->tenggat_waktu)->format('d M Y') }}
-                                        @else
-                                            {{ $suratMasuk->disposisi->tenggat_waktu->format('d M Y') }}
-                                        @endif
+                                        {{ \Carbon\Carbon::parse($suratMasuk->disposisi->tenggat_waktu)->format('d M Y') }}
                                     </p>
                                     
                                     <small class="text-muted">Catatan:</small>
-                                    <p class="mb-0">{!! nl2br(e($suratMasuk->disposisi->catatan_disposisi)) !!}</p>
+                                    <p class="mb-0">
+                                        @if($suratMasuk->disposisi->catatan_disposisi)
+                                            {!! nl2br(e($suratMasuk->disposisi->catatan_disposisi)) !!}
+                                        @else
+                                            <span class="text-muted">Tidak ada catatan</span>
+                                        @endif
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -104,19 +113,17 @@
                 </div>
                 @endif
                 
-                @if($suratMasuk->lampiran->count() > 0)
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">Lampiran</h6>
-                        <div class="d-flex flex-wrap gap-2">
-                            @foreach($suratMasuk->lampiran as $lampiran)
-                            <div class="border rounded p-2 bg-light">
-                                <a href="{{ Storage::url($lampiran->path) }}" target="_blank" class="text-decoration-none">
-                                    <i class="bi bi-file-earmark me-1"></i> Lampiran {{ $loop->iteration }}
-                                </a>
-                            </div>
-                            @endforeach
-                        </div>
+                @if($suratMasuk->lampiran_path)
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Lampiran</label>
+                    <div class="border rounded p-2 bg-light">
+                        <a href="{{ $suratMasuk->lampiran_path }}" 
+                        target="_blank" 
+                        class="text-decoration-none d-flex align-items-center">
+                            <i class="bi bi-file-earmark-{{ $suratMasuk->lampiran_tipe === 'pdf' ? 'pdf' : 'text' }} me-2"></i>
+                            <span>{{ $suratMasuk->lampiran_nama }}</span>
+                            <small class="ms-2 text-muted">({{ $suratMasuk->lampiran_size }})</small>
+                        </a>
                     </div>
                 </div>
                 @endif
@@ -128,9 +135,9 @@
                     <i class="bi bi-arrow-right-circle me-1"></i> Disposisi
                 </a>
                 @endif
-                <button onclick="window.print()" class="btn btn-success">
+                <a href="{{ route('surat_masuk.print', $suratMasuk->id) }}" target="_blank" class="btn btn-success">
                     <i class="bi bi-printer me-1"></i> Cetak
-                </button>
+                </a>
             </div>
         </div>
     </div>

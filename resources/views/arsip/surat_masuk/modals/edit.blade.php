@@ -60,10 +60,15 @@
                         <textarea class="form-control" id="isi_surat" name="isi_surat" rows="5">{{ $suratMasuk->isi_surat }}</textarea>
                     </div>
                     
+                    // Dalam form create/edit
                     <div class="mb-3">
-                        <label for="lampiran" class="form-label fw-bold">Lampiran Baru</label>
-                        <input class="form-control" type="file" id="lampiran" name="lampiran[]" multiple>
-                        <div class="form-text">Kosongkan jika tidak ingin mengganti lampiran</div>
+                        <label for="lampiran" class="form-label">Lampiran</label>
+                        <input type="file" class="form-control" id="lampiran" name="lampiran">
+                        @if(isset($suratMasuk) && $suratMasuk->lampiran_path)
+                            <div class="mt-2">
+                                <small>Lampiran saat ini: {{ $suratMasuk->lampiran_nama }}</small>
+                            </div>
+                        @endif
                     </div>
                     
                     @if($suratMasuk->lampiran->count() > 0)
