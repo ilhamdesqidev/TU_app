@@ -5,7 +5,7 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 <section class="home bg-light">
     <div class="container py-3">
         <div class="row justify-content-center">
@@ -19,53 +19,43 @@
                     </div>
                 </div>
                 
-                <!-- Notification Alerts -->
                 @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-check-circle me-2 fs-5"></i>
-                        <div>
-                            <strong>Berhasil!</strong> {{ session('success') }}
-                        </div>
+                        <div><strong>Berhasil!</strong> {{ session('success') }}</div>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
                 
-                <!-- Header with card design -->
+                <!-- Header -->
                 <div class="card shadow-sm mb-3 border-0 rounded-3">
                     <div class="card-body p-2">
                         <div class="d-flex justify-content-between align-items-center flex-wrap">
-                            <h1 class="fs-2 mb-0 text-primary">
-                                <i class="fas fa-user-graduate me-1"></i>Data Siswa
-                            </h1>
+                            <h1 class="fs-2 mb-0 text-primary"><i class="fas fa-user-graduate me-1"></i>Data Siswa</h1>
                             <div class="badge bg-primary bg-opacity-10 text-primary py-1 px-2 rounded-pill">
-                               Angkatan: {{ $klapper->id }}
+                                Angkatan: {{ $klapper->id }}
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Search and filter card -->
+                <!-- Search and filter -->
                 <div class="card shadow-sm mb-3 border-0 rounded-3">
                     <div class="card-body p-2">
                         <form action="{{ route('klapper.show', $klapper->id) }}" method="GET" id="searchForm">
                             <div class="row g-1 align-items-center">
-                                <!-- Input Cari Siswa -->
                                 <div class="col-md-5">
                                     <label class="form-label fw-semibold text-secondary small">Cari Siswa</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-white border-end-0">
-                                            <i class="fas fa-search text-muted"></i>
-                                        </span>
+                                        <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
                                         <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Nama" class="form-control rounded-end">
                                         <div class="input-group-text bg-white border-start-0 d-none" id="loadingIndicator">
                                             <i class="fas fa-spinner fa-spin text-primary"></i>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Filter Sekolah -->
                                 <div class="col-md-4">
                                     <label class="form-label fw-semibold text-secondary small">Filter Sekolah</label>
                                     <select name="amaliah" onchange="this.form.submit()" class="form-select">
@@ -74,8 +64,6 @@
                                         <option value="2" {{ request('amaliah') == '2' ? 'selected' : '' }}>SMK Amaliah 2</option>
                                     </select>
                                 </div>
-
-                                <!-- Tombol Reset -->
                                 <div class="col-md-3">
                                     <label class="form-label d-none d-md-block small">&nbsp;</label>
                                     <a href="{{ route('klapper.show', $klapper->id) }}" class="btn btn-outline-secondary w-100">
@@ -87,79 +75,62 @@
                     </div>
                 </div>
                 
-                <div class="container">
-                    <!-- Card Aksi Massal -->
-                    <div class="card shadow-sm mb-3 border-0 rounded-3">
-                        <div class="card-body p-2">
-                            <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center">
-                                <h5 class="mb-0 text-dark small">Aksi Massal</h5>
-                                <div class="d-flex flex-wrap gap-1">
+                <!-- Bulk Actions -->
+                <div class="card shadow-sm mb-3 border-0 rounded-3">
+                    <div class="card-body p-2">
+                        <div class="d-flex flex-wrap gap-1 justify-content-between align-items-center">
+                            <h5 class="mb-0 text-dark small">Aksi Massal</h5>
+                            <div class="d-flex flex-wrap gap-1">
                                 @php
-                                        // Define variables to track student status
-                                        $hasKelasX = false;
-                                        $hasKelasXI = false;
-                                        $hasKelasXII = false;
-                                        $allStudentsActive = true;
-                                        $allStudentsGraduated = true;
-                                        $hasActiveStudents = false;
-                                        $hasGraduatedStudents = false; // New variable to track if any student has graduated
-                                        
-                                        foreach ($klapper->siswas as $siswa) {
-                                            if ($siswa->status == 2) {  // Active students
-                                                $hasActiveStudents = true;
-                                                $allStudentsGraduated = false;
-                                                if ($siswa->kelas == 'X') $hasKelasX = true;
-                                                if ($siswa->kelas == 'XI') $hasKelasXI = true;
-                                                if ($siswa->kelas == 'XII') $hasKelasXII = true;
-                                            } else if ($siswa->status == 1) { // Graduated students
-                                                $allStudentsActive = false;
-                                                $hasGraduatedStudents = true; // Mark that we have graduated students
-                                            } else { // Dropped out students (status = 0)
-                                                $allStudentsActive = false;
-                                                $allStudentsGraduated = false;
-                                            }
+                                    $hasKelasX = false; $hasKelasXI = false; $hasKelasXII = false;
+                                    $allStudentsActive = true; $allStudentsGraduated = true;
+                                    $hasActiveStudents = false; $hasGraduatedStudents = false;
+                                    
+                                    foreach ($klapper->siswas as $siswa) {
+                                        if ($siswa->status == 2) {
+                                            $hasActiveStudents = true;
+                                            $allStudentsGraduated = false;
+                                            if ($siswa->kelas == 'X') $hasKelasX = true;
+                                            if ($siswa->kelas == 'XI') $hasKelasXI = true;
+                                            if ($siswa->kelas == 'XII') $hasKelasXII = true;
+                                        } else if ($siswa->status == 1) {
+                                            $allStudentsActive = false;
+                                            $hasGraduatedStudents = true;
+                                        } else {
+                                            $allStudentsActive = false;
+                                            $allStudentsGraduated = false;
                                         }
-                                        
-                                        $enableNaikXI = $hasKelasX && !$hasKelasXI && !$hasKelasXII;
-                                        $enableNaikXII = !$hasKelasX && $hasKelasXI && !$hasKelasXII;
-                                        $enableLuluskan = !$hasKelasX && !$hasKelasXI && $hasKelasXII;
-                                        
-                                        // Show "Tambah Siswa" button if:
-                                        // 1. There are no students at all, OR
-                                        // 2. There are still active students (status = 2), OR
-                                        // 3. There are only dropped out students (status = 0) and no graduated students (status = 1)
-                                        $showTambahSiswa = count($klapper->siswas) == 0 || 
-                                                        $hasActiveStudents || 
-                                                        (!$hasGraduatedStudents && !$hasActiveStudents);
-                                    @endphp
+                                    }
                                     
-                                    @if($showTambahSiswa)
-                                    <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-user-plus me-1"></i> Tambah
-                                    </a>
-                                    @endif
-                                    
-                                    <!-- Button for "Naik Kelas XI" -->
-                                    <button type="button" class="btn btn-info btn-sm text-white {{ $enableNaikXI ? '' : 'disabled' }}" 
-                                            data-bs-toggle="modal" data-bs-target="{{ $enableNaikXI ? '#naikKelasXIModal' : '' }}"
-                                            title="{{ $enableNaikXI ? 'Naik Kelas XI' : 'Hanya tersedia untuk siswa aktif di Kelas X' }}">
-                                        <i class="fas fa-arrow-up me-1"></i> Naik XI
-                                    </button>
-                                    
-                                    <!-- Button for "Naik Kelas XII" -->
-                                    <button type="button" class="btn btn-info btn-sm text-white {{ $enableNaikXII ? '' : 'disabled' }}" 
-                                            data-bs-toggle="modal" data-bs-target="{{ $enableNaikXII ? '#naikKelasXIIModal' : '' }}"
-                                            title="{{ $enableNaikXII ? 'Naik Kelas XII' : 'Hanya tersedia untuk siswa aktif di Kelas XI' }}">
-                                        <i class="fas fa-arrow-up me-1"></i> Naik XII
-                                    </button>
-                                    
-                                    <!-- Button for "Luluskan Semua" -->
-                                    <button type="button" class="btn btn-success btn-sm {{ $enableLuluskan ? '' : 'disabled' }}" 
-                                            data-bs-toggle="modal" data-bs-target="{{ $enableLuluskan ? '#tanggalLulusModal' : '' }}"
-                                            title="{{ $enableLuluskan ? 'Luluskan Semua' : 'Hanya tersedia untuk siswa aktif di Kelas XII' }}">
-                                        <i class="fas fa-graduation-cap me-1"></i> Luluskan
-                                    </button>
-                                </div>
+                                    $enableNaikXI = $hasKelasX && !$hasKelasXI && !$hasKelasXII;
+                                    $enableNaikXII = !$hasKelasX && $hasKelasXI && !$hasKelasXII;
+                                    $enableLuluskan = !$hasKelasX && !$hasKelasXI && $hasKelasXII;
+                                    $showTambahSiswa = count($klapper->siswas) == 0 || $hasActiveStudents || (!$hasGraduatedStudents && !$hasActiveStudents);
+                                @endphp
+                                
+                                @if($showTambahSiswa)
+                                <a href="{{ route('siswa.create', $klapper->id) }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-user-plus me-1"></i> Tambah
+                                </a>
+                                @endif
+                                
+                                <button type="button" class="btn btn-info btn-sm text-white {{ $enableNaikXI ? '' : 'disabled' }}" 
+                                        data-bs-toggle="modal" data-bs-target="{{ $enableNaikXI ? '#naikKelasXIModal' : '' }}"
+                                        title="{{ $enableNaikXI ? 'Naik Kelas XI' : 'Hanya tersedia untuk siswa aktif di Kelas X' }}">
+                                    <i class="fas fa-arrow-up me-1"></i> Naik XI
+                                </button>
+                                
+                                <button type="button" class="btn btn-info btn-sm text-white {{ $enableNaikXII ? '' : 'disabled' }}" 
+                                        data-bs-toggle="modal" data-bs-target="{{ $enableNaikXII ? '#naikKelasXIIModal' : '' }}"
+                                        title="{{ $enableNaikXII ? 'Naik Kelas XII' : 'Hanya tersedia untuk siswa aktif di Kelas XI' }}">
+                                    <i class="fas fa-arrow-up me-1"></i> Naik XII
+                                </button>
+                                
+                                <button type="button" class="btn btn-success btn-sm {{ $enableLuluskan ? '' : 'disabled' }}" 
+                                        data-bs-toggle="modal" data-bs-target="{{ $enableLuluskan ? '#tanggalLulusModal' : '' }}"
+                                        title="{{ $enableLuluskan ? 'Luluskan Semua' : 'Hanya tersedia untuk siswa aktif di Kelas XII' }}">
+                                    <i class="fas fa-graduation-cap me-1"></i> Luluskan
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -177,8 +148,7 @@
                                 </div>
                                 <div class="modal-body p-2">
                                     <div class="alert alert-info p-2 mb-2">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        Tindakan ini akan mengubah status semua siswa kelas XII menjadi "Lulus".
+                                        <i class="fas fa-info-circle me-2"></i>Tindakan ini akan mengubah status semua siswa kelas XII menjadi "Lulus".
                                     </div>
                                     <label for="tanggal_lulus" class="form-label small">Tanggal Lulus:</label>
                                     <input type="date" name="tanggal_lulus" id="tanggal_lulus" class="form-control form-control-sm" required>
@@ -203,8 +173,7 @@
                                 </div>
                                 <div class="modal-body p-2">
                                     <div class="alert alert-info p-2 mb-2">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        Tindakan ini akan mengubah semua siswa kelas X menjadi kelas XI.
+                                        <i class="fas fa-info-circle me-2"></i>Tindakan ini akan mengubah semua siswa kelas X menjadi kelas XI.
                                     </div>
                                     <label for="tanggal_naik_kelas_xi" class="form-label small">Tanggal:</label>
                                     <input type="date" name="tanggal_naik_kelas_xi" id="tanggal_naik_kelas_xi" class="form-control form-control-sm" required>
@@ -229,8 +198,7 @@
                                 </div>
                                 <div class="modal-body p-2">
                                     <div class="alert alert-info p-2 mb-2">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        Tindakan ini akan mengubah semua siswa kelas XI menjadi kelas XII.
+                                        <i class="fas fa-info-circle me-2"></i>Tindakan ini akan mengubah semua siswa kelas XI menjadi kelas XII.
                                     </div>
                                     <label for="tanggal_naik_kelas_xii" class="form-label small">Tanggal:</label>
                                     <input type="date" name="tanggal_naik_kelas_xii" id="tanggal_naik_kelas_xii" class="form-control form-control-sm" required>
@@ -244,12 +212,10 @@
                     </div>
                 </div>
 
-                <!-- Improved Data Table Card -->
+                <!-- Data Table -->
                 <div class="card shadow border-0 rounded-3">
                     <div class="card-header bg-white p-2 d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0 fs-6">
-                            <i class="fas fa-list me-1 text-primary"></i>Daftar Siswa
-                        </h5>
+                        <h5 class="card-title mb-0 fs-6"><i class="fas fa-list me-1 text-primary"></i>Daftar Siswa</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -277,7 +243,7 @@
                                         } elseif ($amaliah == '2') {
                                             return in_array(strtolower($siswa->jurusan), $jurusanAmaliah2);
                                         }
-                                        return true; // Jika tidak ada filter, tampilkan semua
+                                        return true;
                                     });
                                     @endphp
 
@@ -295,28 +261,15 @@
                                                 {{ strtoupper($siswa->jurusan) }}
                                             </span>
                                         </td>
-                                        <td>
-                                            <span class="badge bg-light text-dark border small">
-                                                Kelas {{ $siswa->kelas }}
-                                            </span>
-                                        </td>
+                                        <td><span class="badge bg-light text-dark border small">Kelas {{ $siswa->kelas }}</span></td>
                                         <td>
                                             @if($siswa->status == 2)
-                                            <span class="badge bg-primary text-white small">
-                                                <i class="fas fa-user-graduate me-1"></i> Pelajar
-                                            </span>
+                                            <span class="badge bg-primary text-white small"><i class="fas fa-user-graduate me-1"></i> Pelajar</span>
                                             @elseif($siswa->status == 1)
-                                            <span class="badge bg-success text-white small">
-                                                <i class="fas fa-graduation-cap me-1"></i> Lulus
-                                            </span>
+                                            <span class="badge bg-success text-white small"><i class="fas fa-graduation-cap me-1"></i> Lulus</span>
                                             @elseif($siswa->status == 0)
-                                            <span class="badge bg-danger text-white small">
-                                                <i class="fas fa-arrow-right-from-bracket me-1"></i> Keluar
-                                            </span>
-                                            <br>
-                                                <small class="text-muted">
-                                                    {{ $siswa->alasan_keluar }}
-                                                </small>
+                                            <span class="badge bg-danger text-white small"><i class="fas fa-arrow-right-from-bracket me-1"></i> Keluar</span>
+                                            <br><small class="text-muted">{{ $siswa->alasan_keluar }}</small>
                                             @endif
                                         </td>
                                         <td>
@@ -324,15 +277,14 @@
                                                 <a href="{{ route('siswa.show', $siswa->id) }}" class="btn btn-outline-primary">
                                                     <i class="fa-solid fa-folder-open"></i>
                                                 </a>
-                                                
                                                 @if($siswa->status == 2)
-                                                    <button type="button" class="btn btn-outline-danger" 
-                                                            data-bs-toggle="modal" 
-                                                            data-bs-target="#modalKeluarkanSiswa{{ $siswa->id }}"
-                                                            title="Keluarkan Siswa">
-                                                        <i class="fas fa-arrow-right-from-bracket"></i>
-                                                    </button>
-                                               @endif
+                                                <button type="button" class="btn btn-outline-danger" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#modalKeluarkanSiswa{{ $siswa->id }}"
+                                                        title="Keluarkan Siswa">
+                                                    <i class="fas fa-arrow-right-from-bracket"></i>
+                                                </button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -343,12 +295,10 @@
                                             <div class="modal-content">
                                                 <div class="modal-header p-2">
                                                     <h5 class="modal-title fs-6" id="modalKeluarkanSiswaLabel{{ $siswa->id }}">
-                                                        <i class="fas fa-arrow-right-from-bracket text-danger me-1"></i>
-                                                        Keluarkan Siswa
+                                                        <i class="fas fa-arrow-right-from-bracket text-danger me-1"></i>Keluarkan Siswa
                                                     </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                
                                                 <form action="{{ route('siswa.keluar', $siswa->id) }}" method="POST">
                                                     @csrf
                                                     <div class="modal-body p-2">
@@ -356,39 +306,31 @@
                                                             <i class="fas fa-exclamation-triangle me-1"></i>
                                                             <strong>Peringatan!</strong> Tindakan ini akan mengeluarkan siswa <strong>{{ $siswa->nama_siswa }}</strong> dari sistem.
                                                         </div>
-                                                        
                                                         <div class="mb-2">
                                                             <label for="tanggal_keluar{{ $siswa->id }}" class="form-label small">
-                                                                <i class="fas fa-calendar me-1"></i>
-                                                                Tanggal Keluar <span class="text-danger">*</span>
+                                                                <i class="fas fa-calendar me-1"></i>Tanggal Keluar <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="date" class="form-control form-control-sm" id="tanggal_keluar{{ $siswa->id }}" name="tanggal_keluar" 
-                                                                value="{{ date('Y-m-d') }}" required>
+                                                            <input type="date" class="form-control form-control-sm" id="tanggal_keluar{{ $siswa->id }}" 
+                                                                name="tanggal_keluar" value="{{ date('Y-m-d') }}" required>
                                                         </div>
-                                                        
                                                         <div class="mb-2">
-                                                        <label for="alasan_keluar{{ $siswa->id }}" class="form-label small">
-                                                            <i class="fas fa-comment me-1"></i>
-                                                            Alasan Keluar <span class="text-danger">*</span>
-                                                        </label>
-                                                        <textarea class="form-control form-control-sm" 
-                                                                name="alasan_keluar" 
-                                                                id="alasan_keluar{{ $siswa->id }}" 
-                                                                rows="3" 
+                                                            <label for="alasan_keluar{{ $siswa->id }}" class="form-label small">
+                                                                <i class="fas fa-comment me-1"></i>Alasan Keluar <span class="text-danger">*</span>
+                                                            </label>
+                                                            <textarea class="form-control form-control-sm" name="alasan_keluar" 
+                                                                id="alasan_keluar{{ $siswa->id }}" rows="3" 
                                                                 placeholder="Masukkan alasan keluar siswa... (contoh: Lulus, Pindah Sekolah, Mengundurkan Diri, dll)"
                                                                 required></textarea>
-                                                        <div class="form-text small">Jelaskan alasan mengeluarkan siswa secara detail. Maksimal 500 karakter.</div>
-                                                    </div>
-                                                    <div class="modal-footer p-2">
-                                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                                                            <i class="fas fa-times me-1"></i>
-                                                            Batal
-                                                        </button>
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin mengeluarkan siswa ini?')">
-                                                            <i class="fas fa-check me-1"></i>
-                                                            Keluarkan
-                                                        </button>
-                                                    </div>
+                                                            <div class="form-text small">Jelaskan alasan mengeluarkan siswa secara detail. Maksimal 500 karakter.</div>
+                                                        </div>
+                                                        <div class="modal-footer p-2">
+                                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                                                                <i class="fas fa-times me-1"></i>Batal
+                                                            </button>
+                                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin mengeluarkan siswa ini?')">
+                                                                <i class="fas fa-check me-1"></i>Keluarkan
+                                                            </button>
+                                                        </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -408,7 +350,7 @@
                     </div>
                 </div>
                 
-                <!-- Footer info -->
+                <!-- Footer -->
                 <div class="mt-3 text-center text-muted small">
                     <p class="mb-0">SMK Amaliah Data Management System © {{ date('Y') }}</p>
                 </div>
@@ -419,44 +361,22 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // Search input functionality
+    // Search functionality
     let searchInput = document.getElementById("searchInput");
     let searchForm = document.getElementById("searchForm");
     let loadingIndicator = document.getElementById("loadingIndicator");
     let typingTimer;
-    let doneTypingInterval = 500; // Waktu delay sebelum pencarian otomatis (ms)
+    let doneTypingInterval = 500;
 
     searchInput.addEventListener("input", function () {
         clearTimeout(typingTimer);
-        
-        // Show loading indicator
-        if (loadingIndicator) {
-            loadingIndicator.classList.remove("d-none");
-        }
-        
-        typingTimer = setTimeout(() => {
-            searchForm.submit();
-        }, doneTypingInterval);
+        if (loadingIndicator) loadingIndicator.classList.remove("d-none");
+        typingTimer = setTimeout(() => searchForm.submit(), doneTypingInterval);
     });
 
-    // Jika pengguna masih menketik, hentikan pengiriman form sementara
     searchInput.addEventListener("keydown", function () {
         clearTimeout(typingTimer);
     });
-
-    function handleAlasanChange(id) {
-        const select = document.getElementById(`alasan_keluar_select${id}`);
-        const textarea = document.getElementById(`alasan_keluar${id}`);
-
-        if (select.value === 'custom') {
-            textarea.disabled = false;
-            textarea.required = true;
-        } else {
-            textarea.disabled = true;
-            textarea.required = false;
-            textarea.value = select.value;
-        }
-    }
 
     // Set today's date as default for all date inputs
     const today = new Date().toISOString().split('T')[0];
@@ -469,17 +389,14 @@ document.addEventListener("DOMContentLoaded", function () {
     modals.forEach(modal => {
         const modalElement = document.getElementById(modal.id);
         if (modalElement) {
-            // When modal is shown, set default date
             modalElement.addEventListener('shown.bs.modal', function () {
                 const dateInput = document.getElementById(modal.formId);
-                if (dateInput && !dateInput.value) {
-                    dateInput.value = today;
-                }
+                if (dateInput && !dateInput.value) dateInput.value = today;
             });
         }
     });
 
-    // Konfirmasi sebelum melakukan tindakan massal
+    // Mass action confirmation
     const massActionForms = document.querySelectorAll('.modal form');
     massActionForms.forEach(form => {
         form.addEventListener('submit', function(e) {
@@ -489,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     
-    // Add tooltips to disabled buttons
+    // Tooltips for disabled buttons
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
