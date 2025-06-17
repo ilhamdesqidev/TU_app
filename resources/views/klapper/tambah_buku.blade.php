@@ -15,7 +15,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container flex-grow-1 mb-3"> <!-- Added margin-bottom here -->
+    <div class="container flex-grow-1 mb-3">
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
                 <div class="card shadow-lg border-0 rounded-4">
@@ -36,17 +36,32 @@
                             <div class="mb-3">
                                 <label for="nama_buku" class="form-label fw-semibold">Nama Buku</label>
                                 <input type="text" name="nama_buku" id="nama_buku" class="form-control" 
-                                       value="{{ old('nama_buku', $newNamaBuku) }}" required>
-                                @if(!empty($newNamaBuku))
-                                    <div class="form-text mt-1">Nama buku akan otomatis berlanjut dari data terakhir</div>
+                                       value="{{ old('nama_buku', $newNamaBuku) }}" required
+                                       placeholder="Contoh: Angkatan 1">
+                                @if($isFirstCreate)
+                                    <div class="form-text text-info mt-1">
+                                        <i class="bi bi-info-circle"></i> Ini adalah buku pertama, contoh format: Angkatan 1
+                                    </div>
+                                @else
+                                    <div class="form-text text-success mt-1">
+                                        <i class="bi bi-check-circle"></i> Nama buku otomatis berlanjut dari data terakhir
+                                    </div>
                                 @endif
                             </div>
+                            
                             <div class="mb-3">
                                 <label for="tahun_ajaran" class="form-label fw-semibold">Tahun Ajaran</label>
                                 <input type="text" name="tahun_ajaran" id="tahun_ajaran" class="form-control" 
-                                       value="{{ old('tahun_ajaran', $newTahunAjaran) }}" required>
-                                @if(!empty($newTahunAjaran))
-                                    <div class="form-text mt-1">Tahun ajaran akan otomatis berlanjut dari data terakhir</div>
+                                       value="{{ old('tahun_ajaran', $newTahunAjaran) }}" required
+                                       placeholder="Contoh: 2023/2024">
+                                @if($isFirstCreate)
+                                    <div class="form-text text-info mt-1">
+                                        <i class="bi bi-info-circle"></i> Format tahun ajaran: YYYY/YYYY (contoh: 2023/2024)
+                                    </div>
+                                @else
+                                    <div class="form-text text-success mt-1">
+                                        <i class="bi bi-check-circle"></i> Tahun ajaran otomatis berlanjut dari data terakhir
+                                    </div>
                                 @endif
                             </div>
                             

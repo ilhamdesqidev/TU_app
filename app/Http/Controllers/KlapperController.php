@@ -17,10 +17,11 @@ class KlapperController extends Controller
     {
         $lastKlapper = Klapper::latest()->first();
 
-        // Jika tidak ada data sebelumnya
+        // Jika tidak ada data sebelumnya (first create)
         if (!$lastKlapper) {
-            $newNamaBuku = '';
-            $newTahunAjaran = '';
+            $newNamaBuku = 'Angkatan 1';
+            $newTahunAjaran = date('Y') . '/' . (date('Y') + 1);
+            $isFirstCreate = true;
         } 
         // Jika ada data sebelumnya
         else {
@@ -34,32 +35,31 @@ class KlapperController extends Controller
             } else {
                 $newTahunAjaran = date('Y') . '/' . (date('Y') + 1);
             }
+            $isFirstCreate = false;
         }
 
-        return view('klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran'));
+        return view('klapper.tambah_buku', compact('newNamaBuku', 'newTahunAjaran', 'isFirstCreate'));
     }
 
     public function storeKlapper(Request $request)
     {
         $request->validate([
             'nama_buku' => 'required|unique:klappers,nama_buku',
-            'tahun_ajaran' => 'required',
+            'tahun_ajaran' => 'required|regex:/^\d{4}\/\d{4}$/',
         ],  [
             'nama_buku.required' => 'Nama buku wajib diisi.',
             'nama_buku.unique' => 'Nama buku sudah ada, silakan gunakan nama lain.',
             'tahun_ajaran.required' => 'Tahun ajaran wajib diisi.',
+            'tahun_ajaran.regex' => 'Format tahun ajaran harus YYYY/YYYY (contoh: 2023/2024).',
         ]);
         
-        // Jika input kosong (pertama kali membuat buku)
-        if (empty($request->nama_buku)) {
-            $request->merge([
-                'nama_buku' => 'Angkatan 1',
-                'tahun_ajaran' => date('Y') . '/' . (date('Y') + 1)
-            ]);
-        }
-        
-        Klapper::create($request->all());
-        return redirect()->route('klapper.index')->with('status', 'Berhasil Menambahkan Buku Angkatan');
+        Klapper::create([
+            'nama_buku' => $request->nama_buku,
+            'tahun_ajaran' => $request->tahun_ajaran
+        ]);
+
+        return redirect()->route('klapper.index')
+            ->with('status', 'Berhasil menambahkan buku angkatan baru');
     }
 
     public function showKlapper($id, Request $request)
