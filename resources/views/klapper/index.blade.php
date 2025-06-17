@@ -16,7 +16,7 @@
 </div>
 @endif
 
-@if ($errors->any())
+@if ($errors->any()))
 <div class="position-fixed top-0 end-0 p-2" style="z-index: 1100; max-width: 400px;">
     <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="8000">
         <div class="toast-header bg-danger text-white">
@@ -34,61 +34,46 @@
 </div>
 @endif
 
-<div class="bg-light py-2">
-    <div class="container">
-        <!-- Header Section -->
-        <div class="row my-2">
-            <div class="col-md-8 mx-auto text-center">
-                <h2 class="fw-bold text-primary mb-1">Koleksi Klapper</h2>
-                <p class="text-muted mb-1">Akses data siswa siswi smk amaliah 1&2</p>
-                <div class="d-flex justify-content-center">
-                    <div class="border-bottom border-primary" style="width: 50px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container py-2">
+<div class="container py-4">
     <!-- Tab Content -->
     <div class="tab-content" id="data-tabs-content">
         <!-- KLAPPER TAB CONTENT -->
         <div class="tab-pane fade show active" id="klapper-content" role="tabpanel" aria-labelledby="klapper-tab">
             <div class="card border-0 shadow-sm rounded-4 mb-2">
                 <div class="card-body p-3">
-                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-2">
-                        <div class="mb-1 mb-md-0">
-                            <h4 class="fw-bold mb-1">
-                                <i class="fas fa-user-graduate me-1 text-primary"></i>Klapper Siswa
-                            </h4>
-                            <p class="text-muted mb-0">Menampilkan seluruh data klapper siswa</p>
+                    <!-- Header Section - Modified -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+                        <div>
+                            <h2 class="fw-bold mb-1 text-primary">
+                                <i class="fas fa-book-open me-1"></i>Klapper Siswa
+                            </h2>
+                            <p class="text-muted mb-0">Manajemen data klapper siswa SMK Amaliah</p>
                         </div>
-                        <a href="{{ route('klapper.create') }}" class="btn btn-primary rounded-pill">
-                            <i class="fas fa-plus me-1"></i> Tambah Klapper
-                        </a>
                     </div>
 
-                    <!-- Filter Controls -->
-                    <div class="row g-2 mb-2">
+                    <!-- Filter Controls - Modified -->
+                    <div class="row g-2 mb-3">
                         <div class="col-md-8">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0">
                                     <i class="fas fa-search text-muted"></i>
                                 </span>
-                                <input type="text" class="form-control border-start-0" id="searchSiswa" placeholder="Cari Angkatan Klapper...">
+                                <input type="text" class="form-control border-start-0" id="searchSiswa" placeholder="Cari berdasarkan tahun ajaran...">
                                 <button class="btn btn-outline-secondary" type="button" id="clearSearchSiswa">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="col-md-4 text-md-end">
-                            <div class="btn-group" id="student-view-toggle">
-                                <button class="btn btn-outline-primary active" id="student-grid-btn">
-                                    <i class="fas fa-th me-1"></i> Grid
-                                </button>
-                                <button class="btn btn-outline-primary" id="student-list-btn">
-                                    <i class="fas fa-list me-1"></i> List
-                                </button>
+                            <div class="d-flex justify-content-end gap-2">
+                                <div class="btn-group" id="student-view-toggle">
+                                    <button class="btn btn-outline-primary active" id="student-grid-btn">
+                                        <i class="fas fa-th"></i>
+                                    </button>
+                                    <button class="btn btn-outline-primary" id="student-list-btn">
+                                        <i class="fas fa-list"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -292,34 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, delay)
     })
 
-    // Store the active tab in localStorage
-    const saveActiveTab = function(tabId) {
-        localStorage.setItem('activeKlapperTab', tabId)
-    }
-
-    // Set active tab based on localStorage
-    const setActiveTab = function() {
-        const activeTab = localStorage.getItem('activeKlapperTab')
-        if (activeTab) {
-            const tabEl = document.querySelector(`#${activeTab}`)
-            if (tabEl) {
-                new bootstrap.Tab(tabEl).show()
-            }
-        }
-    }
-
-    // Initialize tabs with Bootstrap
-    const tabs = document.querySelectorAll('button[data-bs-toggle="pill"]')
-    tabs.forEach(function(tab) {
-        tab.addEventListener('shown.bs.tab', function(e) {
-            saveActiveTab(e.target.id)
-        })
-    })
-
-    // Restore active tab when page loads
-    setActiveTab()
-
-    // Student view toggle with improved animation
+    // Student view toggle - Fixed functionality
     const studentGridBtn = document.getElementById('student-grid-btn')
     const studentListBtn = document.getElementById('student-list-btn')
     const studentGridView = document.getElementById('student-grid-view')
@@ -327,13 +285,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const switchView = (view) => {
         if (view === 'grid') {
-            studentGridView.classList.remove('d-none')
-            studentListView.classList.add('d-none')
+            studentGridView.style.display = 'flex'
+            studentListView.style.display = 'none'
             studentGridBtn.classList.add('active')
             studentListBtn.classList.remove('active')
         } else {
-            studentGridView.classList.add('d-none')
-            studentListView.classList.remove('d-none')
+            studentGridView.style.display = 'none'
+            studentListView.style.display = 'block'
             studentListBtn.classList.add('active')
             studentGridBtn.classList.remove('active')
         }
@@ -364,48 +322,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterStudents = () => {
         const searchValue = searchSiswa.value.toLowerCase()
         const studentItems = document.querySelectorAll('.student-item')
-        let visibleCount = 0
         
         studentItems.forEach(item => {
             const text = item.textContent.toLowerCase()
-            const isVisible = text.includes(searchValue)
-            item.classList.toggle('d-none', !isVisible)
-            if (isVisible) visibleCount++
+            if (studentViewPref === 'grid') {
+                item.style.display = text.includes(searchValue) ? '' : 'none'
+            } else {
+                item.style.display = text.includes(searchValue) ? 'table-row' : 'none'
+            }
         })
-        
-        showEmptyState(visibleCount)
-    }
-    
-    const showEmptyState = (visibleCount) => {
-        const activeView = studentGridView.classList.contains('d-none') 
-            ? studentListView 
-            : studentGridView
-        
-        // Remove existing empty state
-        const existingEmpty = activeView.querySelector('.search-empty-state')
-        if (existingEmpty) existingEmpty.remove()
-        
-        if (visibleCount === 0 && searchSiswa.value) {
-            const emptyState = document.createElement('div')
-            emptyState.className = 'search-empty-state text-center py-4'
-            emptyState.innerHTML = `
-                <div class="mb-2">
-                    <i class="fas fa-search text-muted opacity-25 fa-3x"></i>
-                </div>
-                <h5 class="fw-bold text-muted mb-2">Tidak Ada Hasil</h5>
-                <p class="text-muted mb-2">Tidak ditemukan hasil untuk "${searchSiswa.value}"</p>
-                <button class="btn btn-outline-primary rounded-pill" id="resetSearchBtn">
-                    <i class="fas fa-redo me-1"></i> Reset Pencarian
-                </button>
-            `
-            activeView.appendChild(emptyState)
-            
-            document.getElementById('resetSearchBtn').addEventListener('click', () => {
-                searchSiswa.value = ''
-                filterStudents()
-                searchSiswa.focus()
-            })
-        }
     }
     
     searchSiswa.addEventListener('input', debounce(filterStudents, 300))

@@ -12,10 +12,40 @@ class SuratKeluarController extends Controller
     {
         $query = SuratKeluar::query();
 
-        // Filter dan pencarian (sama seperti sebelumnya)
-        // ...
+        // Filter berdasarkan pencarian
+        if ($request->filled('search')) {
+            $search = '%' . $request->input('search') . '%';
+            $query->where(function($q) use ($search) {
+                $q->where('nomor_surat', 'like', $search)
+                ->orWhere('penerima', 'like', $search)
+                ->orWhere('perihal', 'like', $search);
+            });
+        }
 
-        $suratKeluars = $query->latest()->paginate(10);
+        // Filter tanggal mulai
+        if ($request->filled('start_date')) {
+            $query->whereDate('tanggal_surat', '>=', $request->input('start_date'));
+        }
+
+        // Filter tanggal akhir
+        if ($request->filled('end_date')) {
+            $query->whereDate('tanggal_surat', '<=', $request->input('end_date'));
+        }
+
+        // Filter kategori
+        if ($request->filled('category')) {
+            $query->where('kategori', $request->input('category'));
+        }
+
+        // Filter status
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        // Urutkan dan paginasi
+        $suratKeluars = $query->orderBy('tanggal_surat', 'desc')
+                            ->paginate(10)
+                            ->appends(request()->query());
 
         return view('arsip.surat_keluar.index', compact('suratKeluars'));
     }
