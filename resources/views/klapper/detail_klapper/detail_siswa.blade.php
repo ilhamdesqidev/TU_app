@@ -73,26 +73,48 @@
             <div class="card border-0 shadow h-100">
                 <div class="card-header bg-light border-0 py-3">
                     <!-- Tab Navigation -->
+                    <!-- Ganti bagian tab navigation dengan ini -->
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                         <li class="nav-item me-2" role="presentation">
-                            <button class="nav-link active fw-bold text-white bg-primary border-0 px-2 py-1 rounded small" id="pills-personal-tab" data-bs-toggle="pill" 
-                                data-bs-target="#pills-personal" type="button" role="tab">
+                            <button class="nav-link active fw-bold text-white bg-primary border-0 px-2 py-1 rounded small" 
+                                    id="pills-personal-tab" data-bs-toggle="pill" 
+                                    data-bs-target="#pills-personal" type="button" role="tab">
                                 <i class="fas fa-user me-1"></i>Data Pribadi
                             </button>
                         </li>
                         <li class="nav-item me-2" role="presentation">
-                            <button class="nav-link fw-bold text-primary bg-light border border-primary px-2 py-1 rounded small" id="pills-academic-tab" data-bs-toggle="pill" 
-                                data-bs-target="#pills-academic" type="button" role="tab">
+                            <button class="nav-link fw-bold text-dark bg-light border border-primary px-2 py-1 rounded small" 
+                                    id="pills-academic-tab" data-bs-toggle="pill" 
+                                    data-bs-target="#pills-academic" type="button" role="tab">
                                 <i class="fas fa-graduation-cap me-1"></i>Data Akademik
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link fw-bold text-primary bg-light border border-primary px-2 py-1 rounded small" id="pills-family-tab" data-bs-toggle="pill" 
-                                data-bs-target="#pills-family" type="button" role="tab">
+                            <button class="nav-link fw-bold text-dark bg-light border border-primary px-2 py-1 rounded small" 
+                                    id="pills-family-tab" data-bs-toggle="pill" 
+                                    data-bs-target="#pills-family" type="button" role="tab">
                                 <i class="fas fa-users me-1"></i>Data Keluarga
                             </button>
                         </li>
                     </ul>
+
+                    <!-- Tambahkan style ini di bagian head atau sebelum penutup body -->
+                    <style>
+                        .nav-pills .nav-link.active, 
+                        .nav-pills .show > .nav-link {
+                            color: #fff !important;
+                            background-color: #0d6efd !important;
+                        }
+                        
+                        .nav-pills .nav-link:not(.active) {
+                            color: #212529 !important;
+                            background-color: #f8f9fa !important;
+                        }
+                        
+                        .nav-pills .nav-link:not(.active):hover {
+                            background-color: #e9ecef !important;
+                        }
+                    </style>
                 </div>
 
                 <div class="card-body p-3">
