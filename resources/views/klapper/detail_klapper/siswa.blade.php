@@ -14,11 +14,52 @@
                     </div>
                 </div>
                 
-                @if(session('success'))
+                 <!-- Notifikasi -->
+                 @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-check-circle me-2 fs-5"></i>
                         <div><strong>Berhasil!</strong> {{ session('success') }}</div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                
+                @if(session('naik_kelas_xi'))
+                <div class="alert alert-info alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-arrow-up me-2 fs-5"></i>
+                        <div><strong>Berhasil Naik Kelas!</strong> {{ session('naik_kelas_xi') }}</div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                
+                @if(session('naik_kelas_xii'))
+                <div class="alert alert-info alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-arrow-up me-2 fs-5"></i>
+                        <div><strong>Berhasil Naik Kelas!</strong> {{ session('naik_kelas_xii') }}</div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                
+                @if(session('lulus'))
+                <div class="alert alert-success alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-graduation-cap me-2 fs-5"></i>
+                        <div><strong>Berhasil Meluluskan!</strong> {{ session('lulus') }}</div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                
+                @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-exclamation-circle me-2 fs-5"></i>
+                        <div><strong>Error!</strong> {{ session('error') }}</div>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>

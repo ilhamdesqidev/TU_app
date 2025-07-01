@@ -40,7 +40,7 @@
                                     <i class="fa fa-users text-primary fs-5"></i>
                                 </div>
                             </div>
-                            <h3 class="display-6 fw-light text-dark mb-1">{{ $jumlahSiswa }}</h3>
+                            <h3 class="display-6 fw-light text-dark mb-1">{{ $jumlahSiswaAktif }}</h3>
                             <p class="text-uppercase small fw-semibold text-muted mb-2 tracking-wide">Siswa</p>
                             <div class="border-top pt-2">
                                 <small class="text-muted">Total siswa aktif</small>
@@ -99,47 +99,6 @@
                             <div class="border-top pt-2">
                                 <small class="text-muted">Tahun angkatan</small>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sophisticated Navigation -->
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <div class="text-center mb-4">
-                        <h3 class="h4 fw-normal text-dark mb-2">Menu Utama</h3>
-                        <p class="text-muted small">Akses cepat ke berbagai layanan</p>
-                    </div>
-                    
-                    <div class="row g-3">
-                        <div class="col-lg-3 col-md-6">
-                            <a href="#" class="btn btn-outline-dark w-100 py-3 border-2 text-decoration-none d-flex flex-column align-items-center">
-                                <i class="fa fa-home mb-2"></i>
-                                <span class="fw-normal">Beranda</span>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <a href="#" class="btn btn-outline-dark w-100 py-3 border-2 text-decoration-none d-flex flex-column align-items-center">
-                                <i class="fa fa-info-circle mb-2"></i>
-                                <span class="fw-normal">Tentang</span>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <a href="#" class="btn btn-outline-dark w-100 py-3 border-2 text-decoration-none d-flex flex-column align-items-center">
-                                <i class="fa fa-book mb-2"></i>
-                                <span class="fw-normal">Program</span>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <a href="#" class="btn btn-outline-dark w-100 py-3 border-2 text-decoration-none d-flex flex-column align-items-center">
-                                <i class="fa fa-phone mb-2"></i>
-                                <span class="fw-normal">Kontak</span>
-                            </a>
                         </div>
                     </div>
                 </div>
