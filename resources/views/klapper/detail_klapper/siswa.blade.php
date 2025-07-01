@@ -3,6 +3,87 @@
 @section('content')
 <section class="home bg-light">
     <div class="container py-3">
+        <!-- Toast Notifications -->
+        @if(session('success'))
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast-header bg-primary text-white">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <strong class="me-auto">Berhasil</strong>
+                    <small>Baru saja</small>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-white">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+        @endif
+
+        @if(session('naik_kelas_xi'))
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast-header bg-info text-white">
+                    <i class="fas fa-arrow-up me-2"></i>
+                    <strong class="me-auto">Naik Kelas</strong>
+                    <small>Baru saja</small>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-white">
+                    {{ session('naik_kelas_xi') }}
+                </div>
+            </div>
+        </div>
+        @endif
+
+        @if(session('naik_kelas_xii'))
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast-header bg-info text-white">
+                    <i class="fas fa-arrow-up me-2"></i>
+                    <strong class="me-auto">Naik Kelas</strong>
+                    <small>Baru saja</small>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-white">
+                    {{ session('naik_kelas_xii') }}
+                </div>
+            </div>
+        </div>
+        @endif
+
+        @if(session('lulus'))
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast-header bg-success text-white">
+                    <i class="fas fa-graduation-cap me-2"></i>
+                    <strong class="me-auto">Kelulusan</strong>
+                    <small>Baru saja</small>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-white">
+                    {{ session('lulus') }}
+                </div>
+            </div>
+        </div>
+        @endif
+
+        @if(session('error'))
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast-header bg-danger text-white">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong class="me-auto">Error</strong>
+                    <small>Baru saja</small>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-white">
+                    {{ session('error') }}
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="row justify-content-center">
             <div class="col-12">
                 <!-- Back button -->
@@ -13,57 +94,6 @@
                         </a>
                     </div>
                 </div>
-                
-                 <!-- Notifikasi -->
-                 @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-check-circle me-2 fs-5"></i>
-                        <div><strong>Berhasil!</strong> {{ session('success') }}</div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
-                
-                @if(session('naik_kelas_xi'))
-                <div class="alert alert-info alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-arrow-up me-2 fs-5"></i>
-                        <div><strong>Berhasil Naik Kelas!</strong> {{ session('naik_kelas_xi') }}</div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
-                
-                @if(session('naik_kelas_xii'))
-                <div class="alert alert-info alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-arrow-up me-2 fs-5"></i>
-                        <div><strong>Berhasil Naik Kelas!</strong> {{ session('naik_kelas_xii') }}</div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
-                
-                @if(session('lulus'))
-                <div class="alert alert-success alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-graduation-cap me-2 fs-5"></i>
-                        <div><strong>Berhasil Meluluskan!</strong> {{ session('lulus') }}</div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
-                
-                @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show mb-3 border-0 shadow-sm" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-exclamation-circle me-2 fs-5"></i>
-                        <div><strong>Error!</strong> {{ session('error') }}</div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
                 
                 <!-- Header -->
                 <div class="card shadow-sm mb-3 border-0 rounded-3">
@@ -448,13 +478,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
     
-    // Auto close alerts after 5 seconds
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-        setTimeout(() => {
-            const bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        }, 5000);
+    // Initialize toast notifications
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    var toastList = toastElList.map(function (toastEl) {
+        return new bootstrap.Toast(toastEl, {
+            autohide: true,
+            delay: 5000
+        }).show();
     });
 });
 </script>
