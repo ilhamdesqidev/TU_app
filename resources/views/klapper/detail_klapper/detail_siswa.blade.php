@@ -1,9 +1,5 @@
 @extends('main')
 @section('content')
-<!-- Import CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
 <div class="container py-4">
     <!-- Header -->
     <div class="row mb-4">
@@ -73,7 +69,6 @@
             <div class="card border-0 shadow h-100">
                 <div class="card-header bg-light border-0 py-3">
                     <!-- Tab Navigation -->
-                    <!-- Ganti bagian tab navigation dengan ini -->
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                         <li class="nav-item me-2" role="presentation">
                             <button class="nav-link active fw-bold text-white bg-primary border-0 px-2 py-1 rounded small" 
@@ -98,7 +93,6 @@
                         </li>
                     </ul>
 
-                    <!-- Tambahkan style ini di bagian head atau sebelum penutup body -->
                     <style>
                         .nav-pills .nav-link.active, 
                         .nav-pills .show > .nav-link {
@@ -236,6 +230,22 @@
                                             </td>
                                             <td class="py-1" style="font-size: 0.85rem;">
                                                 <span class="fw-medium text-dark">{{ $siswa->tanggal_keluar ? \Carbon\Carbon::parse($siswa->tanggal_keluar)->isoFormat('D MMMM YYYY') : 'Masih Aktif' }}</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top">
+                                            <td class="fw-bold text-dark py-1" style="font-size: 0.85rem;">
+                                                <i class="fas fa-comment-dots text-danger me-2" style="font-size: 0.75rem;"></i>Alasan Keluar
+                                            </td>
+                                            <td class="py-1" style="font-size: 0.85rem;">
+                                                <span class="fw-medium text-dark">
+                                                    @if($siswa->tanggal_keluar && $siswa->alasan_keluar)
+                                                        {{ $siswa->alasan_keluar }}
+                                                    @elseif($siswa->tanggal_keluar && !$siswa->alasan_keluar)
+                                                        Tidak ada alasan yang dicatat
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </span>
                                             </td>
                                         </tr>
                                     </tbody>

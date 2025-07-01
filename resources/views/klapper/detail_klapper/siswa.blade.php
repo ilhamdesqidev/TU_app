@@ -1,11 +1,6 @@
 @extends('main')
 
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <section class="home bg-light">
     <div class="container py-3">
         <div class="row justify-content-center">
@@ -269,7 +264,7 @@
                                             <span class="badge bg-success text-white small"><i class="fas fa-graduation-cap me-1"></i> Lulus</span>
                                             @elseif($siswa->status == 0)
                                             <span class="badge bg-danger text-white small"><i class="fas fa-arrow-right-from-bracket me-1"></i> Keluar</span>
-                                            <br><small class="text-muted">{{ $siswa->alasan_keluar }}</small>
+                                                
                                             @endif
                                         </td>
                                         <td>
