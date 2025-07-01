@@ -2,49 +2,37 @@
 
 @section('content')
 <div class="container py-4">
-    <div class="card shadow border-0 rounded-3">
-        <!-- Card Header dengan Search dan Filter -->
-        <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex align-items-center mb-2 mb-md-0">
-                <h4 class="card-title mb-0">
-                    <i class="fas fa-archive me-2 text-primary"></i>Arsip Ijazah
-                </h4>
-            </div>
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+            <h4 class="mb-0">
+                <i class="fas fa-archive me-2"></i>Arsip Ijazah
+            </h4>
             
-            <div class="d-flex flex-wrap gap-2">
-                <!-- Search Form -->
-                <form action="{{ route('ijazah.index') }}" method="GET" class="position-relative" id="searchForm">
-                    <div class="input-group">
-                        <input type="text" 
-                               name="search" 
-                               id="searchInput"
-                               class="form-control" 
-                               placeholder="Cari nama/NIS/nomor ijazah..." 
-                               value="{{ request('search') }}"
-                               style="min-width: 250px;">
-                        <button class="btn btn-outline-primary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <div class="position-absolute top-50 end-0 translate-middle-y pe-4 d-none" id="searchLoading">
-                            <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="d-flex gap-2 mt-2 mt-md-0">
+                <!-- Pencarian -->
+                <form action="{{ route('ijazah.index') }}" method="GET" class="d-flex">
+                    <input type="text" 
+                           name="search" 
+                           class="form-control me-2" 
+                           placeholder="Cari nama/NIS/nomor ijazah..." 
+                           value="{{ request('search') }}">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </form>
                 
-                <!-- Filter Dropdown -->
+                <!-- Filter -->
                 <div class="dropdown">
                     <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-filter me-1"></i> Filter Klapper
+                        <i class="fas fa-filter"></i> Filter
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="?filter=all{{ request('search') ? '&search='.request('search') : '' }}">Semua Klapper</a></li>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?filter=all{{ request('search') ? '&search='.request('search') : '' }}">Semua</a></li>
                         @foreach($availableKlappers as $klapper)
                         <li>
                             <a class="dropdown-item" href="?filter=klapper-{{ $klapper->id }}{{ request('search') ? '&search='.request('search') : '' }}">
-                                Angkatan {{ $klapper->tahun_ajaran }}
-                                <span class="badge bg-primary float-end">{{ $klapper->ijazahs_count }}</span>
+                                {{ $klapper->tahun_ajaran }} ({{ $klapper->ijazahs_count }})
                             </a>
                         </li>
                         @endforeach
@@ -53,82 +41,56 @@
             </div>
         </div>
 
-        <!-- Notifikasi Filter Aktif -->
-        @if(request('filter') && request('filter') != 'all' && !request('search'))
-        <div class="alert alert-primary alert-dismissible fade show mx-3 mt-3 mb-0" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-filter me-2"></i>
+        <!-- Notifikasi -->
+        @if(request('filter') || request('search'))
+        <div class="alert alert-info alert-dismissible fade show mx-3 mt-3 mb-0">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <strong>Filter Aktif:</strong> 
-                    Menampilkan ijazah dari angkatan 
-                    <strong>{{ $availableKlappers->firstWhere('id', str_replace('klapper-', '', request('filter')))->tahun_ajaran ?? '' }}</strong>
-                    <span class="badge bg-white text-primary ms-2">{{ $ijazahs->total() }} data</span>
+                    @if(request('search'))
+                        Hasil pencarian: <strong>{{ request('search') }}</strong>
+                    @endif
+                    @if(request('filter') && request('filter') != 'all')
+                        - Angkatan: <strong>{{ $availableKlappers->firstWhere('id', str_replace('klapper-', '', request('filter')))->tahun_ajaran ?? '' }}</strong>
+                    @endif
+                    <span class="badge bg-primary ms-2">{{ $ijazahs->total() }} data</span>
+                </div>
+                <div>
+                    <a href="{{ route('ijazah.index') }}" class="btn btn-sm btn-outline-secondary me-2">Reset</a>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
                 </div>
             </div>
-            <a href="{{ route('ijazah.index') }}{{ request('search') ? '?search='.request('search') : '' }}" class="btn-close" aria-label="Close"></a>
-        </div>
-        @endif
-
-        @if(request('search') && (!request('filter') || request('filter') == 'all'))
-        <div class="alert alert-info alert-dismissible fade show mx-3 mt-3 mb-0" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-search me-2"></i>
-                <div>
-                    <strong>Pencarian:</strong> 
-                    Menampilkan hasil untuk "<strong>{{ request('search') }}</strong>"
-                    <span class="badge bg-white text-info ms-2">{{ $ijazahs->total() }} hasil</span>
-                </div>
-            </div>
-            <a href="{{ route('ijazah.index') }}{{ request('filter') ? '?filter='.request('filter') : '' }}" class="btn-close" aria-label="Close"></a>
-        </div>
-        @endif
-
-        @if(request('filter') && request('filter') != 'all' && request('search'))
-        <div class="alert alert-secondary alert-dismissible fade show mx-3 mt-3 mb-0" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-funnel me-2"></i>
-                <div>
-                    <strong>Kombinasi Filter:</strong> 
-                    Menampilkan hasil pencarian "<strong>{{ request('search') }}</strong>" 
-                    dalam angkatan <strong>{{ $availableKlappers->firstWhere('id', str_replace('klapper-', '', request('filter')))->tahun_ajaran ?? '' }}</strong>
-                    <span class="badge bg-white text-secondary ms-2">{{ $ijazahs->total() }} data</span>
-                </div>
-            </div>
-            <a href="{{ route('ijazah.index') }}" class="btn-close" aria-label="Close"></a>
         </div>
         @endif
 
         @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show mx-3 mt-3 mb-0" role="alert">
-            <i class="fas fa-check-circle me-2"></i>
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert alert-success alert-dismissible fade show mx-3 mt-3 mb-0">
+            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
         </div>
         @endif
 
-        @if($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3 mb-0" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i>
-            Terjadi kesalahan saat menyimpan data. Silakan cek kembali form edit.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @if($errors->any()))
+        <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3 mb-0">
+            <i class="fas fa-exclamation-circle me-2"></i>Terjadi kesalahan. Silakan cek kembali.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
         </div>
         @endif
 
-        <!-- Card Body dengan Tabel Data -->
+        <!-- Tabel -->
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
-                    <thead class="bg-light">
+                    <thead class="table-light">
                         <tr>
-                            <th width="50">No</th>
-                            <th>Nama Siswa</th>
+                            <th>No</th>
+                            <th>Nama</th>
                             <th>NIS</th>
                             <th>Jurusan</th>
-                            <th>Klapper</th>
+                            <th>Angkatan</th>
                             <th>Tanggal Lulus</th>
                             <th>Nomor Ijazah</th>
-                            <th>File Ijazah</th>
-                            <th width="150">Aksi</th>
+                            <th>File</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,55 +98,45 @@
                         <tr>
                             <td>{{ ($ijazahs->currentPage()-1) * $ijazahs->perPage() + $loop->iteration }}</td>
                             <td>
-                                <a href="{{ route('siswa.show', $ijazah->siswa_id) }}" class="text-dark">
+                                <a href="{{ route('siswa.show', $ijazah->siswa_id) }}" class="text-decoration-none">
                                     {{ $ijazah->nama_siswa }}
-                                    @if($ijazah->siswa->status == 2)
-                                        <i class="fas fa-user-slash text-danger ms-1" title="Siswa Keluar"></i>
-                                    @endif
                                 </a>
+                                @if($ijazah->siswa->status == 2)
+                                    <i class="fas fa-user-slash text-danger ms-1" title="Siswa Keluar"></i>
+                                @endif
                             </td>
                             <td>{{ $ijazah->nis }}</td>
                             <td>
-                                <span class="badge 
-                                    @if(in_array(strtolower($ijazah->jurusan), ['pplg', 'tjkt'])) bg-info text-dark
-                                    @elseif(in_array(strtolower($ijazah->jurusan), ['akl', 'mp'])) bg-warning text-dark
-                                    @else bg-secondary text-white @endif">
-                                    {{ strtoupper($ijazah->jurusan) }}
-                                </span>
+                                <span class="badge bg-secondary">{{ strtoupper($ijazah->jurusan) }}</span>
                             </td>
-                            <td>
-                                <span class="badge bg-light text-dark">
-                                    {{ $ijazah->klapper->nama_buku }} ({{ $ijazah->klapper->tahun_ajaran }})
-                                </span>
-                            </td>
+                            <td>{{ $ijazah->klapper->tahun_ajaran }}</td>
                             <td>{{ $ijazah->tanggal_lulus->format('d/m/Y') }}</td>
                             <td>
-                                <span class="badge bg-primary bg-opacity-10 text-primary">
-                                    {{ $ijazah->nomor_ijazah }}
-                                </span>
+                                <code>{{ $ijazah->nomor_ijazah }}</code>
                             </td>
                             <td>
                                 @if($ijazah->file_path)
-                                    <a href="{{ Storage::url($ijazah->file_path) }}" 
-                                    target="_blank" class="badge bg-success bg-opacity-10 text-success">
-                                        <i class="fas fa-file-pdf me-1"></i> Lihat
-                                    </a>
+                                    <span class="badge bg-success">Ada</span>
                                 @else
-                                    <span class="badge bg-danger bg-opacity-10 text-danger">Belum Upload</span>
+                                    <span class="badge bg-danger">Belum</span>
                                 @endif
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     @if($ijazah->file_path)
+                                        <a href="{{ Storage::url($ijazah->file_path) }}" 
+                                           target="_blank" class="btn btn-outline-primary" title="Lihat">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                         <a href="{{ route('ijazah.download', $ijazah->id) }}" 
-                                           class="btn btn-outline-primary" title="Unduh PDF">
-                                            <i class="fas fa-file-pdf"></i>
+                                           class="btn btn-outline-success" title="Unduh">
+                                            <i class="fas fa-download"></i>
                                         </a>
                                     @endif
                                     <button class="btn btn-outline-secondary" 
                                             data-bs-toggle="modal" 
                                             data-bs-target="#uploadModal{{ $ijazah->id }}"
-                                            title="Upload Ijazah">
+                                            title="Unggah">
                                         <i class="fas fa-upload"></i>
                                     </button>
                                     <a href="{{ route('ijazah.edit', $ijazah->id) }}" 
@@ -193,32 +145,30 @@
                                     </a>
                                 </div>
                                 
-                                <!-- Modal Upload -->
-                                <div class="modal fade" id="uploadModal{{ $ijazah->id }}" tabindex="-1" aria-hidden="true">
+                                <!-- Modal Unggah -->
+                                <div class="modal fade" id="uploadModal{{ $ijazah->id }}" tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                        <form action="{{ route('ijazah.upload', $ijazah->id) }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('ijazah.upload', $ijazah->id) }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Upload File Ijazah</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <h5 class="modal-title">Unggah Ijazah</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="mb-3">
-                                                        <label for="file_ijazah" class="form-label">Pilih File Ijazah (PDF)</label>
-                                                        <input type="file" class="form-control" id="file_ijazah" name="file_ijazah" accept=".pdf" required>
-                                                        <div class="form-text">Maksimal ukuran file: 5MB</div>
+                                                        <label class="form-label">File PDF (Maks 5MB)</label>
+                                                        <input type="file" class="form-control" name="file_ijazah" accept=".pdf" required>
                                                     </div>
                                                     @if($ijazah->file_path)
-                                                    <div class="alert alert-info">
-                                                        <i class="fas fa-info-circle me-2"></i>
-                                                        File ijazah sudah ada. Upload baru akan menggantikan file yang lama.
+                                                    <div class="alert alert-warning">
+                                                        File lama akan diganti dengan file baru.
                                                     </div>
                                                     @endif
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                                    <button type="submit" class="btn btn-primary">Unggah</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -228,12 +178,12 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="9" class="text-center py-4">
-                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                <h5 class="text-muted">Belum ada arsip ijazah</h5>
+                            <td colspan="9" class="text-center py-5">
+                                <i class="fas fa-inbox fa-2x text-muted mb-3"></i>
+                                <h5 class="text-muted">Tidak ada data</h5>
                                 @if(request('filter') || request('search'))
-                                <a href="{{ route('ijazah.index') }}" class="btn btn-sm btn-outline-primary mt-2">
-                                    <i class="fas fa-times me-1"></i> Hapus semua filter
+                                <a href="{{ route('ijazah.index') }}" class="btn btn-outline-primary">
+                                    Tampilkan Semua
                                 </a>
                                 @endif
                             </td>
@@ -243,44 +193,27 @@
                 </table>
             </div>
             
+            <!-- Pagination -->
             @if($ijazahs->hasPages())
-            <div class="card-footer bg-white">
+            <div class="card-footer">
                 {{ $ijazahs->links() }}
             </div>
             @endif
         </div>
     </div>
 </div>
+@endsection
 
+@section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const searchForm = document.getElementById('searchForm');
-    const searchLoading = document.getElementById('searchLoading');
-    let typingTimer;
-    const doneTypingInterval = 500; // 0.5 detik setelah selesai mengetik
-    
-    // Auto submit form setelah selesai mengetik
-    searchInput.addEventListener('input', function() {
-        clearTimeout(typingTimer);
-        searchLoading.classList.remove('d-none');
-        
-        typingTimer = setTimeout(() => {
-            searchForm.submit();
-        }, doneTypingInterval);
-    });
-    
-    // Jika tekan enter, langsung submit
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            clearTimeout(typingTimer);
-            searchForm.submit();
-        }
-    });
-    
-    // Reset loading indicator saat form submit
-    searchForm.addEventListener('submit', function() {
-        searchLoading.classList.remove('d-none');
+    // Notifikasi akan hilang otomatis setelah 5 detik
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 5000); // 5000 milidetik = 5 detik
     });
 });
 </script>
