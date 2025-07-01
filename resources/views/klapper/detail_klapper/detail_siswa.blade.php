@@ -205,7 +205,11 @@
                                                 <i class="fas fa-level-up-alt text-info me-2" style="font-size: 0.75rem;"></i>Naik Kelas XI
                                             </td>
                                             <td class="py-1" style="font-size: 0.85rem;">
-                                                <span class="fw-medium text-dark">{{ $siswa->tanggal_naik_kelas_xi ? \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->isoFormat('D MMMM YYYY') : 'Belum Tersedia' }}</span>
+                                                @if($siswa->status == 0) <!-- Jika siswa keluar -->
+                                                    <span class="fw-medium text-dark">Siswa Keluar</span>
+                                                @else
+                                                    <span class="fw-medium text-dark">{{ $siswa->tanggal_naik_kelas_xi ? \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xi)->isoFormat('D MMMM YYYY') : 'Belum Tersedia' }}</span>
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr class="border-top">
@@ -213,7 +217,11 @@
                                                 <i class="fas fa-level-up-alt text-warning me-2" style="font-size: 0.75rem;"></i>Naik Kelas XII
                                             </td>
                                             <td class="py-1" style="font-size: 0.85rem;">
-                                                <span class="fw-medium text-dark">{{ $siswa->tanggal_naik_kelas_xii ? \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->isoFormat('D MMMM YYYY') : 'Belum Tersedia' }}</span>
+                                                @if($siswa->status == 0) <!-- Jika siswa keluar -->
+                                                    <span class="fw-medium text-dark">Siswa Keluar</span>
+                                                @else
+                                                    <span class="fw-medium text-dark">{{ $siswa->tanggal_naik_kelas_xii ? \Carbon\Carbon::parse($siswa->tanggal_naik_kelas_xii)->isoFormat('D MMMM YYYY') : 'Belum Tersedia' }}</span>
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr class="border-top">
@@ -221,7 +229,11 @@
                                                 <i class="fas fa-medal text-success me-2" style="font-size: 0.75rem;"></i>Tanggal Lulus
                                             </td>
                                             <td class="py-1" style="font-size: 0.85rem;">
-                                                <span class="fw-medium text-dark">{{ $siswa->tanggal_lulus ? \Carbon\Carbon::parse($siswa->tanggal_lulus)->isoFormat('D MMMM YYYY') : 'Belum Lulus' }}</span>
+                                                @if($siswa->status == 0) <!-- Jika siswa keluar -->
+                                                    <span class="fw-medium text-dark">Siswa Keluar</span>
+                                                @else
+                                                    <span class="fw-medium text-dark">{{ $siswa->tanggal_lulus ? \Carbon\Carbon::parse($siswa->tanggal_lulus)->isoFormat('D MMMM YYYY') : 'Belum Lulus' }}</span>
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr class="border-top">
@@ -229,7 +241,11 @@
                                                 <i class="fas fa-door-closed text-danger me-2" style="font-size: 0.75rem;"></i>Tanggal Keluar
                                             </td>
                                             <td class="py-1" style="font-size: 0.85rem;">
-                                                <span class="fw-medium text-dark">{{ $siswa->tanggal_keluar ? \Carbon\Carbon::parse($siswa->tanggal_keluar)->isoFormat('D MMMM YYYY') : 'Masih Aktif' }}</span>
+                                                @if($siswa->status == 1) <!-- Jika siswa lulus -->
+                                                    <span class="fw-medium text-dark">Siswa Lulus</span>
+                                                @else
+                                                    <span class="fw-medium text-dark">{{ $siswa->tanggal_keluar ? \Carbon\Carbon::parse($siswa->tanggal_keluar)->isoFormat('D MMMM YYYY') : 'Masih Aktif' }}</span>
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr class="border-top">
@@ -238,7 +254,9 @@
                                             </td>
                                             <td class="py-1" style="font-size: 0.85rem;">
                                                 <span class="fw-medium text-dark">
-                                                    @if($siswa->tanggal_keluar && $siswa->alasan_keluar)
+                                                    @if($siswa->status == 1) <!-- Jika siswa lulus -->
+                                                        -
+                                                    @elseif($siswa->tanggal_keluar && $siswa->alasan_keluar)
                                                         {{ $siswa->alasan_keluar }}
                                                     @elseif($siswa->tanggal_keluar && !$siswa->alasan_keluar)
                                                         Tidak ada alasan yang dicatat
@@ -252,7 +270,7 @@
                                 </table>
                             </div>
 
-                            @if($siswa->kelas != 'X' && $siswa->alasan_masuk)
+                            @if($siswa->kelas != 'X' && $siswa->alasan_masuk && $siswa->status != 0)
                             <div class="alert alert-info border-0 shadow-sm mt-3" style="padding: 0.5rem 0.75rem;">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
@@ -305,7 +323,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>  
 
 <!-- Import JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
